@@ -54,14 +54,13 @@
             android:id="@+id/passwordTextBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:drawableLeft="@drawable/ic_action_password"
             android:hint="Password"
-            android:inputType="textPersonName"
+            android:drawableLeft="@drawable/ic_action_password"
             android:textColor="@color/white"
             android:textColorHint="#79FFFFFF"
-            android:textSize="25dp" />
+            android:ems="10"
+            android:textSize="25dp"
+            android:inputType="textPassword" />
 
     </LinearLayout>
 
