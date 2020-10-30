@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/studentbackground"
-    tools:context=".UIStudent">
+    tools:context=".UIintern">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -49,8 +48,20 @@
                 android:id="@+id/npstaffSchoolText"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
                 android:text="School/Course"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <TextView
+                android:layout_below="@+id/npstaffSchoolText"
+                android:id="@+id/npstaffClassText"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="Postal/Address"
                 android:textColor="@color/white"
                 android:textSize="16dp"
                 android:layout_width="wrap_content"
@@ -61,12 +72,12 @@
 
         <GridLayout
             android:columnCount="2"
-            android:rowCount="3"
+            android:rowCount="2"
             android:alignmentMode="alignMargins"
             android:columnOrderPreserved="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-//attendance
+            //attendance
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/npstaffAttendance"
@@ -103,7 +114,7 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-//data
+            //data
             <androidx.cardview.widget.CardView
                 android:id="@+id/npstaffStudentData"
                 android:layout_width="180dp"
@@ -139,43 +150,8 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-//calendar
-            <androidx.cardview.widget.CardView
-                android:id="@+id/studentCalendar"
-                android:layout_width="180dp"
-                android:layout_height="180dp"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="12dp"
-                android:elevation="6dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="6dp">
+            //calendar
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/calendar" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="SCHEDULE"
-                        android:textColor="#3E3E3E"
-                        android:textSize="20dp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-//tasks
             <androidx.cardview.widget.CardView
                 android:id="@+id/npstaffTask"
                 android:layout_width="180dp"
@@ -196,14 +172,14 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:src="@drawable/task"
+                        android:src="@drawable/log"
                         android:layout_width="100dp"
                         android:layout_height="100dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="TASKS"
+                        android:text="DAILY LOG"
                         android:textStyle="bold"
                         android:textSize="20dp"
                         android:textColor="#3E3E3E"
@@ -252,5 +228,6 @@
 
         </GridLayout>
     </LinearLayout>
+
 
 </ScrollView>
