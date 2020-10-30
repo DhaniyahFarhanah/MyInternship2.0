@@ -1,5 +1,6 @@
 package com.example.myinternship20
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.loginscreen.*
@@ -13,6 +14,10 @@ class MainActivity : AppCompatActivity() {
             var setup = LoginSetup1()
 
             setup.show(supportFragmentManager, "setup1")
+        }
+        loginButton.setOnClickListener {
+            val intent = Intent(this, SplashScreen::class.java)
+            startActivity(intent)
         }
 
     }
