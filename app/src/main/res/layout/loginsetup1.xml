@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="match_parent">
 
     <TextView
@@ -29,6 +29,7 @@
         android:backgroundTint="@color/purple_500"
         android:text="Internship"
         android:textSize="19dp"
+        android:textColor="@color/white"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -40,6 +41,7 @@
         android:backgroundTint="@color/purple_500"
         android:text="NPIS"
         android:textSize="19dp"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/internButton"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/internButton"
@@ -52,6 +54,7 @@
         android:backgroundTint="@color/teal_700"
         android:text="Student"
         android:textSize="19dp"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/npisButton"
         app:layout_constraintHorizontal_bias="0.0"
@@ -67,6 +70,7 @@
         android:text="NP staff"
         android:textSize="19dp"
         android:backgroundTint="@color/teal_700"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/studentButton"
         app:layout_constraintHorizontal_bias="1.0"
