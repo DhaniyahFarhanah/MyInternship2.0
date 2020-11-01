@@ -4,17 +4,25 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.AbsSpinner
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.loginsetup1.*
 import kotlinx.android.synthetic.main.setup_intern.*
 
 class SetupIntern : AppCompatActivity() {
+
+    lateinit var spinner: Spinner
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.setup_intern)
 
         val type = intent.getStringExtra("userType").toString()
+        val selectedSchool = findViewById<Spinner>(R.id.schoolSpinner)
+        val selectedCourse = findViewById<Spinner>(R.id.courseSpinner)
 
         setupUserType.text="$type setup"
         setupUserEmail.hint="$type E-mail"
@@ -32,6 +40,7 @@ class SetupIntern : AppCompatActivity() {
                 Toast.makeText(this,"Successfully created $type User",Toast.LENGTH_SHORT).show()
             }
         }
+
         setupCancelButton.setOnClickListener{
             finish()
         }
