@@ -112,8 +112,7 @@
                     android:layout_width="200dp"
                     android:layout_height="44dp"
                     android:layout_below="@+id/textView6"
-                    android:layout_alignLeft="@+id/textView6"
-                    android:entries="@array/school_list"/>
+                    android:layout_alignLeft="@+id/textView6" />
 
                 <TextView
                     android:id="@+id/textView8"
@@ -165,7 +164,7 @@
                     android:layout_toRightOf="@+id/setupNpisID"
                     android:ems="10"
                     android:hint="Postal"
-                    android:inputType="textPostalAddress"
+                    android:inputType="number"
                     android:textSize="20dp" />
             </RelativeLayout>
 
