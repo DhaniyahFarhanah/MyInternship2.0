@@ -1,4 +1,4 @@
-package com.example.myinternship20
+package com.ngeeann.myinternship20
 
 import org.junit.Test
 

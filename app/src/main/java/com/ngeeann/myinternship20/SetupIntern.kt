@@ -1,14 +1,12 @@
-package com.example.myinternship20
+package com.ngeeann.myinternship20
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import androidx.core.view.isVisible
-import com.example.myinternship20.databinding.ActivityMainBinding
-import com.example.myinternship20.databinding.SetupInternBinding
-import kotlinx.android.synthetic.main.loginsetup1.*
+import com.ngeeann.myinternship20.databinding.ActivityMainBinding
+import com.ngeeann.myinternship20.databinding.SetupInternBinding
 import kotlinx.android.synthetic.main.setup_intern.*
 
 class SetupIntern : AppCompatActivity() {

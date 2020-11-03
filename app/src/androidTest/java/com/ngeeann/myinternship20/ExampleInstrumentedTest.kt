@@ -1,4 +1,4 @@
-package com.example.myinternship20
+package com.ngeeann.myinternship20
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

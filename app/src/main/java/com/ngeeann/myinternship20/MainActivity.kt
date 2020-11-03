@@ -1,11 +1,10 @@
-package com.example.myinternship20
+package com.ngeeann.myinternship20
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import kotlinx.android.synthetic.main.loginscreen.*
-import kotlinx.android.synthetic.main.loginsetup1.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
