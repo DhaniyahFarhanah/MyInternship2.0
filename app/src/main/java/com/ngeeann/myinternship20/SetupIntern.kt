@@ -26,6 +26,11 @@ class SetupIntern : AppCompatActivity() {
         binding.setupUserEmail.hint="$type E-mail"
         binding.setupUserID.hint="$type ID"
 
+        if(type=="NPIS"||type=="NP Staff"){
+            textView8.visibility=View.GONE
+            courseSpinner.visibility=View.GONE
+        }
+
         if(type=="Intern"){
             setupIntern.visibility=View.VISIBLE
         }
@@ -71,7 +76,6 @@ class SetupIntern : AppCompatActivity() {
 
             }
         }
-
 
         binding.registerButton.setOnClickListener {
             if(binding.setupUserEmail.text.toString()==""||binding.setupUserID.text.toString()==""||binding.setupPassword.text.toString()==""){
