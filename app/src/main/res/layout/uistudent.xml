@@ -19,7 +19,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/npstaffNameText"
+                android:id="@+id/studentTitleText"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
@@ -32,8 +32,8 @@
             </TextView>
 
             <TextView
-                android:layout_below="@+id/npstaffNameText"
-                android:id="@+id/npstaffIdText"
+                android:layout_below="@+id/studentTitleText"
+                android:id="@+id/studentIdText"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"
@@ -45,8 +45,8 @@
             </TextView>
 
             <TextView
-                android:layout_below="@+id/npstaffIdText"
-                android:id="@+id/npstaffSchoolText"
+                android:layout_below="@+id/studentIdText"
+                android:id="@+id/studentSchoolText"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"
@@ -69,7 +69,7 @@
 //attendance
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/npstaffAttendance"
+                android:id="@+id/studentAttendance"
                 android:layout_width="180dp"
                 android:layout_height="180dp"
                 android:layout_rowWeight="1"
@@ -105,7 +105,7 @@
             </androidx.cardview.widget.CardView>
 //data
             <androidx.cardview.widget.CardView
-                android:id="@+id/npstaffStudentData"
+                android:id="@+id/studentData"
                 android:layout_width="180dp"
                 android:layout_height="180dp"
                 android:layout_rowWeight="1"
@@ -177,7 +177,7 @@
             </androidx.cardview.widget.CardView>
 //tasks
             <androidx.cardview.widget.CardView
-                android:id="@+id/npstaffTask"
+                android:id="@+id/studentTask"
                 android:layout_width="180dp"
                 android:layout_height="180dp"
                 android:layout_rowWeight="1"
@@ -213,7 +213,7 @@
             </androidx.cardview.widget.CardView>
             //alarm
             <androidx.cardview.widget.CardView
-                android:id="@+id/internAlarm"
+                android:id="@+id/studentAlarm"
                 android:layout_width="180dp"
                 android:layout_height="180dp"
                 android:layout_rowWeight="1"

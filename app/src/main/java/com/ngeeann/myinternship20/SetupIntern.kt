@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import com.ngeeann.myinternship20.databinding.ActivityMainBinding
 import com.ngeeann.myinternship20.databinding.SetupInternBinding
 import kotlinx.android.synthetic.main.setup_intern.*
 

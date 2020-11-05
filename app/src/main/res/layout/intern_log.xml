@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:background="@drawable/studentbackground2"
+    tools:context=".Log_Intern">
+
+
+    <ImageView
+        android:layout_marginLeft="4dp"
+        android:id="@+id/logBackArrow"
+        android:layout_width="80dp"
+        android:layout_height="59dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_backarrow" />
+
+    <TextView
+        android:id="@+id/logLabel"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_marginTop="6dp"
+        android:gravity="center"
+        android:text="DAILY LOG"
+        android:textColor="@color/white"
+        android:textSize="35dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></TextView>
+
+    <TextView
+        android:id="@+id/logDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textColor="#2B2B2B"
+        android:textSize="25dp"
+        android:text="Date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logLabel" />
+
+    <EditText
+        android:id="@+id/logDataEntered"
+        android:layout_width="391dp"
+        android:layout_height="503dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/border"
+        android:ems="10"
+        android:fontFamily="monospace"
+        android:gravity="start|top"
+        android:hint="Enter your log here"
+        android:inputType="textMultiLine"
+        android:padding="4dp"
+        android:textColor="@color/black"
+        android:textColorHint="#676767"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logDateLabel" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/logSubmitButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logDataEntered">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/studentgrad"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="SUBMIT"
+                android:textColor="@color/white"
+                android:textSize="23dp"></TextView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

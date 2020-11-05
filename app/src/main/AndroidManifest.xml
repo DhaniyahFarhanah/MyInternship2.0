@@ -9,12 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar">
-        <activity android:name="com.ngeeann.myinternship20.SetupIntern"></activity>
-        <activity android:name="com.ngeeann.myinternship20.UIStaff" />
-        <activity android:name="com.ngeeann.myinternship20.UIintern" />
-        <activity android:name="com.ngeeann.myinternship20.UIStudent" />
-        <activity android:name="com.ngeeann.myinternship20.SplashScreen" />
-        <activity android:name="com.ngeeann.myinternship20.MainActivity">
+        <activity android:name=".Log_Intern"></activity>
+        <activity android:name=".SetupIntern" />
+        <activity android:name=".UIStaff" />
+        <activity android:name=".UIintern" />
+        <activity android:name=".UIStudent" />
+        <activity android:name=".SplashScreen" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
