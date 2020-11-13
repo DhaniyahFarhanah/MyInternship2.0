@@ -17,6 +17,6 @@ class SplashScreen : AppCompatActivity() {
             val intent= Intent(this,UIintern::class.java)
             startActivity(intent)
             finish()
-        }, 2000) //delay of 3 secs before welcome
+        }, 2000) //delay of 3 (2?) secs before welcome
     }
 }
