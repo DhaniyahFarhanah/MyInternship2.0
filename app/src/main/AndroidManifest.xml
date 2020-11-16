@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar">
-        <activity android:name=".LogIntern"></activity>
+        <activity android:name=".Log_Intern"></activity>
         <activity android:name=".SetupIntern" />
         <activity android:name=".UIStaff" />
         <activity android:name=".UIintern" />

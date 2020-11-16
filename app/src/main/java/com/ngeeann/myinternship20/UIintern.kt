@@ -11,7 +11,7 @@ class UIintern : AppCompatActivity() {
         setContentView(R.layout.uiintern)
 
         internLog.setOnClickListener {
-            startActivity(Intent(this, LogIntern::class.java))
+            startActivity(Intent(this, Log_Intern::class.java))
         }
     }
 

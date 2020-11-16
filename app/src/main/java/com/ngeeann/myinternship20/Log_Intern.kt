@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.intern_log.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class LogIntern : AppCompatActivity() {
+class Log_Intern : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
