@@ -13,6 +13,9 @@ class UIintern : AppCompatActivity() {
         internLog.setOnClickListener {
             startActivity(Intent(this, Log_Intern::class.java))
         }
+        internAttendance.setOnClickListener {
+            startActivity(Intent(this, Attendance_Intern::class.java))
+        }
     }
 
 
