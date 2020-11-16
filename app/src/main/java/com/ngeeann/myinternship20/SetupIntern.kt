@@ -81,7 +81,7 @@ class SetupIntern : AppCompatActivity() {
                 Toast.makeText(this,"Fill in empty blanks",Toast.LENGTH_SHORT).show()
             }
             else{//successful creation
-                startActivity(Intent(this,MainActivity::class.java))//successful registeration
+                startActivity(Intent(this,MainActivity::class.java))//successful registration
                 Toast.makeText(this,"Successfully created $type User",Toast.LENGTH_SHORT).show()
             }
         }
