@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity() {
         val username = idTextBox.text
         val grpRef = database.getReference("users/$username/group")
         val studIntent = Intent(this, UIStudent::class.java)
+        intent.putExtra("Username",username)
         val intIntent = Intent(this, UIintern::class.java)
         val staffIntent = Intent(this, UIStaff::class.java)
 
