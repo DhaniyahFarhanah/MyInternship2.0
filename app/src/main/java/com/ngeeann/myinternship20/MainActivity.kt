@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.loginscreen)
 
         setupButton.setOnClickListener {
-            var setup = LoginSetup1()
+            val setup = LoginSetup1()
 
             setup.show(supportFragmentManager, "setup1")
         }
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val dbPassword = dataSnapshot.getValue<String>()
                 if (dbPassword == password) {
-                    Toast.makeText(baseContext, "Login succesful.",
+                    Toast.makeText(baseContext, "Login successful.",
                         Toast.LENGTH_SHORT).show()
                     grpQuery()
                 }
@@ -64,13 +64,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun grpQuery(){
-        val username = idTextBox.text
+        val username = idTextBox.text.toString()
         val grpRef = database.getReference("users/$username/group")
-        val studIntent = Intent(this, UIStudent::class.java)
-        intent.putExtra("Username",username)
-        val intIntent = Intent(this, UIintern::class.java)
-        val staffIntent = Intent(this, UIStaff::class.java)
-
+        val studIntent = Intent(this, UIStudent::class.java).putExtra("username",username)
+        val intIntent = Intent(this, UIintern::class.java).putExtra("username",username)
+        val staffIntent = Intent(this, UIStaff::class.java).putExtra("username",username)
 
         grpRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {

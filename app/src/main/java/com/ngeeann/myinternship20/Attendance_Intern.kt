@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.intern_attendance.*
 
-class Attendance_Intern : AppCompatActivity() {
+class Attendance_Intern : AppCompatActivity() { //TODO rework attendance storage system on database and build the attendance system
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.intern_attendance)
