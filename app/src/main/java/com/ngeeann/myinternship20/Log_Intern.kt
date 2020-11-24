@@ -33,11 +33,10 @@ class Log_Intern : AppCompatActivity() {
         logDateLabel.text=currentDate.toString()
 
         logBackArrow.setOnClickListener {
-            startActivity(Intent(this, UIintern::class.java))
+            this.finish()
         }
 
         logSubmitButton.setOnClickListener{
-            //startActivity(Intent(this, UIintern::class.java))
             if (username != null) {
                 newLog(username, "username", currentDate, logDataEntered.text.toString())
             }
@@ -69,6 +68,11 @@ class Log_Intern : AppCompatActivity() {
                 .addOnFailureListener{
                     Toast.makeText(this,"Daily Log was unable to submit please try again.", Toast.LENGTH_SHORT).show()
                 }
+    }
+
+    fun checkLog(userId: String) { //checks for existing log for today using date, user ID
+        val path = database.child("users").child(userId).child("internlogids")
+        //if exist, pass log text into textbox
     }
 
     data class Log(

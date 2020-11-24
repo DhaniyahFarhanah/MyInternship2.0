@@ -12,7 +12,7 @@ class Attendance_Intern : AppCompatActivity() { //TODO rework attendance storage
         setContentView(R.layout.intern_attendance)
 
         attendanceBackArrow.setOnClickListener {
-            startActivity(Intent(this, UIintern::class.java))
+            this.finish()
         }
         if (attendanceStatus.text=="Upcoming"){
             attendanceLinear.background=null
