@@ -2,6 +2,7 @@ package com.ngeeann.myinternship20
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -12,57 +13,40 @@ import kotlinx.android.synthetic.main.uiintern.*
 import kotlinx.android.synthetic.main.uistaff.*
 
 class UIStaff : AppCompatActivity() {
-    val database = Firebase.database
-    lateinit var username: String
+    private val database = Firebase.database
+    lateinit var userId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.uistaff)
-        username = intent.getStringExtra("username").toString()
+        userId = intent.getStringExtra("username").toString()
 
-        fetchUserInfo(username)
+        fetchUserInfo(userId)
     }
 
-    private fun fetchUserInfo(username: String) {
-        val namePath = database.getReference("users/$username/Name")
-        val schoolPath = database.getReference("users/$username/school")
-        val subPath = database.getReference("users/$username/subject")
-        var staffSchool: String?
-        var staffSubject: String?
 
-        staffIdText.text = username
-
-        namePath.addListenerForSingleValueEvent(object : ValueEventListener {
+    private fun fetchUserInfo(userId: String) { //checks for existing log for today using user ID & current date
+        val path = database.getReference("users/$userId")
+        staffIdText.text = userId
+        path.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val staffName = snapshot.getValue<String>() //Instantiates val with value of name
-                staffNameText.text = staffName//Populates value into textview in the UI layout
+                val staff = snapshot.getValue<Staff>()
+                staff?.let{
+                    staffNameText.text = it.Name
+                    staffSchoolText.text = it.school
+                    staffSubjectText.text = it.subject
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })
-
-        schoolPath.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                staffSchool = snapshot.getValue<String>()
-                staffSchoolText.text = staffSchool
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })
-
-        subPath.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                staffSubject = snapshot.getValue<String>()
-                staffSubjectText.text = staffSubject
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                staffSubjectText.text = ""
+                Toast.makeText(baseContext,"Unable to connect to the server.", Toast.LENGTH_SHORT).show()
             }
         })
     }
+
+    data class Staff(
+        var Name: String? = "",
+        var school: String? = "",
+        var subject: String? = ""
+    )
 }
