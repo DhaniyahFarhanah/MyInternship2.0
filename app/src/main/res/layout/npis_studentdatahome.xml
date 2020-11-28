@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NPIS_StudentDataHome"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/linearLayout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:background="@drawable/teachergradcode"
+        android:gravity="center"
+        android:paddingTop="1dp">
+
+        <TextView
+            android:layout_marginTop="18dp"
+            android:id="@+id/textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Please choose a student"
+            android:layout_marginBottom="10dp"/>
+
+        <Spinner
+            android:layout_below="@id/textview"
+            android:id="@+id/studentDataSpinner"
+            android:gravity="center"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="330dp"
+            android:layout_height="44dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginBottom="8dp"/>
+
+        <ImageView
+            android:id="@+id/npisDatabackarrow"
+            android:layout_width="52dp"
+            android:layout_height="38dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="3dp"
+            app:srcCompat="@drawable/ic_baseline_backarrow" />
+
+    </RelativeLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/npisBottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/teachergradcode"
+        app:itemTextColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:itemIconTint="#fff"
+        android:padding="2dp"
+        app:itemIconSize="28dp"
+        app:menu="@menu/npis_navmenu"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
