@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/npis_student_data_nav"
+    app:startDestination="@id/nav_overview">
+
+    <fragment
+        android:id="@+id/nav_overview"
+        android:name="com.ngeeann.myinternship20.NPISfragments.OverviewFragment"
+        android:label="fragment_overview"
+        tools:layout="@layout/fragment_overview" />
+    <fragment
+        android:id="@+id/nav_log"
+        android:name="com.ngeeann.myinternship20.NPISfragments.logFragment"
+        android:label="fragment_log"
+        tools:layout="@layout/fragment_log" />
+    <fragment
+        android:id="@+id/nav_attendance"
+        android:name="com.ngeeann.myinternship20.NPISfragments.AttendanceDataFragment"
+        android:label="fragment_attendance_data"
+        tools:layout="@layout/fragment_attendance_data" />
+</navigation>

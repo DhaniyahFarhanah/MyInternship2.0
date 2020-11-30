@@ -48,19 +48,31 @@
 
     </RelativeLayout>
 
+    <fragment
+        android:id="@+id/npisStudentFragmentNav"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@id/npisBottomNav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout"
+        app:navGraph="@navigation/npis_student_data_nav" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/npisBottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@drawable/teachergradcode"
+        android:padding="2dp"
+        app:itemIconSize="28dp"
+        app:itemIconTint="#fff"
         app:itemTextColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:itemIconTint="#fff"
-        android:padding="2dp"
-        app:itemIconSize="28dp"
-        app:menu="@menu/npis_navmenu"/>
+        app:menu="@menu/npis_navmenu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
