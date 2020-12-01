@@ -26,7 +26,10 @@ class UIStudent : AppCompatActivity() {
 
         Toast.makeText(this,"Welcome", Toast.LENGTH_SHORT).show()
 
-
+        internAttendance.setOnClickListener { //TODO assign an ID for this button
+            startActivity(Intent(this, Attendance_Intern::class.java)
+                    .putExtra("userID",userId))
+        }
     }
 
     private fun fetchUserInfo(userId: String) { //checks for existing log for today using user ID & current date
