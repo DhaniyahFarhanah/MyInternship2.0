@@ -7,8 +7,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.core.app.BundleCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.navArgs
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ngeeann.myinternship20.NPISfragments.AttendanceDataFragment
@@ -26,10 +28,27 @@ class NPIS_StudentDataHome : AppCompatActivity() {
         setContentView(R.layout.npis_studentdatahome)
 
         val npisBottomNav= findViewById<BottomNavigationView>(R.id.npisBottomNav)
-        val navController= findNavController(R.id.npisStudentFragmentNav)
 
-        npisBottomNav.setupWithNavController(navController)
-
+        npisBottomNav.setOnNavigationItemSelectedListener { item ->
+            when(item.itemId) {
+                R.id.nav_overview -> {
+                    overviewLayout.visibility=View.VISIBLE
+                    logLayout.visibility=View.GONE
+                    attendanceLayout.visibility=View.GONE
+                }
+                R.id.nav_log -> {
+                    overviewLayout.visibility=View.GONE
+                    logLayout.visibility=View.VISIBLE
+                    attendanceLayout.visibility=View.GONE
+                }
+                R.id.nav_attendance -> {
+                    overviewLayout.visibility=View.GONE
+                    logLayout.visibility=View.GONE
+                    attendanceLayout.visibility=View.VISIBLE
+                }
+            }
+            true
+        }//navigation
         val adapter= ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,nameTest)
 
         studentDataSpinner.adapter=adapter
@@ -38,6 +57,8 @@ class NPIS_StudentDataHome : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedStudent:String=nameTest[position]
                 Toast.makeText(applicationContext,"$selectedStudent's Data",Toast.LENGTH_SHORT).show()
+
+                overviewText.text="$selectedStudent's Overview"
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -52,5 +73,6 @@ class NPIS_StudentDataHome : AppCompatActivity() {
 
 
     }
-
 }
+
+

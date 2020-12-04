@@ -47,18 +47,113 @@
             app:srcCompat="@drawable/ic_baseline_backarrow" />
 
     </RelativeLayout>
+//Overview Layout
 
-    <fragment
-        android:id="@+id/npisStudentFragmentNav"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:id="@+id/overviewLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@id/npisBottomNav"
+        android:padding="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout"
-        app:navGraph="@navigation/npis_student_data_nav" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/overviewText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OVERVIEW"
+            android:textColor="#292929"
+            android:textSize="30dp"></TextView>
+
+    </RelativeLayout>
+    //log Layout
+
+    //attendance
+
+    <RelativeLayout
+        android:id="@+id/logLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/npisBottomNav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.607">
+
+        <ImageView
+            android:id="@+id/daterightbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            app:srcCompat="@drawable/ic_round_arrow_roudedarrowright" />
+
+        <ImageView
+            android:id="@+id/dateleftbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            app:srcCompat="@drawable/ic_round_roundedarrowleft" />
+
+        <TextView
+            android:id="@+id/dateSubmittedLogText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_toLeftOf="@+id/daterightbutton"
+            android:layout_toRightOf="@id/dateleftbutton"
+            android:gravity="center"
+            android:text="DATE"
+            android:textColor="#292929"
+            android:textSize="30dp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:layout_below="@+id/dateSubmittedLogText"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/border"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/studentLogDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:hint="No Log Submitted"
+                android:textColor="@color/black"
+                android:textColorHint="#8B2E2E2E"
+                android:textSize="18dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dateSubmittedLogText" />
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/attendanceLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+
+    </RelativeLayout>
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/npisBottomNav"
@@ -74,5 +169,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/npis_navmenu" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
