@@ -75,9 +75,13 @@ class NPIS_StudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetList
                 Toast.makeText(applicationContext,"$selectedStudent's Data",Toast.LENGTH_SHORT).show()
 
                 getDateCalendar()
-                binding.overviewText.text="$selectedStudent's Overview"
-                binding.dateSubmittedLogText.text="$chosenDay ${changeMonthToString(chosenMonth)} $chosenYear"
 
+                binding.overviewText.text="$selectedStudent's Overview Data"
+                binding.dateSubmittedLogText.text="$chosenDay ${changeMonthToString(chosenMonth)} $chosenYear"
+                binding.attendanceText.text="$selectedStudent's Attendance Data"
+                binding.gradeText.text="$selectedStudent's Ready For Grading"
+
+                //log coding here
                 binding.dateSubmittedLogText.setOnClickListener {
                     pickDate()
                 }
@@ -91,7 +95,7 @@ class NPIS_StudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetList
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("Not yet implemented")
+                //nothing here
             }
 
         }
