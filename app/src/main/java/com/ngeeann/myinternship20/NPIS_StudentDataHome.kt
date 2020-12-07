@@ -1,64 +1,96 @@
 package com.ngeeann.myinternship20
 
+import android.app.DatePickerDialog
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
+import android.widget.DatePicker
 import android.widget.Toast
-import androidx.core.app.BundleCompat
-import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
-import androidx.navigation.navArgs
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.ngeeann.myinternship20.NPISfragments.AttendanceDataFragment
-import com.ngeeann.myinternship20.NPISfragments.OverviewFragment
-import com.ngeeann.myinternship20.NPISfragments.logFragment
+import androidx.annotation.RequiresApi
+import com.ngeeann.myinternship20.databinding.NpisStudentdatahomeBinding
 import kotlinx.android.synthetic.main.npis_studentdatahome.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 
-class NPIS_StudentDataHome : AppCompatActivity() {
+class NPIS_StudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
+    private lateinit var binding: NpisStudentdatahomeBinding
+    private var nameTest = arrayOf("Jessica", "Adams", "Why")//testing array for the names in the spinner for the NPIS staff to choose
+    private var c= Calendar.getInstance()
 
-    private var nameTest = arrayOf("Jessica", "Adams", "Why")
+    var day = 0
+    var month = 0
+    var year = 0
+
+    var changedDay = 0
+    var changedMonth = 0
+    var changedYear = 0
+
+    @RequiresApi(Build.VERSION_CODES.O)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.npis_studentdatahome)
+        binding= NpisStudentdatahomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)//using binding due to many variables
 
-        val npisBottomNav= findViewById<BottomNavigationView>(R.id.npisBottomNav)
-
-        npisBottomNav.setOnNavigationItemSelectedListener { item ->
+        binding.npisBottomNav.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.nav_overview -> {
                     overviewLayout.visibility=View.VISIBLE
                     logLayout.visibility=View.GONE
                     attendanceLayout.visibility=View.GONE
+                    gradeLayout.visibility=View.GONE
                 }
                 R.id.nav_log -> {
                     overviewLayout.visibility=View.GONE
                     logLayout.visibility=View.VISIBLE
                     attendanceLayout.visibility=View.GONE
+                    gradeLayout.visibility=View.GONE
                 }
                 R.id.nav_attendance -> {
                     overviewLayout.visibility=View.GONE
                     logLayout.visibility=View.GONE
                     attendanceLayout.visibility=View.VISIBLE
+                    gradeLayout.visibility=View.GONE
+                }
+                R.id.nav_grading -> {
+                    overviewLayout.visibility=View.GONE
+                    logLayout.visibility=View.GONE
+                    attendanceLayout.visibility=View.GONE
+                    gradeLayout.visibility=View.VISIBLE
                 }
             }
             true
-        }//navigation
+        }//navigation between frames (You can ignore this
+
         val adapter= ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,nameTest)
+        val formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy")
+        val currentDate= LocalDate.now().format(formatter)
 
-        studentDataSpinner.adapter=adapter
-
-        studentDataSpinner.onItemSelectedListener=object : AdapterView.OnItemSelectedListener{
+        binding.studentDataSpinner.adapter=adapter
+        //here is the spinner for the names
+        binding.studentDataSpinner.onItemSelectedListener=object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
                 val selectedStudent:String=nameTest[position]
                 Toast.makeText(applicationContext,"$selectedStudent's Data",Toast.LENGTH_SHORT).show()
 
-                overviewText.text="$selectedStudent's Overview"
+                binding.overviewText.text="$selectedStudent's Overview"
+
+                binding.dateSubmittedLogText.setOnClickListener {
+
+                }
+
+                binding.dateleftbutton.setOnClickListener {
+
+                }
+                binding.daterightbutton.setOnClickListener {
+
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -73,6 +105,12 @@ class NPIS_StudentDataHome : AppCompatActivity() {
 
 
     }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        TODO("Not yet implemented")
+    }
 }
+
+
 
 

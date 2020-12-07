@@ -47,7 +47,7 @@
             app:srcCompat="@drawable/ic_baseline_backarrow" />
 
     </RelativeLayout>
-//Overview Layout
+    //Overview Layout
 
     <RelativeLayout
         android:id="@+id/overviewLayout"
@@ -69,10 +69,7 @@
             android:textSize="30dp"></TextView>
 
     </RelativeLayout>
-    //log Layout
-
-    //attendance
-
+    //Log layout
     <RelativeLayout
         android:id="@+id/logLayout"
         android:layout_width="match_parent"
@@ -88,22 +85,26 @@
 
         <ImageView
             android:id="@+id/daterightbutton"
+            android:layout_below="@+id/presstext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             app:srcCompat="@drawable/ic_round_arrow_roudedarrowright" />
 
         <ImageView
+            android:layout_below="@+id/presstext"
             android:id="@+id/dateleftbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
             app:srcCompat="@drawable/ic_round_roundedarrowleft" />
 
         <TextView
             android:id="@+id/dateSubmittedLogText"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="39dp"
             android:layout_toLeftOf="@+id/daterightbutton"
             android:layout_toRightOf="@id/dateleftbutton"
             android:gravity="center"
@@ -111,10 +112,20 @@
             android:textColor="#292929"
             android:textSize="30dp" />
 
+        <TextView
+            android:id="@+id/presstext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_below="@+id/dateSubmittedLogText"
+            android:text="press here to choose date"
+            android:textColor="#B8B8B8"
+            android:textSize="9dp"></TextView>
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="450dp"
-            android:layout_below="@+id/dateSubmittedLogText"
+            android:layout_below="@+id/presstext"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="5dp"
@@ -138,7 +149,7 @@
         </ScrollView>
 
     </RelativeLayout>
-
+    //Attendance layout
     <RelativeLayout
         android:id="@+id/attendanceLayout"
         android:layout_width="wrap_content"
@@ -150,8 +161,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/attendanceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ATTENDANCE"
+            android:textColor="#292929"
+            android:textSize="30dp"></TextView>
+    </RelativeLayout>
+    //Grading layout
+    <RelativeLayout
+        android:id="@+id/gradeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-
+        <TextView
+            android:id="@+id/gradeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GRADING"
+            android:textColor="#292929"
+            android:textSize="30dp"></TextView>
     </RelativeLayout>
 
 
