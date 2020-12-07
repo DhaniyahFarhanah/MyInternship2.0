@@ -20,15 +20,15 @@ class NPIS_StudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
     private lateinit var binding: NpisStudentdatahomeBinding
     private var nameTest = arrayOf("Jessica", "Adams", "Why")//testing array for the names in the spinner for the NPIS staff to choose
-    private var c= Calendar.getInstance()
+    val cal=Calendar.getInstance()
 
     var day = 0
     var month = 0
     var year = 0
 
-    var changedDay = 0
-    var changedMonth = 0
-    var changedYear = 0
+    var chosenDay = 0
+    var chosenMonth = 0
+    var chosenYear = 0
 
     @RequiresApi(Build.VERSION_CODES.O)
 
@@ -79,10 +79,12 @@ class NPIS_StudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetList
                 val selectedStudent:String=nameTest[position]
                 Toast.makeText(applicationContext,"$selectedStudent's Data",Toast.LENGTH_SHORT).show()
 
+                getDateCalendar()
                 binding.overviewText.text="$selectedStudent's Overview"
+                binding.dateSubmittedLogText.text="$day/$month/$year"
 
                 binding.dateSubmittedLogText.setOnClickListener {
-
+                    pickDate()
                 }
 
                 binding.dateleftbutton.setOnClickListener {
@@ -103,12 +105,29 @@ class NPIS_StudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetList
             this.finish()
         }
 
+    }
 
+    private fun getDateCalendar(){
+        day=cal.get(Calendar.DAY_OF_MONTH)
+        month=cal.get(Calendar.MONTH)
+        year=cal.get(Calendar.YEAR)
+    }
+
+    private fun pickDate(){
+
+            getDateCalendar()
+
+            DatePickerDialog(this,this,year,month,day).show()
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        TODO("Not yet implemented")
+        chosenDay=dayOfMonth
+        chosenMonth=month
+        chosenYear=year
+
+        binding.dateSubmittedLogText.text="$chosenDay / $chosenMonth / $chosenYear"
     }
+
 }
 
 

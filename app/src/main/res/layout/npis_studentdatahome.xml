@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,12 +70,13 @@
 
     </RelativeLayout>
     //Log layout
+
     <RelativeLayout
         android:id="@+id/logLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/npisBottomNav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -85,18 +86,18 @@
 
         <ImageView
             android:id="@+id/daterightbutton"
-            android:layout_below="@+id/presstext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_below="@+id/presstext"
             android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
             app:srcCompat="@drawable/ic_round_arrow_roudedarrowright" />
 
         <ImageView
-            android:layout_below="@+id/presstext"
             android:id="@+id/dateleftbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/presstext"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             app:srcCompat="@drawable/ic_round_roundedarrowleft" />
@@ -116,8 +117,8 @@
             android:id="@+id/presstext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_below="@+id/dateSubmittedLogText"
+            android:gravity="center"
             android:text="press here to choose date"
             android:textColor="#B8B8B8"
             android:textSize="9dp"></TextView>
