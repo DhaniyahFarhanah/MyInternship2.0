@@ -87,7 +87,7 @@
                 android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif"
                 android:gravity="center"
-                android:text="UPCOMING/CURRENT"
+                android:text="UPCOMING"
                 android:textColor="#403F3F"
                 android:textSize="35dp"
                 android:textStyle="bold"></TextView>
