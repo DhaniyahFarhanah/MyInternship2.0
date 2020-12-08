@@ -28,7 +28,9 @@ class UIStudent : AppCompatActivity() {
 
         studentAttendance.setOnClickListener { //TODO assign an ID for this button
             startActivity(Intent(this, Attendance_Intern::class.java)
-                    .putExtra("userId",userId))
+                    .putExtra("userId",userId)
+                    .putExtra("username", "Ben Dover") //TODO change the Name and Student to proper values
+                    .putExtra("group", "Student"))
         }
     }
 

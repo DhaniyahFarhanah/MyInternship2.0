@@ -32,7 +32,9 @@ class UIintern : AppCompatActivity() { //TODO Transfer User's name into the Log 
         }
         internAttendance.setOnClickListener {
             startActivity(Intent(this, Attendance_Intern::class.java)
-                    .putExtra("userId", userId))
+                    .putExtra("userId", userId)
+                    .putExtra("username", username)
+                    .putExtra("group", "Intern"))
         }
     }
 

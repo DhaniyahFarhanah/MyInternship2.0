@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.*
 
-class Attendance_Intern : AppCompatActivity() { //TODO rework attendance storage system on database and build the attendance system
+class Attendance_Intern : AppCompatActivity() { //TODO fix the stupid red line with some actual text
     val database = Firebase.database
     lateinit var currentLesson: Lesson
 
@@ -31,35 +31,62 @@ class Attendance_Intern : AppCompatActivity() { //TODO rework attendance storage
         super.onCreate(savedInstanceState)
         setContentView(R.layout.intern_attendance)
         val userId = intent.getStringExtra("userId") //fetches userId from the main screen to use for querying database
+        val userName = intent.getStringExtra("username")
+        val userGroup = intent.getStringExtra("group")
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_WEEK) //gets the day of the week as a numeral e.g. 0 is Saturday
         val date = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE) //Date format: yyyy-MM-dd
-        val time = LocalTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME) //Time format: hh:MM:ss.SSS
+        val time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH mm ss")) //Time format: 17:12:47
 
-        checkClass(userId.toString(), 2, "11:03") //WHEN TESTING MAKE SURE THE HOUR PORTION HAS 2 DIGITS e.g. 8 am is 08:00
-        checkAttendance(date)
+        checkClass(userId.toString(), 3, "13:00") //WHEN TESTING MAKE SURE THE HOUR PORTION HAS 2 DIGITS e.g. 8 am is 08:00
 
         attendanceBackArrow.setOnClickListener { //returns back to UIStudent/UIIntern main screen
             this.finish()
         }
 
         attendanceAttendButton.setOnClickListener { //should only be clickable when lesson has started (startTime <= localtime < endTime)
-            val title = "${currentLesson.name}-${currentLesson.group}"
-            if(LocalTime.parse("11:03")/*LocalTime.now()*/<=currentLesson.startTime.plusMinutes(5)) { //that means its "On Time" (within 5 minutes)//TODO replace "08:02" with LocalTime.now()
-                database.getReference("attendance/$date/$title/present/$userId").setValue(time)
+            if(userGroup == "Student") { //Student Mode
+                val title = "${currentLesson.name}-${currentLesson.group}" //should only work if its student since intern's do not have a group
+            }
+            else {  //Intern Mode
+                val title = currentLesson.name
+            }
+            if(/*LocalTime.now()*/LocalTime.parse("13:00")<=currentLesson.startTime.plusMinutes(5)) { //that means its "On Time" (within 5 minutes)//TODO replace "08:02" with LocalTime.now()
+                currentLesson.status = "Present"
+                currentLesson.userName = userName.toString()
+                //currentLesson.entryTime = time
+                //database.getReference("attendance/$date/$title/Present/$userId").setValue(time)
+                val lessonValues = currentLesson.toInternMap()
+
+                val attendUpdates = hashMapOf<String, Any>(
+                        "$userId" to lessonValues
+                )
+
+                database.getReference("attendance/$date/${currentLesson.title}").updateChildren(attendUpdates)
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Attendance submitted", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener{
+                            Toast.makeText(this, "Attendance was unable to submit please try again.", Toast.LENGTH_SHORT).show()
+                        }
             }
             else {
-                database.getReference("attendance/$date/$title/late/$userId").setValue(time)
+                currentLesson.status = "Late"
+                database.getReference("attendance/$date/$title/$userId").setValue(time)
             }
-            attendanceLinear.background=null
-            attendText.setTextColor(Color.parseColor("#B5B5B5"))
-            attendanceAttendButton.isClickable = false
-            Toast.makeText(this, "Attendance has been marked, you may now close this page.", Toast.LENGTH_SHORT).show()
+            attendButtonClicked()
         }
 
         attendanceMCButton.setOnClickListener { //TODO advanced MC button will involve adding in the file uploading thing and then mark all lessons for the day with MC
-            val title = "${currentLesson.name}-${currentLesson.group}"
+            if(userGroup == "Student") {
+                val title = "${currentLesson.name}-${currentLesson.group}"
+            }
+            else {
+                val title = currentLesson.name
+            }
+            currentLesson.status = "MC"
             database.getReference("attendance/$date/$title/mc/$userId").setValue("sick")
+            attendButtonClicked()
         }
     }
 
@@ -105,6 +132,7 @@ class Attendance_Intern : AppCompatActivity() { //TODO rework attendance storage
                     }
                     attendanceSet.text = nameArr[currLess]
                     attendanceLocation.text = locArr[currLess]
+                    checkAttendance(userId, "2020-12-08")
                 }
                 else { //a third state that only appears when there are no lessons found within the query parameters e.g. lessons have ended for the day or no lessons
                     attendanceSet.text = "See you tomorrow!"
@@ -120,11 +148,19 @@ class Attendance_Intern : AppCompatActivity() { //TODO rework attendance storage
     }
 
     fun checkAttendance(userId: String, date: String) {
-        val path = database.getReference("attendance/$date/${currentLesson.title}").orderByChild(userId).equalTo()
+        val path = database.getReference("attendance/$date/${currentLesson.title}").child(userId)
         path.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.child(userId).exists()){
-
+                if(snapshot.exists()){ //allow User to press attendance button
+                    val attendStat = snapshot.child("Status").getValue<String>()
+                    if(snapshot.child("Status").getValue<String>() == "Absent") {
+                        attendanceLateWarning.text = "Please mark your attendance within 5 minutes of class starting!"
+                    }
+                    else {
+                        attendanceLateWarning.text = "Attendance Status: $attendStat"
+                        attendanceLateWarning.setTextColor(Color.parseColor("#0ae973"))
+                        attendButtonClicked()
+                    }
                 }
             }
 
@@ -134,11 +170,40 @@ class Attendance_Intern : AppCompatActivity() { //TODO rework attendance storage
         })
     }
 
+    private fun attendButtonClicked () {
+        attendanceLinear.background=null
+        attendText.setTextColor(Color.parseColor("#B5B5B5"))
+        attendanceAttendButton.isClickable = false //once attendance has been submitted, both buttons will be disabled for that lesson
+        mcLinear.background = null
+        mcText.setTextColor(Color.parseColor("#B5B5B5"))
+        attendanceMCButton.isClickable = false
+        Toast.makeText(this, "Attendance has been marked, you may now close this page.", Toast.LENGTH_SHORT).show()
+    }
+
     data class Lesson(
             var group: String? = "",
             var name: String? = "",
             var startTime: LocalTime
     ) {
-        var title = "$name-$group"
+        var entryTime: String = "14:00"
+        var title: String = "$name-$group" //todo fix this later PLEASE
+        var userName: String = ""
+        var status: String = ""
+
+        fun toInternMap(): Map<String, Any?> {
+            return mapOf(
+                    "EntryTime" to entryTime, //possible issue trying to convert map value of LocalTime
+                    "Name" to userName,
+                    "Status" to status
+            )
+        }
+
+        fun toStudMap(): Map<String, Any?>{ //its the same, maybe remove?
+            return mapOf(
+                    "EntryTime" to entryTime,
+                    "Name" to name,
+                    "Status" to status
+            )
+        }
     }
 }
