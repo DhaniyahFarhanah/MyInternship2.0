@@ -12,9 +12,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.ngeeann.myinternship20.databinding.NpisStudentdatahomeBinding
 import kotlinx.android.synthetic.main.npis_studentdatahome.*
-import java.time.LocalDate
-import java.time.Month
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class NPIS_StudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
@@ -107,24 +104,11 @@ class NPIS_StudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetList
     }
 
     private fun changeMonthToString(mm: Int): String{
-        var monthInString= ""
 
-        when(mm){
-            0 -> monthInString="January"
-            1 -> monthInString="February"
-            2 -> monthInString="March"
-            3 -> monthInString="April"
-            4 -> monthInString="May"
-            5 -> monthInString="June"
-            6 -> monthInString="July"
-            7 -> monthInString="August"
-            8 -> monthInString="September"
-            9 -> monthInString="October"
-            10-> monthInString="November"
-            11-> monthInString="December"
-        }
+        val monthArray = arrayOf("January","February","March","April","May","June","July","August","September","October","November","December")
 
-        return monthInString
+        return monthArray[mm]
+
     }
 
     private fun getDateCalendar(){
@@ -155,9 +139,7 @@ class NPIS_StudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetList
     private fun nextDay(){
 
         cal.add(Calendar.DATE,1)
-        chosenDay=cal.get(Calendar.DAY_OF_MONTH)
-        chosenMonth=cal.get(Calendar.MONTH)
-        chosenYear=cal.get(Calendar.YEAR)
+        getDateCalendar()
 
         binding.dateSubmittedLogText.text="$chosenDay ${changeMonthToString(chosenMonth)} $chosenYear"
     }
@@ -165,9 +147,7 @@ class NPIS_StudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetList
     private fun previousDay(){
         cal.add(Calendar.DATE,-1)
 
-        chosenDay=cal.get(Calendar.DAY_OF_MONTH)
-        chosenMonth=cal.get(Calendar.MONTH)
-        chosenYear=cal.get(Calendar.YEAR)
+        getDateCalendar()
 
         binding.dateSubmittedLogText.text="$chosenDay ${changeMonthToString(chosenMonth)} $chosenYear"
     }

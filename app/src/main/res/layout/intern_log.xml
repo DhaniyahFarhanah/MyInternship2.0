@@ -7,7 +7,7 @@
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
     android:background="@drawable/studentbackground2"
-    tools:context=".Log_Intern">
+    tools:context=".Intern_Log">
 
 
     <ImageView

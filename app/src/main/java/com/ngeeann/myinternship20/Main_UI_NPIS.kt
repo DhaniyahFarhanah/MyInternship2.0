@@ -10,42 +10,37 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.uiintern.*
-import kotlinx.android.synthetic.main.uistaff.*
-import kotlinx.android.synthetic.main.uistudent.*
+import kotlinx.android.synthetic.main.ui_npis_main.*
 
-class UIStudent : AppCompatActivity() {
-    val database = Firebase.database
+class Main_UI_NPIS : AppCompatActivity() {
+    private val database = Firebase.database
     lateinit var userId: String
-    lateinit var userName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.uistudent)
+        setContentView(R.layout.ui_npis_main)
         userId = intent.getStringExtra("username").toString()
+
         fetchUserInfo(userId)
 
-        Toast.makeText(this,"Welcome", Toast.LENGTH_SHORT).show()
-
-        studentAttendance.setOnClickListener { //TODO assign an ID for this button
-            startActivity(Intent(this, Attendance_Intern::class.java)
-                    .putExtra("userId", userId)
-                    .putExtra("username", userName)
-                    .putExtra("group", "Student"))
+        npisStudentData.setOnClickListener{
+            startActivity(Intent(this, NPIS_StudentDataHome::class.java))
         }
     }
 
+
     private fun fetchUserInfo(userId: String) { //checks for existing log for today using user ID & current date
         val path = database.getReference("users/$userId")
-
-        studentTitleText.text = userId
+        npisIdText.text = userId
         path.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val student = snapshot.getValue<Student>()
-                student?.let{
-                    userName = it.Name.toString()
-                    studentIdText.text = it.Name
-                    studentSchoolText.text = it.School + " / " + it.Course
+                val staff = snapshot.getValue<NPIS>()
+                staff?.let{
+                    npisNameText.text = it.Name + "'s Dashboard"
+                    npisIdText.text= it.email
+                    npisSchoolText.text = it.school
+                    npisGroupText.text = it.group
+
                 }
             }
 
@@ -55,9 +50,10 @@ class UIStudent : AppCompatActivity() {
         })
     }
 
-    data class Student(
+    data class NPIS(
         var Name: String? = "",
-        var School: String? = "",
-        var Course: String? = ""
+        var school: String? = "",
+        var email: String? = "",
+        var group: String? =""
     )
 }

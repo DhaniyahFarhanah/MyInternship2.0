@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SetupIntern"
+    tools:context=".Login_Setup"
     android:padding="8dp"
     android:orientation="vertical"
     android:theme="@style/Theme.Design.Light.NoActionBar"
@@ -12,8 +12,8 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="146dp"
-        android:layout_height="133dp"
+        android:layout_width="122dp"
+        android:layout_height="102dp"
         android:layout_gravity="center"
         android:layout_marginTop="4dp"
         android:padding="5dp"
@@ -51,8 +51,34 @@
                 android:padding="10dp"
                 android:text="TextView"
                 android:textAllCaps="true"
-                android:textSize="40dp"
+                android:textSize="30dp"
                 android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/setupUserID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:drawableLeft="@drawable/ic_action_useradd"
+                android:ems="10"
+                android:hint="User ID (used for logging in)"
+                android:inputType="textPersonName"
+                android:padding="10dp"
+                android:textColorHint="#79353535"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/setupPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:drawableLeft="@drawable/ic_action_userpassword"
+                android:ems="10"
+                android:hint="Password"
+                android:inputType="textVisiblePassword"
+                android:padding="10dp"
+                android:textColorHint="#79353535"
+                android:textSize="20dp" />
 
             <EditText
                 android:id="@+id/setupUserEmail"
@@ -68,27 +94,14 @@
                 android:textSize="20dp" />
 
             <EditText
-                android:id="@+id/setupUserID"
+                android:id="@+id/setupName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:ems="10"
-                android:drawableLeft="@drawable/ic_action_useradd"
-                android:hint="User ID"
+                android:drawableLeft="@drawable/ic_action_username"
+                android:hint="User's Name (according to IC)"
                 android:inputType="textPersonName"
-                android:padding="10dp"
-                android:textColorHint="#79353535"
-                android:textSize="20dp" />
-
-            <EditText
-                android:id="@+id/setupPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:ems="10"
-                android:hint="Password"
-                android:drawableLeft="@drawable/ic_action_userpassword"
-                android:inputType="textVisiblePassword"
                 android:padding="10dp"
                 android:textColorHint="#79353535"
                 android:textSize="20dp" />

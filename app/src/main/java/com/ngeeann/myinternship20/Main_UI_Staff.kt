@@ -10,36 +10,35 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.uiintern.*
-import kotlinx.android.synthetic.main.uistaff.*
+import kotlinx.android.synthetic.main.ui_staff_main.*
 
-class UIStaff : AppCompatActivity() {
+class Main_UI_Staff : AppCompatActivity() {
     private val database = Firebase.database
     lateinit var userId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.uistaff)
+        setContentView(R.layout.ui_staff_main)
+
         userId = intent.getStringExtra("username").toString()
 
         fetchUserInfo(userId)
 
-        staffStudentData.setOnClickListener{
-            startActivity(Intent(this, NPIS_StudentDataHome::class.java))
-        }
     }
 
 
     private fun fetchUserInfo(userId: String) { //checks for existing log for today using user ID & current date
         val path = database.getReference("users/$userId")
-        staffIdText.text = userId
         path.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val staff = snapshot.getValue<Staff>()
+                val staff = snapshot.getValue<NPstaff>()
                 staff?.let{
-                    staffNameText.text = it.Name
+                    staffNameText.text = it.Name + "'s Dashboard"
+                    staffEmailText.text = it.email
+                    staffRoleText.text = it.group
                     staffSchoolText.text = it.school
-                    staffSubjectText.text = it.subject
+
+
                 }
             }
 
@@ -49,9 +48,10 @@ class UIStaff : AppCompatActivity() {
         })
     }
 
-    data class Staff(
+    data class NPstaff(
         var Name: String? = "",
         var school: String? = "",
-        var subject: String? = ""
+        var email: String? = "",
+        var group: String? = ""
     )
 }

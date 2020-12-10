@@ -5,16 +5,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import com.ngeeann.myinternship20.databinding.SetupInternBinding
-import kotlinx.android.synthetic.main.setup_intern.*
+import com.ngeeann.myinternship20.databinding.SetupUiBinding
+import kotlinx.android.synthetic.main.setup_ui.*
 
-class SetupIntern : AppCompatActivity() {
+class Login_Setup : AppCompatActivity() {
 
     lateinit var spinner: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = SetupInternBinding.inflate(layoutInflater)
+        val binding = SetupUiBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val type = intent.getStringExtra("userType").toString()
@@ -23,7 +23,8 @@ class SetupIntern : AppCompatActivity() {
         binding.schoolSpinner.adapter=arrayAdapter_school
         binding.setupUserType.text="$type setup"
         binding.setupUserEmail.hint="$type E-mail"
-        binding.setupUserID.hint="$type ID"
+        binding.setupUserID.hint="$type ID (Used for login)"
+        binding.setupName.hint="$type's Name (according to IC)"
 
         if(type=="NPIS"||type=="NP Staff"){
             textView8.visibility=View.GONE
@@ -81,7 +82,7 @@ class SetupIntern : AppCompatActivity() {
                 Toast.makeText(this,"Fill in empty blanks",Toast.LENGTH_SHORT).show()
             }
             else{//successful creation
-                startActivity(Intent(this,MainActivity::class.java))//successful registration
+                startActivity(Intent(this,Login_MainScreen::class.java))//successful registration
                 Toast.makeText(this,"Successfully created $type User",Toast.LENGTH_SHORT).show()
             }
         }

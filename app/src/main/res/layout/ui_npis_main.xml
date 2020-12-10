@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/teacherbackground"
-    tools:context=".UIStaff">
+    tools:context=".Main_UI_NPIS">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -15,10 +15,11 @@
         <RelativeLayout
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
 
             <TextView
-                android:id="@+id/staffNameText"
+                android:id="@+id/npisNameText"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
@@ -31,8 +32,8 @@
             </TextView>
 
             <TextView
-                android:layout_below="@+id/staffNameText"
-                android:id="@+id/staffIdText"
+                android:layout_below="@+id/npisNameText"
+                android:id="@+id/npisIdText"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"
@@ -44,28 +45,26 @@
             </TextView>
 
             <TextView
-                android:id="@+id/staffSchoolText"
+                android:id="@+id/npisGroupText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/staffIdText"
+                android:layout_below="@+id/npisIdText"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Group"
+                android:textColor="@color/white"
+                android:textSize="16dp"/>
+
+            <TextView
+                android:id="@+id/npisSchoolText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/npisGroupText"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:text="School"
                 android:textColor="@color/white"
-                android:textSize="16dp"></TextView>
-
-            <TextView
-                android:layout_below="@+id/staffSchoolText"
-                android:id="@+id/staffSubjectText"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-                android:text="Subject Teaching"
-                android:textColor="@color/white"
-                android:textSize="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            </TextView>
+                android:textSize="16dp"/>
 
         </RelativeLayout>
 
@@ -79,7 +78,7 @@
             //attendance
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/staffAttendance"
+                android:id="@+id/npisAttendance"
                 android:layout_width="180dp"
                 android:layout_height="180dp"
                 android:layout_rowWeight="1"
@@ -116,7 +115,7 @@
             //data
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/staffStudentData"
+                android:id="@+id/npisStudentData"
                 android:layout_width="180dp"
                 android:layout_height="180dp"
                 android:layout_rowWeight="1"
@@ -154,7 +153,7 @@
             //calendar
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/staffScheduleTask"
+                android:id="@+id/npisScheduleTask"
                 android:layout_width="180dp"
                 android:layout_height="180dp"
                 android:layout_rowWeight="1"
@@ -188,82 +187,6 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/staffAddTask"
-                android:layout_width="180dp"
-                android:layout_height="180dp"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="12dp"
-                android:elevation="6dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="6dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/addtask" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="ADD TASK"
-                        android:textColor="#3E3E3E"
-                        android:textSize="20dp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/staffStudentTask"
-                android:layout_width="180dp"
-                android:layout_height="180dp"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="12dp"
-                android:elevation="6dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="6dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/teachertask" />
-
-                    <TextView
-                        android:layout_width="181dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center"
-                        android:text="STUDENT TASK"
-                        android:textColor="#3E3E3E"
-                        android:textSize="20dp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-            //alarm
-            //Alarm
-
 
         </GridLayout>
     </LinearLayout>

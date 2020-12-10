@@ -4,10 +4,8 @@ import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -15,12 +13,11 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.intern_attendance.*
+import kotlinx.android.synthetic.main.student_attendance.*
 import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import java.util.*
 
 /*
@@ -47,7 +44,7 @@ their name and their attendance status (MC) and skip steps 4 to 5.
 5) Pressing the check-out button will trigger it's OnClickListener function, changing the user's status to Checked-Out and adding a LeaveTime child node in the entry
 */
 
-class Attendance_Intern : AppCompatActivity() {
+class Student_Attendance : AppCompatActivity() {
     private val database = Firebase.database
     lateinit var currentLesson: Lesson
     lateinit var userName: String
@@ -56,7 +53,7 @@ class Attendance_Intern : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.intern_attendance)
+        setContentView(R.layout.student_attendance)
         val userId = intent.getStringExtra("userId") //fetches userId from the main screen to use for querying database
         userName = intent.getStringExtra("username").toString()
         userType= intent.getStringExtra("group").toString() //Student or Intern

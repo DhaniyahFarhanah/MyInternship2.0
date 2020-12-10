@@ -17,7 +17,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import kotlin.math.log
 
-class Log_Intern : AppCompatActivity() {
+class Intern_Log : AppCompatActivity() {
 
     private lateinit var database: DatabaseReference
     private lateinit var existKey: String

@@ -12,7 +12,8 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.loginscreen.*
 
-class MainActivity : AppCompatActivity() {
+class Login_MainScreen : AppCompatActivity() {
+
     val database = Firebase.database
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.loginscreen)
 
         setupButton.setOnClickListener {
-            val setup = LoginSetup1()
+            val setup = Login_GroupSelect()
 
             setup.show(supportFragmentManager, "setup1")
         }
@@ -66,17 +67,20 @@ class MainActivity : AppCompatActivity() {
     private fun grpQuery(){
         val username = idTextBox.text.toString()
         val grpRef = database.getReference("users/$username/group")
-        val studIntent = Intent(this, UIStudent::class.java).putExtra("username",username)
-        val intIntent = Intent(this, UIintern::class.java).putExtra("username",username)
-        val staffIntent = Intent(this, UIStaff::class.java).putExtra("username",username)
+
+        val studIntent = Intent(this, Main_UI_Student::class.java).putExtra("username",username)
+        val intIntent = Intent(this, Main_UI_Intern::class.java).putExtra("username",username)
+        val npisIntent = Intent(this, Main_UI_NPIS::class.java).putExtra("username",username)
+        val staffIntent=Intent(this, Main_UI_Staff::class.java).putExtra("username",username)
 
         grpRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 when (dataSnapshot.getValue<String>().toString()) {
-                    "student" ->  startActivity(studIntent) //start UIStudent actvity
-                    "intern" -> startActivity(intIntent) //start UIintern actvity
+                    "student" ->  startActivity(studIntent) //start Main_UI_Student activity
+                    "intern" -> startActivity(intIntent) //start Main_UI_Intern activity
+                    "npis" -> startActivity(npisIntent)//start Main_UI_NPIS activity
                     else -> {
-                        startActivity(staffIntent) //start UIStaff actvity
+                        startActivity(staffIntent) //start Main_UI_Staff activity
                     }
                 }
             }

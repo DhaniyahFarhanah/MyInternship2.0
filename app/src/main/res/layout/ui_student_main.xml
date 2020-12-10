@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/studentbackground"
-    tools:context=".UIStudent">
+    tools:context=".Main_UI_Student">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/studentTitleText"
+                android:id="@+id/studentNameText"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
@@ -32,12 +32,12 @@
             </TextView>
 
             <TextView
-                android:layout_below="@+id/studentTitleText"
+                android:layout_below="@+id/studentNameText"
                 android:id="@+id/studentIdText"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"
-                android:text="Name of student"
+                android:text="Student ID"
                 android:textColor="@color/white"
                 android:textSize="20dp"
                 android:layout_width="wrap_content"
@@ -66,7 +66,6 @@
             android:columnOrderPreserved="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-//attendance
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/studentAttendance"
@@ -103,7 +102,7 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-//data
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/studentData"
                 android:layout_width="180dp"
@@ -139,7 +138,7 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-//calendar
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/studentCalendar"
                 android:layout_width="180dp"
@@ -175,7 +174,7 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-//tasks
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/studentTask"
                 android:layout_width="180dp"
@@ -211,7 +210,7 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-            //alarm
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/studentAlarm"
                 android:layout_width="180dp"
@@ -247,8 +246,6 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-            //Alarm
-
 
         </GridLayout>
     </LinearLayout>
