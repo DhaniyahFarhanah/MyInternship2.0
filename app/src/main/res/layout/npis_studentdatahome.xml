@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NPIS_StudentDataHome"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/linearLayout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:background="@drawable/teachergradcode"
+        android:gravity="center"
+        android:paddingTop="1dp">
+
+        <TextView
+            android:layout_marginTop="18dp"
+            android:id="@+id/textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Please choose a student"
+            android:layout_marginBottom="10dp"/>
+
+        <Spinner
+            android:layout_below="@id/textview"
+            android:id="@+id/studentDataSpinner"
+            android:gravity="center"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="330dp"
+            android:layout_height="44dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginBottom="8dp"/>
+
+        <ImageView
+            android:id="@+id/npisDatabackarrow"
+            android:layout_width="52dp"
+            android:layout_height="38dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="3dp"
+            app:srcCompat="@drawable/ic_baseline_backarrow" />
+
+    </RelativeLayout>
+    //Overview Layout
+
+    <RelativeLayout
+        android:id="@+id/overviewLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/overviewText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OVERVIEW"
+            android:textColor="#292929"
+            android:textSize="30dp"></TextView>
+
+    </RelativeLayout>
+    //Log layout
+
+    <RelativeLayout
+        android:id="@+id/logLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/npisBottomNav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.607">
+
+        <ImageView
+            android:id="@+id/datenextbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/presstext"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            app:srcCompat="@drawable/ic_round_arrow_roudedarrowright" />
+
+        <ImageView
+            android:id="@+id/datepreviousbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/presstext"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            app:srcCompat="@drawable/ic_round_roundedarrowleft" />
+
+        <TextView
+            android:id="@+id/dateSubmittedLogText"
+            android:layout_width="match_parent"
+            android:layout_height="39dp"
+            android:layout_toLeftOf="@+id/datenextbutton"
+            android:layout_toRightOf="@id/datepreviousbutton"
+            android:gravity="center"
+            android:text="DATE"
+            android:textColor="#292929"
+            android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/presstext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dateSubmittedLogText"
+            android:gravity="center"
+            android:text="press here to choose date"
+            android:textColor="#B8B8B8"
+            android:textSize="9dp"></TextView>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:layout_below="@+id/presstext"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/border"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/studentLogDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:hint="No Log Submitted"
+                android:textColor="@color/black"
+                android:textColorHint="#8B2E2E2E"
+                android:textSize="18dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dateSubmittedLogText" />
+
+        </ScrollView>
+
+    </RelativeLayout>
+    //Attendance layout
+    <RelativeLayout
+        android:id="@+id/attendanceLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/attendanceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ATTENDANCE"
+            android:textColor="#292929"
+            android:textSize="30dp"></TextView>
+    </RelativeLayout>
+    //Grading layout
+    <RelativeLayout
+        android:id="@+id/gradeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/gradeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GRADING"
+            android:textColor="#292929"
+            android:textSize="30dp"></TextView>
+    </RelativeLayout>
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/npisBottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/teachergradcode"
+        android:padding="2dp"
+        app:itemIconSize="28dp"
+        app:itemIconTint="#fff"
+        app:itemTextColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/npis_navmenu" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

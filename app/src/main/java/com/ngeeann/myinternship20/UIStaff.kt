@@ -1,5 +1,6 @@
 package com.ngeeann.myinternship20
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -22,6 +23,10 @@ class UIStaff : AppCompatActivity() {
         userId = intent.getStringExtra("username").toString()
 
         fetchUserInfo(userId)
+
+        staffStudentData.setOnClickListener{
+            startActivity(Intent(this, NPIS_StudentDataHome::class.java))
+        }
     }
 
 
