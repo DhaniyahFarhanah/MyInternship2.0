@@ -14,7 +14,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.intern_log.*
 import kotlinx.android.synthetic.main.uiintern.*
 
-class UIintern : AppCompatActivity() { //TODO Transfer User's name into the Log function for the Author input, add in postal code and address later on
+class UIintern : AppCompatActivity() {
     private val database = Firebase.database
     lateinit var userId: String
     lateinit var username: String

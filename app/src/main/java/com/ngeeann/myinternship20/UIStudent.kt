@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.uistudent.*
 class UIStudent : AppCompatActivity() {
     val database = Firebase.database
     lateinit var userId: String
+    lateinit var userName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +29,8 @@ class UIStudent : AppCompatActivity() {
 
         studentAttendance.setOnClickListener { //TODO assign an ID for this button
             startActivity(Intent(this, Attendance_Intern::class.java)
-                    .putExtra("userId",userId)
-                    .putExtra("username", "Ben Dover") //TODO change the Name and Student to proper values
+                    .putExtra("userId", userId)
+                    .putExtra("username", userName)
                     .putExtra("group", "Student"))
         }
     }
@@ -42,6 +43,7 @@ class UIStudent : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val student = snapshot.getValue<Student>()
                 student?.let{
+                    userName = it.Name.toString()
                     studentIdText.text = it.Name
                     studentSchoolText.text = it.School + " / " + it.Course
                 }
