@@ -8,14 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.login_groupset_ui.view.*
 
-class Login_GroupSelect: DialogFragment() {
+class LoginGroupSelect: DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         var rootView: View= inflater.inflate(R.layout.login_groupset_ui,container)
-        val intent= Intent(activity,Login_Setup::class.java)
+        val intent= Intent(activity,LoginSetup::class.java)
 
         rootView.cancelButton.setOnClickListener{
             dismiss()

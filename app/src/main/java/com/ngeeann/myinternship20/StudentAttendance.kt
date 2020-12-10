@@ -44,7 +44,7 @@ their name and their attendance status (MC) and skip steps 4 to 5.
 5) Pressing the check-out button will trigger it's OnClickListener function, changing the user's status to Checked-Out and adding a LeaveTime child node in the entry
 */
 
-class Student_Attendance : AppCompatActivity() {
+class StudentAttendance : AppCompatActivity() {
     private val database = Firebase.database
     lateinit var currentLesson: Lesson
     lateinit var userName: String

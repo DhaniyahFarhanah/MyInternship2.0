@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/studentbackground"
-    tools:context=".Main_UI_Student">
+    tools:context=".MainUiStudent">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -219,6 +219,7 @@
                 android:layout_columnWeight="1"
                 android:layout_margin="12dp"
                 android:elevation="6dp"
+                android:visibility="gone"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="6dp">
 

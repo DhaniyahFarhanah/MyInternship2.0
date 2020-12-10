@@ -9,16 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar">
-        <activity android:name=".Main_UI_Staff"></activity>
-        <activity android:name=".NPIS_StudentDataHome" />
-        <activity android:name=".Student_Attendance" />
-        <activity android:name=".Intern_Log" />
-        <activity android:name=".Login_Setup" />
-        <activity android:name=".Main_UI_NPIS" />
-        <activity android:name=".Main_UI_Intern" />
-        <activity android:name=".Main_UI_Student" />
+        <activity android:name=".MainUiStaff"></activity>
+        <activity android:name=".NpisStudentDataHome" />
+        <activity android:name=".StudentAttendance" />
+        <activity android:name=".InternLog" />
+        <activity android:name=".LoginSetup" />
+        <activity android:name=".MainUiNPIS" />
+        <activity android:name=".MainUiIntern" />
+        <activity android:name=".MainUiStudent" />
         <activity android:name=".SplashScreen" />
-        <activity android:name=".Login_MainScreen">
+        <activity android:name=".LoginMainScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

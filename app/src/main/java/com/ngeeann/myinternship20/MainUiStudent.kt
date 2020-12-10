@@ -12,7 +12,7 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.ui_student_main.*
 
-class Main_UI_Student : AppCompatActivity() {
+class MainUiStudent : AppCompatActivity() {
     val database = Firebase.database
     lateinit var userId: String
     lateinit var userName: String
@@ -26,7 +26,7 @@ class Main_UI_Student : AppCompatActivity() {
         Toast.makeText(this,"Welcome", Toast.LENGTH_SHORT).show()
 
         studentAttendance.setOnClickListener { //TODO assign an ID for this button
-            startActivity(Intent(this, Student_Attendance::class.java)
+            startActivity(Intent(this, StudentAttendance::class.java)
                     .putExtra("userId", userId)
                     .putExtra("username", userName)
                     .putExtra("group", "Student"))

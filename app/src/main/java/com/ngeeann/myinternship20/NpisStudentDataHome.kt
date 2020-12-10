@@ -14,7 +14,7 @@ import com.ngeeann.myinternship20.databinding.NpisStudentdatahomeBinding
 import kotlinx.android.synthetic.main.npis_studentdatahome.*
 import java.util.*
 
-class NPIS_StudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
+class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var binding: NpisStudentdatahomeBinding
     private var nameTest = arrayOf("Jessica", "Adams", "Why")//testing array for the names in the spinner for the NPIS staff to choose

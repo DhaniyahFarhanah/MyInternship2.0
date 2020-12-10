@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/studentbackground"
-    tools:context=".Main_UI_Intern">
+    tools:context=".MainUiIntern">
 
     <LinearLayout
         android:layout_width="wrap_content"

@@ -12,7 +12,7 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.loginscreen.*
 
-class Login_MainScreen : AppCompatActivity() {
+class LoginMainScreen : AppCompatActivity() {
 
     val database = Firebase.database
 
@@ -21,7 +21,7 @@ class Login_MainScreen : AppCompatActivity() {
         setContentView(R.layout.loginscreen)
 
         setupButton.setOnClickListener {
-            val setup = Login_GroupSelect()
+            val setup = LoginGroupSelect()
 
             setup.show(supportFragmentManager, "setup1")
         }
@@ -68,10 +68,10 @@ class Login_MainScreen : AppCompatActivity() {
         val username = idTextBox.text.toString()
         val grpRef = database.getReference("users/$username/group")
 
-        val studIntent = Intent(this, Main_UI_Student::class.java).putExtra("username",username)
-        val intIntent = Intent(this, Main_UI_Intern::class.java).putExtra("username",username)
-        val npisIntent = Intent(this, Main_UI_NPIS::class.java).putExtra("username",username)
-        val staffIntent=Intent(this, Main_UI_Staff::class.java).putExtra("username",username)
+        val studIntent = Intent(this, MainUiStudent::class.java).putExtra("username",username)
+        val intIntent = Intent(this, MainUiIntern::class.java).putExtra("username",username)
+        val npisIntent = Intent(this, MainUiNPIS::class.java).putExtra("username",username)
+        val staffIntent=Intent(this, MainUiStaff::class.java).putExtra("username",username)
 
         grpRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {

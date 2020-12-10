@@ -12,7 +12,7 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.ui_intern_main.*
 
-class Main_UI_Intern : AppCompatActivity() {
+class MainUiIntern : AppCompatActivity() {
     private val database = Firebase.database
     lateinit var userId: String
     lateinit var username: String
@@ -24,12 +24,12 @@ class Main_UI_Intern : AppCompatActivity() {
 
         fetchUserInfo(userId)
         internLog.setOnClickListener {
-            startActivity(Intent(this, Intern_Log::class.java)
+            startActivity(Intent(this, InternLog::class.java)
                     .putExtra("userId", userId)
                     .putExtra("username", username))
         }
         internAttendance.setOnClickListener {
-            startActivity(Intent(this, Student_Attendance::class.java)
+            startActivity(Intent(this, StudentAttendance::class.java)
                     .putExtra("userId", userId)
                     .putExtra("username", username)
                     .putExtra("group", "Intern"))

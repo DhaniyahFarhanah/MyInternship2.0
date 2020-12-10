@@ -8,7 +8,7 @@ import android.widget.*
 import com.ngeeann.myinternship20.databinding.SetupUiBinding
 import kotlinx.android.synthetic.main.setup_ui.*
 
-class Login_Setup : AppCompatActivity() {
+class LoginSetup : AppCompatActivity() {
 
     lateinit var spinner: Spinner
 
@@ -82,7 +82,7 @@ class Login_Setup : AppCompatActivity() {
                 Toast.makeText(this,"Fill in empty blanks",Toast.LENGTH_SHORT).show()
             }
             else{//successful creation
-                startActivity(Intent(this,Login_MainScreen::class.java))//successful registration
+                startActivity(Intent(this,LoginMainScreen::class.java))//successful registration
                 Toast.makeText(this,"Successfully created $type User",Toast.LENGTH_SHORT).show()
             }
         }
