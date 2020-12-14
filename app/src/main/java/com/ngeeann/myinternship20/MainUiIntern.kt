@@ -21,8 +21,8 @@ class MainUiIntern : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ui_intern_main)
         userId = intent.getStringExtra("username").toString()
-
         fetchUserInfo(userId)
+
         internLog.setOnClickListener {
             startActivity(Intent(this, InternLog::class.java)
                     .putExtra("userId", userId)
@@ -36,7 +36,8 @@ class MainUiIntern : AppCompatActivity() {
         }
     }
 
-    private fun fetchUserInfo(userId: String) { //checks for existing log for today using user ID & current date
+    private fun fetchUserInfo(userId: String) { //fetches user's particulars using their username, by right userId should be the Student Number (S102XXXXXX)
+        // but for testing it is a name
         val path = database.getReference("users/$userId")
 
         path.addListenerForSingleValueEvent(object : ValueEventListener {

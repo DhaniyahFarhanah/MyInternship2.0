@@ -12,9 +12,11 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.ui_staff_main.*
 
-class MainUiStaff : AppCompatActivity() {
+class MainUiStaff : AppCompatActivity() { //TODO add in the putExtra values later on to allow staff to check student attendance
     private val database = Firebase.database
     lateinit var userId: String
+    lateinit var studentName: Array<String>
+    lateinit var studentId: Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +25,10 @@ class MainUiStaff : AppCompatActivity() {
         userId = intent.getStringExtra("username").toString()
 
         fetchUserInfo(userId)
-
+        staffStudentData.setOnClickListener{
+            startActivity(Intent(this, NpisStudentDataHome::class.java)
+                    .putExtra("userId", userId))
+        }
     }
 
 
@@ -37,8 +42,6 @@ class MainUiStaff : AppCompatActivity() {
                     staffEmailText.text = it.email
                     staffRoleText.text = it.group
                     staffSchoolText.text = it.school
-
-
                 }
             }
 

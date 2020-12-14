@@ -125,7 +125,7 @@ class StudentAttendance : AppCompatActivity() {
                         classSnapshot.child("Group").getValue<String>().also { grpArr[n] = it.toString() }
 
                         if (localTime < startTime) { //checks if there is an upcoming lesson
-                            if(localTime >= startTime.minusMinutes(15) ){ //TODO fix this fking disaster, instantiate currentLesson with index 0 values sp that after the for loop  currentLesson will always exist
+                            if(localTime >= startTime.minusMinutes(15) ){
                                 val diffTime = Duration.between(localTime, startTime).toMinutes()
                                 attendanceStatus.text = "UPCOMING IN ${diffTime.toString()} MINUTES"
                                 currLess = n
