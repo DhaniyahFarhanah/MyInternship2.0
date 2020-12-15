@@ -22,14 +22,36 @@ import java.util.*
 import kotlin.collections.ArrayList
 /*
 Students: Adam, Diana Hol, Jessica
-On Create Process
-1. 
-Log Viewer Process:
-1. Using the list of names from step 1,
-2. fetches all logs linked to the specific ID
-3 .populates logArrayList and dateArrayList with all logs from the selected student
+Quick Activity Structure Breakdown:
+1. On Create
+2. Data Viewer
+3. Log Viewer
+4. Attendance Viewer
+5. Waits for change in student
+6. Repeats steps 2-4 with newly selected student data
+
+On Create Process (Requires: Intern Name array, Intern ID array)
+1. Fetches a list of names and ID's of interns that the supervisor is in charge of
+2. Initializes arrayLists with the name and ID values, studentNameArray and studIdArray
+3. Initializes studentNameArray values into a data spinner. The data spinner allows the supervisor to select which inter's data they would like to view
+4. Displays the first name in the name list, fetches their data with the different processes and displays the data for the currently selected tab
+5. When the selected name is changed, the UI displays the selected name and data
+
+Intern Data Viewer Process:
+
+Intern Log Viewer Process: (Requires: Intern ID)
+1. Based on the currently selected intern, the function fetchStudentLog() is called with those values
+2. fetchStudentLog() fetches all logs that match the specific ID and adds the log entry and date into a set
+of arrayLists. Both arrayLists object positions in the index will match with each other: the date value in
+dateArrayList[3] comes from the same log "file" as the log entry value in logArrayList[3]
+3. findLogByDate() function is then called, displaying the log entry for the selected intern on the selected date on the screen
+4. If the user changes the selected intern, the fetchStudentLog() function is called with the new value
+5. Before  adding the new set of data into the arrayLists, the arrayLists are first cleared of the previous set of data, ready to be used again
+
+Intern Attendance Viewer Process:
+
 */
-class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
+class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListener { //TODO: Add in a overall student stat value to see all students together in one graph?
 
     private lateinit var binding: NpisStudentdatahomeBinding
     private val cal = Calendar.getInstance()
@@ -51,7 +73,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
                 ?: arrayListOf("Student 1 ID", "Student 2 ID", "Student 3 ID")
         super.onCreate(savedInstanceState)
         binding = NpisStudentdatahomeBinding.inflate(layoutInflater)
-        setContentView(binding.root)//using binding due to many variables
+        setContentView(binding.root) //using binding due to many variables
 
         binding.npisBottomNav.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
@@ -100,7 +122,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
                 binding.gradeText.text = "$selectedStudent's Ready For Grading"
 
                 //log coding here
-                fetchStudentLog(studIdArray[position], convDateToString()) //populates logArrayList and dateArrayList with all logs from the selected student
+                fetchStudentLog(studIdArray[position]) //populates logArrayList and dateArrayList with all logs from the selected student
 
                 binding.dateSubmittedLogText.setOnClickListener {
                     pickDate()
@@ -180,7 +202,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         return "$day ${changeMonthToString(chosenMonth)} $chosenYear"
     }
 
-    private fun fetchStudentLog(studId: String, date: String) { //uses Supervisor's ID to query for student's that they are in charge of to display on the page
+    private fun fetchStudentLog(studId: String) { //uses studentId to query for daily logs written by the student and places the date and log entry values into arrayLists
         val path = database.child("internlogs").orderByChild("userid").equalTo(studId)
 
         path.addListenerForSingleValueEvent(object: ValueEventListener {
