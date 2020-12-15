@@ -256,7 +256,6 @@ class StudentAttendance : AppCompatActivity() {
         var mc: String = "" //Value initialized in MCButton, Medical Certificate picture online database storage link// TODO add in a proper link later on (LOW PRIORITY)
         //var details: String = ""
 
-
         fun toMap(): Map<String, Any?> {
             return mapOf(
                     "EntryTime" to entryTime, //possible issue trying to convert map value of LocalTime

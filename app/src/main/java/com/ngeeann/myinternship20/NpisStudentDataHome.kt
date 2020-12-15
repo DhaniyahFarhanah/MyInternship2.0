@@ -101,7 +101,6 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
 
                 //log coding here
                 fetchStudentLog(studIdArray[position], convDateToString()) //populates logArrayList and dateArrayList with all logs from the selected student
-                findLogByDate() //scans through dateArrayList to find an entry with a date that matches the selected calendar date and displays it on screen
 
                 binding.dateSubmittedLogText.setOnClickListener {
                     pickDate()
@@ -187,10 +186,13 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         path.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    for ((n, studentSnapshot) in snapshot.children.withIndex()) {
+                    dateArrayList.clear() //clears out the arrayLists to add the date and logs of a different user TODO possibly switch the program to create another arrayList for each student to store values instead of cleearing them
+                    logArrayList.clear()
+                    for (studentSnapshot in snapshot.children) {
                         dateArrayList.add(studentSnapshot.child("date").getValue<String>().toString())
                         logArrayList.add(studentSnapshot.child("log").getValue<String>().toString())
                     }
+                    findLogByDate()
                 }
                 else {
                     studentLogDisplay.text = "Unable to find any entries for this student."
@@ -203,7 +205,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         })
     }
 
-    fun findLogByDate () {
+    fun findLogByDate () { //scans through dateArrayList to find an entry with a date that matches the selected calendar date and displays it on screen
         val selectedIndex = dateArrayList.indexOf(convDateToString())
         if (selectedIndex == -1) { // An indexOf return value of -1 means that the element specified in the brackets was unable to be found, so this condition will notify the user of this
             studentLogDisplay.text = "Unable to find any entries for this day."
