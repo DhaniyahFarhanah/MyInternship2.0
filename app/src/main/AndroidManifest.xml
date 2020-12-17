@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar">
-        <activity android:name=".MainUiStaff"></activity>
+        <activity android:name=".StaffAttendanceDataMoreInfo"></activity>
+        <activity android:name=".StaffAttendanceDataHome" />
+        <activity android:name=".MainUiStaff" />
         <activity android:name=".NpisStudentDataHome" />
         <activity android:name=".StudentAttendance" />
         <activity android:name=".InternLog" />
