@@ -15,16 +15,22 @@ import kotlinx.android.synthetic.main.ui_npis_main.*
 class MainUiNPIS : AppCompatActivity() {
     private val database = Firebase.database
     lateinit var userId: String
+    var studentName: ArrayList<String?> = arrayListOf()
+    var studentId: ArrayList<String> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ui_npis_main)
         userId = intent.getStringExtra("username").toString()
 
-        fetchUserInfo(userId)
+        fetchUserInfo(userId) //gets supervisor particular to display on the screen
+        fetchStudentInfo(userId) //gets student info and puts it in an array
 
         npisStudentData.setOnClickListener{
-            startActivity(Intent(this, NpisStudentDataHome::class.java))
+            startActivity(Intent(this, NpisStudentDataHome::class.java)
+                    .putExtra("userId", userId)
+                    .putExtra("studNameArr", studentName)
+                    .putExtra("studIdArr", studentId))
         }
     }
 
@@ -40,7 +46,6 @@ class MainUiNPIS : AppCompatActivity() {
                     npisIdText.text= it.email
                     npisSchoolText.text = it.school
                     npisGroupText.text = it.group
-
                 }
             }
 
@@ -50,10 +55,26 @@ class MainUiNPIS : AppCompatActivity() {
         })
     }
 
+    private fun fetchStudentInfo(userId: String) {
+        val path = database.getReference("users/$userId/Supervising").orderByChild("Name")
+        path.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for ((n, studentSnapshot) in snapshot.children.withIndex()) {
+                    studentName.add(studentSnapshot.child("Name").getValue<String>().toString())
+                    studentId.add(studentSnapshot.child("userid").getValue<String>().toString())
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+
     data class NPIS(
-        var Name: String? = "",
-        var school: String? = "",
-        var email: String? = "",
-        var group: String? =""
+            var Name: String? = "",
+            var school: String? = "",
+            var email: String? = "",
+            var group: String? =""
     )
 }

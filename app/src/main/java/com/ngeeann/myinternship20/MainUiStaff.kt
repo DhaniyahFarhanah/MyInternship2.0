@@ -25,7 +25,8 @@ class MainUiStaff : AppCompatActivity() {
         fetchUserInfo(userId)
 
         staffStudentAttendanceData.setOnClickListener {
-            startActivity(Intent(this,StaffAttendanceDataHome::class.java))
+            startActivity(Intent(this,StaffAttendanceDataHome::class.java)
+                    .putExtra("userId", userId))
         }
 
     }
