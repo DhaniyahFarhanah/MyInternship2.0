@@ -27,7 +27,7 @@
             android:id="@+id/nowViewing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Now Viewing"
+            android:text="Now Viewing Daily Attendance Of"
             android:gravity="center"/>
         
         <TextView
@@ -52,6 +52,16 @@
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="18sp"
+            />
+
+        <TextView
+            android:id="@+id/classTimeView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/groupView"
+            android:text="Timing"
+            android:gravity="center"
+            android:textSize="15sp"
             />
     </RelativeLayout>
 
@@ -85,10 +95,11 @@
             app:srcCompat="@drawable/ic_round_roundedarrowleft" />
 
         <TextView
-            android:id="@+id/dateSubmittedLogText"
+            android:id="@+id/dateChosenText"
             android:layout_width="match_parent"
             android:layout_height="39dp"
-
+            android:layout_toRightOf="@id/datePreviousButton"
+            android:layout_toLeftOf="@+id/dateNextButton"
             android:gravity="center"
             android:text="DATE"
             android:textColor="#292929"
@@ -98,7 +109,7 @@
             android:id="@+id/presstext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dateSubmittedLogText"
+            android:layout_below="@+id/dateChosenText"
             android:gravity="center"
             android:text="press here to choose date"
             android:textColor="#B8B8B8"
@@ -108,29 +119,30 @@
 
     <LinearLayout
         android:id="@+id/dataViewingLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/staffDateChooseLayout"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="416dp"
+        android:layout_height="475dp"
         android:orientation="vertical"
+        android:padding="8dp"
         app:layout_constraintBottom_toTopOf="@+id/staffStudentDataBottomNav"
-        android:padding="8dp">
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/staffDateChooseLayout">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/staffRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="450dp"/>
+            android:layout_height="450dp" />
 
         <TextView
+            android:id="@+id/totalText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Total"
             android:layout_marginTop="3dp"
-            android:textSize="17sp"
             android:gravity="right"
+            android:paddingEnd="18dp"
+            android:text="Total"
             android:textColor="@color/black"
-            android:paddingEnd="18dp"/>
+            android:textSize="17sp" />
 
     </LinearLayout>
 

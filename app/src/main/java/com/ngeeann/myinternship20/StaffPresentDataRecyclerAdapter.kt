@@ -7,7 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 //this is the adapter to pass the data from an array into the cardviews item by item. scrollable.
-class StaffStudentDataRecyclerAdapter: RecyclerView.Adapter<StaffStudentDataRecyclerAdapter.ViewHolder>() {
+class StaffPresentDataRecyclerAdapter: RecyclerView.Adapter<StaffPresentDataRecyclerAdapter.ViewHolder>() {
+
+
 
     //testing data only. 5 in each.
     private var studentNameArray= arrayOf("Chew Li Mien", "Brudder","Jackson Knew Me","Hoe Li Fook","Cornmit Sewer Side")
@@ -16,9 +18,9 @@ class StaffStudentDataRecyclerAdapter: RecyclerView.Adapter<StaffStudentDataRecy
 
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StaffStudentDataRecyclerAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StaffPresentDataRecyclerAdapter.ViewHolder {
         //makes the items in recyclerview fill with the StaffStudentDataCard. Each item will be the card instead of "item 1" and so on. Ignore this. This is for layout purposes only.
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.staff_attendancedata_presentcard,parent,false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.staff_attendancedata_card,parent,false)
         return ViewHolder(v)
     }
 
@@ -33,7 +35,7 @@ class StaffStudentDataRecyclerAdapter: RecyclerView.Adapter<StaffStudentDataRecy
         return studentNameArray.size //this will give the total number of items in array. So 5 items will give int of 4
     }
 
-    //initializing of what values will be placed in which textview
+    //initializing of what values will be placed in which textview. Ignore this
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
         var studentName: TextView = itemView.findViewById(R.id.studentNameText_card)

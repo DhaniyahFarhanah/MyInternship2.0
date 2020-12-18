@@ -142,7 +142,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:gravity="center"
-                        android:text="ATTENDANCE   DATA"
+                        android:text="STUDENT DATA"
                         android:textColor="#3E3E3E"
                         android:textSize="20sp"
                         android:textStyle="bold" />

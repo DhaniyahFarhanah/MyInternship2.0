@@ -1,5 +1,6 @@
 package com.ngeeann.myinternship20
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,7 +14,7 @@ import kotlinx.android.synthetic.main.staff_attendancedatahome.*
 class StaffAttendanceDataHome : AppCompatActivity() {
 
     private lateinit var binding: StaffAttendancedatahomeBinding//used binding again
-    private var testSubject = arrayOf("64LNXSR","64BASRS") //testing array for the Subjects
+    private var testModule = arrayOf("64LNXSR","64BASRS") //testing array for the Module
     private var testClass = arrayOf("LB11","LB12","LB13") //testing array for the Class
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,21 +22,21 @@ class StaffAttendanceDataHome : AppCompatActivity() {
         binding= StaffAttendancedatahomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var chosenModule=""
-        var chosenGroup=""
+        var chosenModule="" //string of chosen Module from array on selected
+        var chosenGroup="" //string of chosen Group from array on selected
 
         binding.staffStudentDataBackArrow.setOnClickListener {
-            this.finish()
+            this.finish() //
         }
 
-        binding.staffSubjectSpinner.adapter=ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,testSubject)
+        binding.staffModuleSpinner.adapter=ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,testModule)
         binding.staffGroupSpinner.adapter=ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,testClass)
 
 
         //initialize chosenModule with the selected item in the array for Module drop box
-        binding.staffSubjectSpinner.onItemSelectedListener=object :AdapterView.OnItemSelectedListener{
+        binding.staffModuleSpinner.onItemSelectedListener=object :AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                chosenModule = testSubject[position]
+                chosenModule = testModule[position]
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -51,7 +52,7 @@ class StaffAttendanceDataHome : AppCompatActivity() {
             }
 
         }
-        //on click of the more details
+        //on click to move to the more details
         moreDetailsButton.setOnClickListener {
             startActivity(Intent(this,StaffAttendanceDataMoreInfo::class.java).
                 putExtra("chosenModule",chosenModule).putExtra("chosenGroup",chosenGroup))//transfer the chosenModule and Group to the next Activity
