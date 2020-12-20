@@ -51,7 +51,8 @@ dateArrayList[3] comes from the same log "file" as the log entry value in logArr
 Intern Attendance Viewer Process:
 
 */
-class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListener { //TODO: Add in a overall student stat value to see all students together in one graph?
+class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListener { //TODO 1: Add in a overall student stat value to see all students together in one graph?
+// TODO 2: avoid making redundant calls by creating a check that sees if the student selected was the same as before, if it is a different student then allow the program to carry on as usual
 
     private lateinit var binding: NpisStudentdatahomeBinding
     private val cal = Calendar.getInstance()
@@ -192,7 +193,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         findLogByDate()
     }
 
-    private fun convDateToString(): String { //converts the currently selected date from integer values to a single combined string
+    private fun convDateToString(): String { //converts the currently selected date from integer values to a single combined string: "04 November 2020"
         val day = if(chosenDay < 10) { //appends a 0 in front of the day number e.g. 9 will be 09
             "0${chosenDay}"
         }
@@ -235,6 +236,36 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         else {
             studentLogDisplay.text = logArrayList[selectedIndex]
         }
+    }
+
+    fun attendByDate () { //displays all students attendance for that day
+        val date = "2020-12-10" //"$chosenYear-$chosenMonth-$chosenDay" TODO change the testing date back to an actual date when done testing
+        val path = database.child("attendance").child(date).child("Internship").orderByKey() //orders the attendance records by student ID
+        path.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (studentSnapshot in snapshot.children) {
+                    studentSnapshot.child("Name").getValue<String>()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        }  )
+    }
+
+    fun attendByStudent (studId: String) { //displays specific student's attendance across a week. Attendance dates use "YYYY-MM-DD" format
+        val date = "$chosenYear-$chosenMonth-$chosenDay"
+        val path = database.child("attendance").orderByChild("Internship/$studId/userid").equalTo(studId)
+        path.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 }
 
