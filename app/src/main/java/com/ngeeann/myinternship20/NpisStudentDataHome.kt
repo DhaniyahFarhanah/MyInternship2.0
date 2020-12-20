@@ -20,8 +20,8 @@ import com.ngeeann.myinternship20.databinding.NpisStudentdatahomeBinding
 import kotlinx.android.synthetic.main.npis_studentdatahome.*
 import java.util.*
 import kotlin.collections.ArrayList
-
-/*Students: Adam, Diana Hol, Jessica
+/*
+Students: Adam, Diana Hol, Jessica
 Quick Activity Structure Breakdown:
 1. On Create
 2. Data Viewer
@@ -54,9 +54,8 @@ Intern Attendance Viewer Process:
 class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListener { //TODO: Add in a overall student stat value to see all students together in one graph?
 
     private lateinit var binding: NpisStudentdatahomeBinding
-    private var nameTest = arrayOf("Jessica", "Adams", "Why")//testing array for the names in the spinner for the NPIS staff to choose
-    val cal=Calendar.getInstance()
-
+    private val cal = Calendar.getInstance()
+    private val database = Firebase.database.reference
     var chosenDay = 0
     var chosenMonth = 0
     var chosenYear = 0
@@ -162,9 +161,9 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
     }
 
     private fun pickDate() {
-            getDateCalendar()
-            DatePickerDialog(this,this, chosenYear, chosenMonth, chosenDay).show()
-            findLogByDate()
+        getDateCalendar()
+        DatePickerDialog(this,this, chosenYear, chosenMonth, chosenDay).show()
+        findLogByDate()
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
