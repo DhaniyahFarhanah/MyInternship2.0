@@ -23,8 +23,6 @@ class MainUiStudent : AppCompatActivity() {
         userId = intent.getStringExtra("username").toString()
         fetchUserInfo(userId)
 
-        Toast.makeText(this,"Welcome", Toast.LENGTH_SHORT).show()
-
         studentAttendance.setOnClickListener { //TODO assign an ID for this button
             startActivity(Intent(this, StudentAttendance::class.java)
                     .putExtra("userId", userId)

@@ -21,7 +21,6 @@ class MainUiIntern : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ui_intern_main)
         userId = intent.getStringExtra("username").toString()
-
         fetchUserInfo(userId)
 
         internLog.setOnClickListener {
