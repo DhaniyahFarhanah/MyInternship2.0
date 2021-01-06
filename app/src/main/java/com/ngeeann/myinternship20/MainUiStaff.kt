@@ -15,8 +15,7 @@ import kotlinx.android.synthetic.main.ui_staff_main.*
 class MainUiStaff : AppCompatActivity() { //TODO add in the putExtra values later on to allow staff to check student attendance
     private val database = Firebase.database
     lateinit var userId: String
-    lateinit var studentName: Array<String>
-    lateinit var studentId: Array<String>
+    var staffModules: ArrayList<String?> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +27,8 @@ class MainUiStaff : AppCompatActivity() { //TODO add in the putExtra values late
 
         staffStudentAttendanceData.setOnClickListener {
             startActivity(Intent(this,StaffAttendanceDataHome::class.java)
-                    .putExtra("userId", userId))
+                    .putExtra("userId", userId)
+                    .putExtra("moduleArray", staffModules))
         }
 
     }
@@ -44,8 +44,9 @@ class MainUiStaff : AppCompatActivity() { //TODO add in the putExtra values late
                     staffEmailText.text = it.email
                     staffRoleText.text = it.group
                     staffSchoolText.text = it.school
-
-
+                }
+                for (childModules in snapshot.child("Modules").children) {
+                    staffModules.add(childModules.key.toString())
                 }
             }
 

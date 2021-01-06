@@ -96,31 +96,34 @@
 
         <TextView
             android:id="@+id/dateChosenText"
-            android:layout_width="match_parent"
-            android:layout_height="39dp"
-            android:layout_toRightOf="@id/datePreviousButton"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
             android:layout_toLeftOf="@+id/dateNextButton"
+            android:layout_toRightOf="@id/datePreviousButton"
             android:gravity="center"
             android:text="DATE"
             android:textColor="#292929"
-            android:textSize="30dp" />
+            android:textSize="30sp" />
 
         <TextView
-            android:id="@+id/presstext"
+            android:id="@+id/dayOfWeekTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/dateChosenText"
             android:gravity="center"
-            android:text="press here to choose date"
-            android:textColor="#B8B8B8"
-            android:textSize="9dp"/>
+            android:text="day of month"
+            android:textColor="#292929"
+            android:layout_marginTop="3dp"
+            android:textSize="20sp"/>
 
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/dataViewingLayout"
-        android:layout_width="416dp"
-        android:layout_height="475dp"
+        android:layout_width="match_parent"
+        android:layout_height="439dp"
         android:orientation="vertical"
         android:padding="8dp"
         app:layout_constraintBottom_toTopOf="@+id/staffStudentDataBottomNav"
@@ -131,18 +134,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/staffRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="450dp" />
-
-        <TextView
-            android:id="@+id/totalText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:gravity="right"
-            android:paddingEnd="18dp"
-            android:text="Total"
-            android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

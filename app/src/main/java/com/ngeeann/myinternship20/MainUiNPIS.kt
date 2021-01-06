@@ -59,7 +59,7 @@ class MainUiNPIS : AppCompatActivity() {
         val path = database.getReference("users/$userId/Supervising").orderByChild("Name")
         path.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                for ((n, studentSnapshot) in snapshot.children.withIndex()) {
+                for (studentSnapshot in snapshot.children) {
                     studentName.add(studentSnapshot.child("Name").getValue<String>().toString())
                     studentId.add(studentSnapshot.child("userid").getValue<String>().toString())
                 }

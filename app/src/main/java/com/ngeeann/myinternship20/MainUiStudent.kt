@@ -23,7 +23,7 @@ class MainUiStudent : AppCompatActivity() {
         userId = intent.getStringExtra("username").toString()
         fetchUserInfo(userId)
 
-        studentAttendance.setOnClickListener { //TODO assign an ID for this button
+        studentAttendance.setOnClickListener {
             startActivity(Intent(this, StudentAttendance::class.java)
                     .putExtra("userId", userId)
                     .putExtra("username", userName)
