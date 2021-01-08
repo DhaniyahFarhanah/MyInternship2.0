@@ -57,7 +57,7 @@ class StaffAttendanceDataHome : AppCompatActivity() {
             this.finish()
         }
 
-        binding.staffModuleSpinner.adapter = ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item, moduleArray)
+        binding.staffModuleSpinner.adapter = ArrayAdapter(this,R.layout.custom_spinner_style, moduleArray)
 
         binding.staffModuleSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -118,11 +118,11 @@ class StaffAttendanceDataHome : AppCompatActivity() {
         val path = database.child("users/$userId/Modules/$module")
         path.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                for ((n, modSnapshot) in snapshot.children.withIndex()){
-                    groupArray[n] = modSnapshot.key.toString()
-                    studentTotalArray[n] = modSnapshot.child("Total Students").value.toString()
-                    dayArray[n] = modSnapshot.child("Day").value.toString()
-                    timeArray[n] = modSnapshot.child("Time").value.toString()
+                for ((n, grpSnapshot) in snapshot.children.withIndex()){
+                    groupArray[n] = grpSnapshot.key.toString()
+                    studentTotalArray[n] = grpSnapshot.child("Total Students").value.toString()
+                    dayArray[n] = grpSnapshot.child("Day").value.toString()
+                    timeArray[n] = grpSnapshot.child("Time").value.toString()
                 }
                 overviewRecyclerView.adapter?.notifyDataSetChanged()
             }

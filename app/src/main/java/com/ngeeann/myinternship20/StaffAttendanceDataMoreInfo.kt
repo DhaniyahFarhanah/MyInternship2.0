@@ -1,10 +1,12 @@
 package com.ngeeann.myinternship20
 
 import android.app.DatePickerDialog
+import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +23,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.ngeeann.myinternship20.databinding.StaffAttendancedataMoreinfoBinding
+import kotlinx.android.synthetic.main.staff_attendancedata_card.*
 import kotlinx.android.synthetic.main.staff_attendancedata_moreinfo.*
 import kotlinx.android.synthetic.main.ui_intern_main.*
 import java.time.format.DateTimeFormatter
@@ -45,6 +48,8 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
 
     private lateinit var binding: StaffAttendancedataMoreinfoBinding //using binding again
     private val database = Firebase.database.reference
+    private val cal = Calendar.getInstance() //calendar instance for the date
+    private val TAG = "StaffAttendanceDataMoreInfo Activity"
 
     //public changeable arrays based of the selection of "present", "late" or "absent" (for testing of layout)
     var studentNameArray = arrayOf("")
@@ -55,14 +60,12 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
     var studentDetail = arrayListOf<String>()
     var studentStatusArrayList = arrayListOf<String>()
 
-    val cal = Calendar.getInstance() //calendar instance for the date
-
     var chosenDate = 0 //chosen day
     var chosenMonth = 0 //chosen month in int
     var chosenYear = 0 //chosen year
-    var chosenDay = 0 //chosen day of the week
+    //var chosenDay = 0 //chosen day of the week
 
-    var status = "present" //to set the default screen as "present" on navbar and keep the UI at the kept screen when changed date. "present", "late" and "absent"
+    var status = "Present" //to set the default screen as "present" on navbar and keep the UI at the kept screen when changed date. "Present", "Late" and "Absent"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,25 +80,30 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
 
         binding.staffRecyclerView.layoutManager = LinearLayoutManager(this)//makes the recycler view a vertical scrollable list.
 
-        navBarSet(status)//set to the default upon opening
-        getDateCalendar() //call to get date of today
-        binding.dateChosenText.text = "$chosenDate ${changeMonthToString(chosenMonth)} $chosenYear" //display date of today
+        binding.dateNextButton.visibility = View.GONE
+        navBarSet(status,chosenStudentTotal)//set to the default upon opening
+
+        //getDateCalendar() //call to get date of today
+        //checkDayOfWeek(chosenDayOfWeek) //changes calendar date to match chosenDayOfWeek value
+        val defaultDateString = revertDateCalendar(changeDayToInt(chosenDayOfWeek)) //called to get the correct date based on schedule
+        binding.dateChosenText.text = "$chosenDate ${changeMonthToString(chosenMonth)} $chosenYear" //sets date into the textview
+        queryLesson(chosenModule,chosenGroup,status)
 
         binding.dateNextButton.setOnClickListener { //next date onclick
-            nextDay() //to get calendar to next date
-            navBarSet(status) //to override data upon change of date
+            nextDay(defaultDateString) //to get calendar to next date
+            navBarSet(status,chosenStudentTotal) //to override data upon change of date
+            //queryLesson(chosenModule, chosenGroup, status)
         }
 
-        //previous date onclick
-        binding.datePreviousButton.setOnClickListener {
+        binding.datePreviousButton.setOnClickListener { //previous date onclick
             previousDay() //to get calendar to previous date
-            navBarSet(status) //to override data upon change of date
+            navBarSet(status,chosenStudentTotal) //to override data upon change of date
+            //queryLesson(chosenModule, chosenGroup, status)
         }
 
-        //picks the date from an open calendar onclick
-        binding.dateChosenText.setOnClickListener {
+        binding.dateChosenText.setOnClickListener { //picks the date from an open calendar onclick
             pickDate() //to get calendar to previous date
-            navBarSet(status) //to override data upon change of date
+            navBarSet(status,chosenStudentTotal) //to override data upon change of date
         }
 
         binding.moduleView.text = chosenModule //puts the module value in the moduleView text view
@@ -103,56 +111,54 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
         binding.classTimeView.text = chosenTiming //puts the timing of the class into the classTimeView text view
         binding.dayOfWeekTextView.text = chosenDayOfWeek//puts the day of the week into the dayOfWeekTextView text view
 
-        //navigation between "present", "late" and "absent"
-        binding.staffStudentDataBottomNav.setOnNavigationItemSelectedListener { item ->
+        binding.staffStudentDataBottomNav.setOnNavigationItemSelectedListener { item -> //navigation between "present", "late" and "absent"
             when (item.itemId) {
                 //present data displayed
                 R.id.nav_present -> {
-                    status = "present" //changes the status so it would go to present
-                    navBarSet(status)
-                    queryLesson(chosenModule, chosenGroup, "Present")
+                    status = "Present" //changes the status so it would go to present
+                    navBarSet(status,chosenStudentTotal)
+                    queryLesson(chosenModule, chosenGroup, status)
                 }
                 //late data displayed
                 R.id.nav_late -> {
-                    status = "late" //changes to status so it would go to late
-                    navBarSet(status)
-                    queryLesson(chosenModule, chosenGroup, "Late")
+                    status = "Late" //changes to status so it would go to late
+                    navBarSet(status,chosenStudentTotal)
+                    queryLesson(chosenModule, chosenGroup, status)
                 }
                 //absent data displayed
                 R.id.nav_absent -> {
-                    status = "absent" //changes to status so it would go to absent.
-                    navBarSet(status)
+                    status = "Absent" //changes to status so it would go to absent.
+                    navBarSet(status,chosenStudentTotal)
                     queryLesson(chosenModule, chosenGroup, "MC")
                 }
             }
             true
         }//end of navigation between "Present", "Late" and "Absent"
 
-
-        //ends the activity with the back arrow. goes back to the overview.
-        binding.staffStudentDataBackArrow2.setOnClickListener {
+        binding.staffStudentDataBackArrow2.setOnClickListener { //ends the activity with the back arrow. goes back to the overview.
             this.finish()
         }
     }
 
-    private fun navBarSet(uiStatus: String){
+    private fun navBarSet(uiStatus: String,studentsTotal:String){
         testSetArrayOfData(uiStatus)//called to override data with new data while returning an int and displaying the size of array
         staffRecyclerView.adapter = DataRecyclerAdapter() //puts data in respective item slot in the recycler view
+        binding.totalDataTextView.text = "Total: ${studentNameArray.size} / $studentsTotal" //puts total of the list into the total text view
     }
 
     private fun testSetArrayOfData(chosenNav: String) : Int{ //this function is for testing only. It will receive the chosen navigation between "present", "late" and "absent. Overriding of Data
         when(chosenNav){
-            "present" ->{
+            "Present" ->{
                 studentNameArray = arrayOf("Chew Li Mien", "Brudder","Jackson Knew Me","Hoe Li Fook","Cornmit Sewer Side","Some","Names","Here")
                 studentIDArray = arrayOf("S142XXXXJ","S297XXXXB","S489XXXXG","S666XXXXD","S420XXXXB","S111XXXXA","S222XXXXB","S333XXXXC")
                 timeStatus = arrayOf("2:00PM","2:00PM","2:02PM","2:05PM","2:11PM","2.11PM","2.12PM","2.14PM")
                 } //data of present in an array
-            "late" -> {
+            "Late" -> {
                 studentNameArray = arrayOf("Um","Yes","Late")
                 studentIDArray = arrayOf("S111XXXXA","S222XXXXB","S333XXXXC")
                 timeStatus = arrayOf("3:20PM","3:50PM","4:00PM")
                 }//data of late in array
-            "absent" ->{
+            "Absent" ->{
                 studentNameArray = arrayOf("I can't think of any names","Hee Haz Corona")
                 studentIDArray = arrayOf("S999XXXXA","S555XXXXB")
                 timeStatus = arrayOf("No", "Yes") //see if there is an MC or Not. Can open image if there is an Mc
@@ -165,7 +171,19 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
         chosenDate = cal.get(Calendar.DATE)
         chosenMonth = cal.get(Calendar.MONTH)
         chosenYear = cal.get(Calendar.YEAR)
-        chosenDay = cal.get(Calendar.DAY_OF_WEEK)
+    }
+
+    private fun revertDateCalendar(dd:Int):String{
+        if(dd>cal.get(Calendar.DAY_OF_WEEK)){
+            cal.set(Calendar.DAY_OF_WEEK,dd)
+            cal.add(Calendar.DATE,-7)
+        }
+        else{
+            cal.set(Calendar.DAY_OF_WEEK,dd)
+        }
+
+        getDateCalendar()
+        return "$chosenDate ${changeMonthToString(chosenMonth)} $chosenYear"
     }
 
     private fun pickDate(){
@@ -173,9 +191,17 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
         // DatePickerDialog(this,this,chosenYear,chosenMonth,chosenDay).show()
     }
 
-    private fun changeDayToString(dd: Int): String {
-        val dayArray  = arrayOf("","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
-        return dayArray[dd]
+    private fun changeDayToInt(dd: String): Int {
+        when(dd){
+            "Sunday" -> return 1
+            "Monday" -> return 2
+            "Tuesday" -> return 3
+            "Wednesday" -> return 4
+            "Thursday" -> return 5
+            "Friday" -> return 6
+            "Saturday" -> return 7
+        }
+        return 0
     }
 
     private fun changeMonthToString(mm: Int): String{
@@ -196,16 +222,23 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
         cal.set(Calendar.DAY_OF_MONTH,dayOfMonth)
     }*/
 
-    private fun nextDay(){  //chooses next day
+    private fun nextDay(default:String){  //chooses next day
         cal.add(Calendar.DATE,7)
         getDateCalendar()
         binding.dateChosenText.text = "$chosenDate ${changeMonthToString(chosenMonth)} $chosenYear"
+        if (binding.dateChosenText.text==default){
+            binding.dateNextButton.visibility=View.GONE
+        }
+        else{
+            binding.dateNextButton.visibility=View.VISIBLE
+        }
     }
 
     private fun previousDay(){ //chooses previous day
         cal.add(Calendar.DATE,-7)
         getDateCalendar()
         binding.dateChosenText.text = "$chosenDate ${changeMonthToString(chosenMonth)} $chosenYear"
+        binding.dateNextButton.visibility=View.VISIBLE
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -216,8 +249,7 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
     //adapter to display data of students
     inner class DataRecyclerAdapter: RecyclerView.Adapter<DataRecyclerAdapter.ViewHolder>() {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataRecyclerAdapter.ViewHolder {
-            //makes the items in recyclerview fill with the StaffStudentDataCard. Each item will be the card instead of "item 1" and so on. Ignore this. This is for layout purposes only.
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataRecyclerAdapter.ViewHolder { //makes the items in recyclerview fill with the StaffStudentDataCard. Each item will be the card instead of "item 1" and so on. Ignore this. This is for layout purposes only.
             val v = LayoutInflater.from(parent.context).inflate(R.layout.staff_attendancedata_card,parent,false)
             return ViewHolder(v)
         }
@@ -230,6 +262,7 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
             //if the ui is showing absent, then it would show if the student has an MC or not
             if (status == "absent"){
                 holder.studentStatus.text = "MC: ${timeStatus[position]}"
+
             }
         }
 
@@ -249,13 +282,13 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
                     val position = adapterPosition //gets the position of the selected array in int
                     when {
                         timeStatus[position] == "Yes" -> {
-                            Toast.makeText(itemView.context, "${studentNameArray[position]} has an Mc. It may open in another activity.", Toast.LENGTH_LONG).show()
+                            Toast.makeText(itemView.context, "${studentNameArray[position]} has an Mc. It may open in another activity.", Toast.LENGTH_SHORT).show()
                         } //if the mc status is "yes", can open mc in another activity
                         timeStatus[position] == "No" -> {
-                            Toast.makeText((itemView.context),"${studentNameArray[position]} does not have an Mc.",Toast.LENGTH_LONG).show()
+                            Toast.makeText((itemView.context),"${studentNameArray[position]} does not have an Mc.",Toast.LENGTH_SHORT).show()
                         }//if the mc status is no.
                         else -> {
-                            Toast.makeText(itemView.context, "${studentNameArray[position]} entered class at ${timeStatus[position]}.", Toast.LENGTH_LONG).show()
+                            Toast.makeText(itemView.context, "${studentNameArray[position]} entered class at ${timeStatus[position]}.", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -263,40 +296,74 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
         }
     }
 
-    private fun queryLesson(module: String, group: String, status: String) { //initializes 4 arraylists with values from the lesson entry
-        val path = database.child("attendance").child("2012-12-22").child("64CCADC-LB12").orderByChild("Status").equalTo(status) //todo revert to original set later
+    private fun queryLesson(module: String, group: String, status: String) { //initializes 4 arrays with values from the lesson entry
+        val path = database.child("attendance/2020-12-22/64CCADC-LB12"/*$date/$module-$group"*/).orderByChild("Status").equalTo("Present") //todo revert to original set later
         path.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
+                    Toast.makeText(this@StaffAttendanceDataMoreInfo, "Query results have been found.", Toast.LENGTH_LONG).show()
+                    Log.w(TAG, "Snapshot found, snapshot name ${snapshot.key.toString()}")
+                    /*
                     studentNameArrayList.clear()
                     studentIdArrayList.clear()
                     studentDetail.clear()
                     studentStatusArrayList.clear()
+                    */
                     for ((n,lessonSnapshot) in snapshot.children.withIndex()){
+                        /*
                         studentNameArrayList.add(lessonSnapshot.child("Name").getValue<String>().toString())
-                        studentNameArray[n] = lessonSnapshot.child("Name").getValue<String>().toString()
                         studentIdArrayList.add(lessonSnapshot.key.toString())
+                        studentStatusArrayList.add(lessonSnapshot.child("Status").getValue<String>().toString())
+                         */
+                        studentNameArray[n] = lessonSnapshot.child("Name").getValue<String>().toString()
+                        Log.w(TAG, "Student $n: ${studentNameArray[n]}")
+                        studentIDArray[n] = lessonSnapshot.key.toString()
+
                         if(lessonSnapshot.child("EntryTime").exists()) { //checks if student is on MC or not as present students have an entry time while sick ones have an MC link in their entry
-                            studentDetail.add(lessonSnapshot.child("EntryTime").getValue<String>().toString())
+                            //studentDetail.add(lessonSnapshot.child("EntryTime").getValue<String>().toString())
+                            timeStatus[n] = lessonSnapshot.child("EntryTime").getValue<String>().toString()
                         }
                         else {
-                            studentDetail.add(lessonSnapshot.child("MC Link").getValue<String>().toString())
+                            //studentDetail.add(lessonSnapshot.child("MC Link").getValue<String>().toString())
+                            timeStatus[n] = lessonSnapshot.child("MC Link").getValue<String>().toString()
                         }
-                        studentStatusArrayList.add(lessonSnapshot.child("Status").getValue<String>().toString())
+
                     }
-                    //studentNameArray = studentNameArrayList.toArray() as Array<String>
                     staffRecyclerView.adapter = DataRecyclerAdapter()
+                    staffRecyclerView.adapter?.notifyDataSetChanged()
                 }
                 else {
                     Toast.makeText(this@StaffAttendanceDataMoreInfo, "No lesson records on this date found.", Toast.LENGTH_SHORT)
+                    Log.w(TAG, "No records found.")
+                    Log.w(TAG, snapshot.key.toString())
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(this@StaffAttendanceDataMoreInfo, "Failed to query, please try again.", Toast.LENGTH_SHORT)
+                Log.w(TAG, "Query failure")
             }
         })
     }
 
+    private fun checkDayOfWeek(chosenDayOfWeekString: String) { //displays latest date for the selected day of the week on screen when activity is created
+        // e.g. chosen = 5 (Thursday), Calendar = 6 (Friday) then calendar goes back by 1 (6-5) day
+        val dayArr = arrayOf("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
+        val currentDayOfWeek = cal.get(Calendar.DAY_OF_WEEK)
+        var chosenDayOfWeek: Int = 1
+        var diff = 0
+
+        for ( i in 0..6) { //converts chosenDayOfWeek from string to integer value to compare
+            if (chosenDayOfWeekString == dayArr[i])
+            chosenDayOfWeek = i + 1
+        }
+        if (chosenDayOfWeek < currentDayOfWeek) { //if chosen day of week occurs before current day of week, subtract by difference
+            diff = chosenDayOfWeek - currentDayOfWeek
+        }
+        if (chosenDayOfWeek > currentDayOfWeek) { //if chosen day of week occurs after current day of week, subtract by 7 + difference
+            diff = -7 + (chosenDayOfWeek - currentDayOfWeek)
+        }
+        cal.add(Calendar.DATE, diff) //adds difference to calendar date, if the two "if" conditions do not trigger, date will not change
+    }
 }
 

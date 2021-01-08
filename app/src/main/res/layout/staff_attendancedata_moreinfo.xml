@@ -27,7 +27,7 @@
             android:id="@+id/nowViewing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Now Viewing Daily Attendance Of"
+            android:text="Now Viewing Attendance Of"
             android:gravity="center"/>
         
         <TextView
@@ -47,11 +47,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/moduleView"
-            android:layout_marginBottom="5dp"
             android:text="Group"
             android:gravity="center"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="23sp"
             />
 
         <TextView
@@ -61,7 +60,8 @@
             android:layout_below="@id/groupView"
             android:text="Timing"
             android:gravity="center"
-            android:textSize="15sp"
+            android:textSize="18sp"
+            android:layout_marginBottom="2dp"
             />
     </RelativeLayout>
 
@@ -69,7 +69,7 @@
         android:id="@+id/staffDateChooseLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,56 +80,54 @@
             android:id="@+id/dateNextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/presstext"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
             app:srcCompat="@drawable/ic_round_arrow_roudedarrowright" />
 
         <ImageView
             android:id="@+id/datePreviousButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/presstext"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             app:srcCompat="@drawable/ic_round_roundedarrowleft" />
 
         <TextView
             android:id="@+id/dateChosenText"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="0dp"
             android:layout_marginRight="0dp"
-            android:layout_toLeftOf="@+id/dateNextButton"
-            android:layout_toRightOf="@id/datePreviousButton"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp"
             android:gravity="center"
             android:text="DATE"
             android:textColor="#292929"
-            android:textSize="30sp" />
+            android:textSize="28sp" />
 
         <TextView
             android:id="@+id/dayOfWeekTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dateChosenText"
             android:gravity="center"
-            android:text="day of month"
-            android:textColor="#292929"
-            android:layout_marginTop="3dp"
-            android:textSize="20sp"/>
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp"
+            android:text="DAY"
+            android:layout_below="@id/dateChosenText"
+            android:textColor="#5C5B5B"
+            android:textSize="18sp"/>
 
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/dataViewingLayout"
         android:layout_width="match_parent"
-        android:layout_height="439dp"
+        android:layout_height="440dp"
         android:orientation="vertical"
         android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/staffStudentDataBottomNav"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/staffDateChooseLayout">
+        app:layout_constraintTop_toBottomOf="@+id/staffDateChooseLayout">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/staffRecyclerView"
@@ -137,6 +135,18 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/totalDataTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total:"
+        android:textColor="#292929"
+        android:layout_marginEnd="16dp"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/staffStudentDataBottomNav"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dataViewingLayout"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/staffStudentDataBottomNav"
