@@ -57,7 +57,7 @@ class StaffAttendanceDataHome : AppCompatActivity() {
             this.finish()
         }
 
-        binding.staffModuleSpinner.adapter = ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item, moduleArray)
+        binding.staffModuleSpinner.adapter = ArrayAdapter(this,R.layout.custom_spinner_style, moduleArray)
 
         binding.staffModuleSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {

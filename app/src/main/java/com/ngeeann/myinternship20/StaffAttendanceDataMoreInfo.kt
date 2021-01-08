@@ -1,6 +1,7 @@
 package com.ngeeann.myinternship20
 
 import android.app.DatePickerDialog
+import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -21,6 +22,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.ngeeann.myinternship20.databinding.StaffAttendancedataMoreinfoBinding
+import kotlinx.android.synthetic.main.staff_attendancedata_card.*
 import kotlinx.android.synthetic.main.staff_attendancedata_moreinfo.*
 import kotlinx.android.synthetic.main.ui_intern_main.*
 import java.time.format.DateTimeFormatter
@@ -60,7 +62,6 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
     var chosenDate = 0 //chosen day
     var chosenMonth = 0 //chosen month in int
     var chosenYear = 0 //chosen year
-    var chosenDay = 0 //chosen day of the week
 
     var status = "present" //to set the default screen as "present" on navbar and keep the UI at the kept screen when changed date. "present", "late" and "absent"
 
@@ -77,25 +78,24 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
 
         binding.staffRecyclerView.layoutManager = LinearLayoutManager(this)//makes the recycler view a vertical scrollable list.
 
-        navBarSet(status)//set to the default upon opening
-        getDateCalendar() //call to get date of today
-        binding.dateChosenText.text = "$chosenDate ${changeMonthToString(chosenMonth)} $chosenYear" //display date of today
+        binding.dateNextButton.visibility=View.GONE
+        navBarSet(status,chosenStudentTotal)//set to the default upon opening
+        val defaultDateString=revertDateCalendar(changeDayToInt(chosenDayOfWeek)) //called to get the correct date based on schedule
+        binding.dateChosenText.text = "$chosenDate ${changeMonthToString(chosenMonth)} $chosenYear"//sets date into the textview
 
         binding.dateNextButton.setOnClickListener { //next date onclick
-            nextDay() //to get calendar to next date
-            navBarSet(status) //to override data upon change of date
+            nextDay(defaultDateString) //to get calendar to next date
+            navBarSet(status,chosenStudentTotal) //to override data upon change of date
         }
 
-        //previous date onclick
-        binding.datePreviousButton.setOnClickListener {
+        binding.datePreviousButton.setOnClickListener { //previous date onclick
             previousDay() //to get calendar to previous date
-            navBarSet(status) //to override data upon change of date
+            navBarSet(status,chosenStudentTotal) //to override data upon change of date
         }
 
-        //picks the date from an open calendar onclick
-        binding.dateChosenText.setOnClickListener {
+        binding.dateChosenText.setOnClickListener { //picks the date from an open calendar onclick
             pickDate() //to get calendar to previous date
-            navBarSet(status) //to override data upon change of date
+            navBarSet(status,chosenStudentTotal) //to override data upon change of date
         }
 
         binding.moduleView.text = chosenModule //puts the module value in the moduleView text view
@@ -103,41 +103,39 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
         binding.classTimeView.text = chosenTiming //puts the timing of the class into the classTimeView text view
         binding.dayOfWeekTextView.text = chosenDayOfWeek//puts the day of the week into the dayOfWeekTextView text view
 
-        //navigation between "present", "late" and "absent"
-        binding.staffStudentDataBottomNav.setOnNavigationItemSelectedListener { item ->
+        binding.staffStudentDataBottomNav.setOnNavigationItemSelectedListener { item -> //navigation between "present", "late" and "absent"
             when (item.itemId) {
                 //present data displayed
                 R.id.nav_present -> {
                     status = "present" //changes the status so it would go to present
-                    navBarSet(status)
+                    navBarSet(status,chosenStudentTotal)
                     queryLesson(chosenModule, chosenGroup, "Present")
                 }
                 //late data displayed
                 R.id.nav_late -> {
                     status = "late" //changes to status so it would go to late
-                    navBarSet(status)
+                    navBarSet(status,chosenStudentTotal)
                     queryLesson(chosenModule, chosenGroup, "Late")
                 }
                 //absent data displayed
                 R.id.nav_absent -> {
                     status = "absent" //changes to status so it would go to absent.
-                    navBarSet(status)
+                    navBarSet(status,chosenStudentTotal)
                     queryLesson(chosenModule, chosenGroup, "MC")
                 }
             }
             true
         }//end of navigation between "Present", "Late" and "Absent"
 
-
-        //ends the activity with the back arrow. goes back to the overview.
-        binding.staffStudentDataBackArrow2.setOnClickListener {
+        binding.staffStudentDataBackArrow2.setOnClickListener { //ends the activity with the back arrow. goes back to the overview.
             this.finish()
         }
     }
 
-    private fun navBarSet(uiStatus: String){
+    private fun navBarSet(uiStatus: String,studentsTotal:String){
         testSetArrayOfData(uiStatus)//called to override data with new data while returning an int and displaying the size of array
         staffRecyclerView.adapter = DataRecyclerAdapter() //puts data in respective item slot in the recycler view
+        binding.totalDataTextView.text = "Total: ${studentNameArray.size} / $studentsTotal" //puts total of the list into the total text view
     }
 
     private fun testSetArrayOfData(chosenNav: String) : Int{ //this function is for testing only. It will receive the chosen navigation between "present", "late" and "absent. Overriding of Data
@@ -165,7 +163,19 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
         chosenDate = cal.get(Calendar.DATE)
         chosenMonth = cal.get(Calendar.MONTH)
         chosenYear = cal.get(Calendar.YEAR)
-        chosenDay = cal.get(Calendar.DAY_OF_WEEK)
+    }
+
+    private fun revertDateCalendar(dd:Int):String{
+        if(dd>cal.get(Calendar.DAY_OF_WEEK)){
+            cal.set(Calendar.DAY_OF_WEEK,dd)
+            cal.add(Calendar.DATE,-7)
+        }
+        else{
+            cal.set(Calendar.DAY_OF_WEEK,dd)
+        }
+
+        getDateCalendar()
+        return "$chosenDate ${changeMonthToString(chosenMonth)} $chosenYear"
     }
 
     private fun pickDate(){
@@ -173,9 +183,17 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
         // DatePickerDialog(this,this,chosenYear,chosenMonth,chosenDay).show()
     }
 
-    private fun changeDayToString(dd: Int): String {
-        val dayArray  = arrayOf("","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
-        return dayArray[dd]
+    private fun changeDayToInt(dd: String): Int {
+        when(dd){
+            "Sunday" -> return 1
+            "Monday" -> return 2
+            "Tuesday" -> return 3
+            "Wednesday" -> return 4
+            "Thursday" -> return 5
+            "Friday" -> return 6
+            "Saturday" -> return 7
+        }
+        return 0
     }
 
     private fun changeMonthToString(mm: Int): String{
@@ -196,16 +214,23 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
         cal.set(Calendar.DAY_OF_MONTH,dayOfMonth)
     }*/
 
-    private fun nextDay(){  //chooses next day
+    private fun nextDay(default:String){  //chooses next day
         cal.add(Calendar.DATE,7)
         getDateCalendar()
         binding.dateChosenText.text = "$chosenDate ${changeMonthToString(chosenMonth)} $chosenYear"
+        if (binding.dateChosenText.text==default){
+            binding.dateNextButton.visibility=View.GONE
+        }
+        else{
+            binding.dateNextButton.visibility=View.VISIBLE
+        }
     }
 
     private fun previousDay(){ //chooses previous day
         cal.add(Calendar.DATE,-7)
         getDateCalendar()
         binding.dateChosenText.text = "$chosenDate ${changeMonthToString(chosenMonth)} $chosenYear"
+        binding.dateNextButton.visibility=View.VISIBLE
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -216,8 +241,7 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
     //adapter to display data of students
     inner class DataRecyclerAdapter: RecyclerView.Adapter<DataRecyclerAdapter.ViewHolder>() {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataRecyclerAdapter.ViewHolder {
-            //makes the items in recyclerview fill with the StaffStudentDataCard. Each item will be the card instead of "item 1" and so on. Ignore this. This is for layout purposes only.
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataRecyclerAdapter.ViewHolder { //makes the items in recyclerview fill with the StaffStudentDataCard. Each item will be the card instead of "item 1" and so on. Ignore this. This is for layout purposes only.
             val v = LayoutInflater.from(parent.context).inflate(R.layout.staff_attendancedata_card,parent,false)
             return ViewHolder(v)
         }
@@ -230,6 +254,7 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
             //if the ui is showing absent, then it would show if the student has an MC or not
             if (status == "absent"){
                 holder.studentStatus.text = "MC: ${timeStatus[position]}"
+
             }
         }
 
@@ -249,13 +274,13 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
                     val position = adapterPosition //gets the position of the selected array in int
                     when {
                         timeStatus[position] == "Yes" -> {
-                            Toast.makeText(itemView.context, "${studentNameArray[position]} has an Mc. It may open in another activity.", Toast.LENGTH_LONG).show()
+                            Toast.makeText(itemView.context, "${studentNameArray[position]} has an Mc. It may open in another activity.", Toast.LENGTH_SHORT).show()
                         } //if the mc status is "yes", can open mc in another activity
                         timeStatus[position] == "No" -> {
-                            Toast.makeText((itemView.context),"${studentNameArray[position]} does not have an Mc.",Toast.LENGTH_LONG).show()
+                            Toast.makeText((itemView.context),"${studentNameArray[position]} does not have an Mc.",Toast.LENGTH_SHORT).show()
                         }//if the mc status is no.
                         else -> {
-                            Toast.makeText(itemView.context, "${studentNameArray[position]} entered class at ${timeStatus[position]}.", Toast.LENGTH_LONG).show()
+                            Toast.makeText(itemView.context, "${studentNameArray[position]} entered class at ${timeStatus[position]}.", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
