@@ -42,7 +42,7 @@ class MainUiStaff : AppCompatActivity() { //TODO add in the putExtra values late
                 staff?.let{
                     staffNameText.text = it.Name + "'s Dashboard"
                     staffEmailText.text = it.email
-                    staffRoleText.text = it.group
+                    staffRoleText.text = "NGEE ANN POLY, " + it.group
                     staffSchoolText.text = it.school
                 }
                 for (childModules in snapshot.child("Modules").children) {

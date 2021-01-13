@@ -1,86 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/teacherbackground"
+    android:background="@color/white"
     tools:context=".MainUiStaff">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/topLayout"
+        android:elevation="17dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:padding="8dp"
+        android:background="@drawable/teachergradcode"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <RelativeLayout
-            android:layout_marginTop="20dp"
+        <TextView
+            android:id="@+id/staffNameText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:text="STAFF NAME DASHBOARD"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/staffNameText"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:text="NAME"
-                android:textColor="@color/white"
-                android:textSize="30sp"
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </TextView>
+        <TextView
+            android:id="@+id/staffEmailText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/staffNameText"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="20dp"
+            android:fontFamily="sans-serif"
+            android:text="E-MAIL"
+            android:textColor="@color/white"
+            android:textSize="23sp"/>
 
-            <TextView
-                android:layout_below="@+id/staffNameText"
-                android:id="@+id/staffEmailText"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-                android:text="NP ID"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            </TextView>
+        <TextView
+            android:id="@+id/staffSchoolText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/staffNameText"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="School"
+            android:textColor="@color/white"
+            android:textSize="23sp" />
 
-            <TextView
-                android:id="@+id/staffSchoolText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/staffEmailText"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:text="School"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+        <TextView
+            android:id="@+id/staffRoleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/staffEmailText"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="20dp"
+            android:fontFamily="sans-serif"
+            android:layout_marginTop="16dp"
+            android:textAllCaps="true"
+            android:text="ROLE"
+            android:textSize="20sp"
+            android:layout_marginBottom="6dp"/>
 
-            <TextView
-                android:layout_below="@+id/staffSchoolText"
-                android:id="@+id/staffRoleText"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-                android:text="Role"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            </TextView>
+    </RelativeLayout>
 
-        </RelativeLayout>
+    <ScrollView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topLayout">
 
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:alignmentMode="alignMargins"
-            android:columnCount="2"
+            android:columnCount="1"
             android:columnOrderPreserved="false"
-            android:rowCount="2">
+            android:rowCount="3">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/staffAttendance"
-                android:layout_width="180dp"
-                android:layout_height="180dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
                 android:layout_margin="12dp"
@@ -88,35 +100,56 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="6dp">
 
-                <LinearLayout
+                <RelativeLayout
+                    android:id="@+id/attendanceLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="20dp">
 
                     <ImageView
+                        android:id="@+id/attendanceImage"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:src="@drawable/teacherattendance" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/attendanceLabel"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/attendanceImage"
+                        android:fontFamily="sans-serif"
+                        android:gravity="center"
                         android:text="ATTENDANCE"
-                        android:textColor="#3E3E3E"
-                        android:textSize="20dp"
+                        android:textColor="#292929"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
-                </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/attendanceDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_toEndOf="@+id/attendanceImage"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="Start your class attendance taking here"
+                        android:textColor="#515151"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/staffStudentAttendanceData"
-                android:layout_width="180dp"
-                android:layout_height="180dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
                 android:layout_margin="12dp"
@@ -124,36 +157,55 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="6dp">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="0dp">
+                    android:padding="20dp">
 
                     <ImageView
-                        android:layout_width="95dp"
-                        android:layout_height="95dp"
+                        android:id="@+id/dataImage"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:src="@drawable/studentdata" />
 
                     <TextView
-                        android:layout_width="181dp"
+                        android:id="@+id/dataLabel"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/dataImage"
+                        android:fontFamily="sans-serif"
                         android:gravity="center"
                         android:text="STUDENT DATA"
-                        android:textColor="#3E3E3E"
-                        android:textSize="20sp"
+                        android:textColor="#292929"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
-                </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/dataDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_toEndOf="@+id/dataImage"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="View your student's daily attendance here"
+                        android:textColor="#515151"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/staffScheduleTask"
-                android:layout_width="180dp"
-                android:layout_height="180dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
                 android:layout_margin="12dp"
@@ -161,7 +213,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="6dp">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/white"
@@ -170,96 +222,44 @@
                     android:padding="20dp">
 
                     <ImageView
+                        android:id="@+id/scheduleImage"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:src="@drawable/staffcalendar" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/scheduleLabel"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="SET SCHEDULE"
-                        android:textColor="#3E3E3E"
-                        android:textSize="19dp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/staffAddTask"
-                android:layout_width="180dp"
-                android:layout_height="180dp"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="12dp"
-                android:elevation="6dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="6dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/addtask" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="ADD TASK"
-                        android:textColor="#3E3E3E"
-                        android:textSize="20dp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/staffStudentTask"
-                android:layout_width="180dp"
-                android:layout_height="180dp"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="12dp"
-                android:elevation="6dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="6dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/teachertask" />
-
-                    <TextView
-                        android:layout_width="181dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/scheduleImage"
+                        android:fontFamily="sans-serif"
                         android:gravity="center"
-                        android:text="STUDENT TASK"
-                        android:textColor="#3E3E3E"
-                        android:textSize="20dp"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                        android:text="SET SCHEDULE"
+                        android:textColor="#292929"
+                        android:textSize="24sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/scheduleDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_toEndOf="@+id/scheduleImage"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="Set and Change your class locations and status here"
+                        android:textColor="#515151"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
 
         </GridLayout>
-    </LinearLayout>
 
-</ScrollView>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -42,7 +42,8 @@ class MainUiStudent : AppCompatActivity() {
                     studentNameText.text= it.Name + "'s Dashboard"
                     userName = it.Name.toString()
                     studentIdText.text = it.StudID
-                    studentSchoolText.text = it.School + " / " + it.Course
+                    studentSchoolText.text = it.School
+                    studentCourseText.text = it.Course
                 }
             }
 
