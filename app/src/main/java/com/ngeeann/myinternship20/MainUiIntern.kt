@@ -50,7 +50,7 @@ class MainUiIntern : AppCompatActivity() {
                     internSchoolText.text = it.School
                     internCourseText.text = it.Course
                     internAddressText.text = it.address
-                    internPostalText.text = it.postal
+                    internPostalText.text = "SG " + it.postal
                 }
             }
 
