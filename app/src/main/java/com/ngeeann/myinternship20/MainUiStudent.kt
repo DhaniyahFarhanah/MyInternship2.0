@@ -29,6 +29,10 @@ class MainUiStudent : AppCompatActivity() {
                     .putExtra("username", userName)
                     .putExtra("group", "Student"))
         }
+
+        studentData.setOnClickListener {
+            startActivity(Intent(this, StudentPersonalDataViewing::class.java))
+        }
     }
 
     private fun fetchUserInfo(userId: String) { //checks for existing log for today using user ID & current date
