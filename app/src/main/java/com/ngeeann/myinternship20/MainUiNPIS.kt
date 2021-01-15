@@ -37,15 +37,13 @@ class MainUiNPIS : AppCompatActivity() {
 
     private fun fetchUserInfo(userId: String) { //checks for existing log for today using user ID & current date
         val path = database.getReference("users/$userId")
-        npisIdText.text = userId
         path.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val staff = snapshot.getValue<NPIS>()
                 staff?.let{
                     npisNameText.text = it.Name + "'s Dashboard"
-                    npisIdText.text= it.email
+                    npisEmailText.text = it.email
                     npisSchoolText.text = it.school
-                    npisGroupText.text = it.group
                 }
             }
 

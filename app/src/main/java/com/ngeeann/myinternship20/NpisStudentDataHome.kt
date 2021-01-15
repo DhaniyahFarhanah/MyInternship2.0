@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -57,6 +58,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
     private lateinit var binding: NpisStudentdatahomeBinding
     private val cal = Calendar.getInstance()
     private val database = Firebase.database.reference
+    private val TAG = "NPISStudentDataHome"
     var chosenDay = 0
     var chosenMonth = 0
     var chosenYear = 0
@@ -193,7 +195,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         findLogByDate()
     }
 
-    private fun convDateToString(): String { //converts the currently selected date from integer values to a single combined string: "04 November 2020"
+    private fun conDateToString(): String { //converts the currently selected date from integer values to a single combined string: "04 November 2020"
         val day = if(chosenDay < 10) { //appends a 0 in front of the day number e.g. 9 will be 09
             "0${chosenDay}"
         }
@@ -209,7 +211,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         path.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    dateArrayList.clear() //clears out the arrayLists to add the date and logs of a different user TODO possibly switch the program to create another arrayList for each student to store values instead of cleearing them
+                    dateArrayList.clear() //clears out the arrayLists to add the date and logs of a different user TODO possibly switch the program to create another arrayList for each student to store values instead of clearing them
                     logArrayList.clear()
                     for (studentSnapshot in snapshot.children) {
                         dateArrayList.add(studentSnapshot.child("date").getValue<String>().toString())
@@ -223,13 +225,13 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                Log.w(TAG, "Query failed.")
             }
         })
     }
 
     fun findLogByDate () { //scans through dateArrayList to find an entry with a date that matches the selected calendar date and displays it on screen
-        val selectedIndex = dateArrayList.indexOf(convDateToString())
+        val selectedIndex = dateArrayList.indexOf(conDateToString())
         if (selectedIndex == -1) { // An indexOf return value of -1 means that the element specified in the brackets was unable to be found, so this condition will notify the user of this
             studentLogDisplay.text = "Unable to find any entries for this day."
         }
@@ -249,7 +251,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                Log.w(TAG, "Unable to query database.")
             }
         }  )
     }
@@ -263,7 +265,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                Log.w(TAG, "Unable to query database.")
             }
         })
     }

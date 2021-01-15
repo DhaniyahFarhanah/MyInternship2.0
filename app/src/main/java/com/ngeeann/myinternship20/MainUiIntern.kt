@@ -44,11 +44,13 @@ class MainUiIntern : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val intern = snapshot.getValue<Intern>()
                 intern?.let{
-                    internTitleText.text= it.Name + "'s Dashboard"
+                    internNameText.text= it.Name + "'s Dashboard"
                     username = it.Name.toString()
                     internIdText.text = it.StudID
-                    internSchoolText.text = it.Course + " / " + it.School
-                    internAddressText.text = it.address + " / " + it.postal
+                    internSchoolText.text = it.School
+                    internCourseText.text = it.Course
+                    internAddressText.text = it.address
+                    internPostalText.text = "SG " + it.postal
                 }
             }
 

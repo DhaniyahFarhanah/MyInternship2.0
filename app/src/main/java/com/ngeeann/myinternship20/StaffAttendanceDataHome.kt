@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,11 +34,12 @@ import kotlinx.android.synthetic.main.staff_attendanceoverview_card.*
 class StaffAttendanceDataHome : AppCompatActivity() {
 
     private lateinit var binding: StaffAttendancedatahomeBinding//used binding again
-    private var groupArray = arrayOf("Group 1","Group 2")//test array for groups to see layout
-    private var studentTotalArray = arrayOf("Number 1", "Number 2")
     private val database = Firebase.database.reference
-    private var dayArray = arrayOf("Tuesday", "Wednesday")//test array for day of the week to see the layout
-    private var timeArray = arrayOf("TS 1","TS 2")//test array for timing to see the layout
+    val TAG = "StaffAttendHome"
+    private var groupArrayList = arrayListOf<String>("Group 1","Group 2")//test array for groups to see layout
+    private var studentTotalArrayList = arrayListOf<String>("Number 1", "Number 2")
+    private var dayArrayList = arrayListOf<String>("Tuesday", "Wednesday")//test array for day of the week to see the layout
+    private var timeArrayList = arrayListOf<String>("TS 1","TS 2")//test array for timing to see the layout
     private var chosenModule = "Module 1"//string to get chosen module
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,14 +82,14 @@ class StaffAttendanceDataHome : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.groupTextView.text = groupArray[position] //displays the group into the designated text view
-            holder.studentTotalTextView.text = "${studentTotalArray[position]} students" //displays the total number of students into the designated text view
-            holder.dayTextView.text = dayArray[position] //displays the day of the week into the designated text view
-            holder.timingTextView.text = timeArray[position] //displays the timing of the class into the designated text view
+            holder.groupTextView.text = groupArrayList[position] //displays the group into the designated text view
+            holder.studentTotalTextView.text = "${studentTotalArrayList[position]} students" //displays the total number of students into the designated text view
+            holder.dayTextView.text = dayArrayList[position] //displays the day of the week into the designated text view
+            holder.timingTextView.text = timeArrayList[position] //displays the timing of the class into the designated text view
         }
 
         override fun getItemCount(): Int {
-            return groupArray.size //this is to make sure the recycler view will display the all items in the array
+            return groupArrayList.size //this is to make sure the recycler view will display the all items in the array
         }
 
         //initializing of what values will be placed in which text view. Ignore this
@@ -105,10 +107,10 @@ class StaffAttendanceDataHome : AppCompatActivity() {
                     startActivity(Intent(this@StaffAttendanceDataHome,StaffAttendanceDataMoreInfo::class.java)
                             //extra data to transfer to the next activity
                             .putExtra("chosenModule",chosenModule)
-                            .putExtra("chosenGroup",groupArray[position])
-                            .putExtra("chosenStudentTotal",studentTotalArray[position])
-                            .putExtra("chosenDay",dayArray[position])
-                            .putExtra("chosenTime",timeArray[position]))
+                            .putExtra("chosenGroup",groupArrayList[position])
+                            .putExtra("chosenStudentTotal",studentTotalArrayList[position])
+                            .putExtra("chosenDay",dayArrayList[position])
+                            .putExtra("chosenTime",timeArrayList[position]))
                 }
             }
         }
@@ -118,17 +120,22 @@ class StaffAttendanceDataHome : AppCompatActivity() {
         val path = database.child("users/$userId/Modules/$module")
         path.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                for ((n, grpSnapshot) in snapshot.children.withIndex()){
-                    groupArray[n] = grpSnapshot.key.toString()
-                    studentTotalArray[n] = grpSnapshot.child("Total Students").value.toString()
-                    dayArray[n] = grpSnapshot.child("Day").value.toString()
-                    timeArray[n] = grpSnapshot.child("Time").value.toString()
+                groupArrayList.clear()
+                studentTotalArrayList.clear()
+                dayArrayList.clear()
+                timeArrayList.clear()
+
+                for (grpSnapshot in snapshot.children){
+                    groupArrayList.add(grpSnapshot.key.toString())
+                    studentTotalArrayList.add(grpSnapshot.child("Total Students").value.toString())
+                    dayArrayList.add(grpSnapshot.child("Day").value.toString())
+                    timeArrayList.add(grpSnapshot.child("Time").value.toString())
                 }
                 overviewRecyclerView.adapter?.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                Log.d(TAG, "Query Failure")
             }
         })
     }

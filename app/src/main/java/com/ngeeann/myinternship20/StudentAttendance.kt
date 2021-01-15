@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
@@ -19,6 +20,8 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 /*
 Feature code process
@@ -46,6 +49,7 @@ their name and their attendance status (MC) and skip steps 4 to 5.
 
 class StudentAttendance : AppCompatActivity() {
     private val database = Firebase.database
+    private val TAG: String = "StudentAttendance"
     lateinit var currentLesson: Lesson
     lateinit var userName: String
     lateinit var userType: String
@@ -62,7 +66,15 @@ class StudentAttendance : AppCompatActivity() {
         val date = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE) //Date format: yyyy-MM-dd, 2020-12-25
         val time = LocalTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME) //Time format: 17:12:47
 
-        checkClass(userId.toString(), dayNum, time) //WHEN TESTING MAKE SURE THE HOUR PORTION HAS 2 DIGITS e.g. 8 am is 08:00
+        val weekArray = arrayOf<String>("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday") //array to convert numeral value of
+        // day of the week to the string name
+        val dayOfWeek = weekArray[calendar.get(Calendar.DAY_OF_WEEK)]
+        if (userType == "Student"){
+            checkClass(userId.toString(), dayOfWeek, time) //WHEN TESTING MAKE SURE THE HOUR PORTION HAS 2 DIGITS e.g. 8 am is 08:00
+        }
+        else {
+            checkIntern(userId.toString(), dayOfWeek)
+        }
 
         attendanceBackArrow.setOnClickListener { //returns back to UIStudent/UIIntern main screen
             this.finish()
@@ -97,10 +109,7 @@ class StudentAttendance : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun checkClass(userId: String, dayNum: Int, time: String) { //uses day of the week and current time to check if there's an ongoing class
-        val weekArray = arrayOf<String>("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday") //array to convert numeral value of
-        // day of the week to the string name
-        val dayOfWeek = weekArray[dayNum] //query path will not take an array element directly so I initialized another value just for it
+    private fun checkClass(userId: String, dayOfWeek: String, time: String) { //uses day of the week and current time to check if there's an ongoing class
         val path = database.getReference("users/$userId/Modules/$dayOfWeek").orderByChild("EndAt").startAt(time) //checks for any classes that
         // end after the given time, only allows current/upcoming classes to show up in the snapshot
         val localTime = LocalTime.parse(time) //converts the Time string value into a Time LocalTime unit value
@@ -145,12 +154,7 @@ class StudentAttendance : AppCompatActivity() {
                     attendanceSet.text = nameArr[currLess] //displays only the lesson which either 1) Will commence in 15 minutes or 2) Is ongoing
                     attendanceLocation.text = locArr[currLess]
                     currentLesson.userName = userName
-                    if (userType == "Student") { //Interns do not belong to tutorial or lecture groups like students do so the Lesson title for them will only be "Internship"
-                        currentLesson.title = "${currentLesson.name.toString()}-${currentLesson.group}" //Title: 64BASRS-TB11
-                    }
-                    else {
-                        currentLesson.title = currentLesson.name.toString() //Title: Internship
-                    }
+                    currentLesson.title = "${currentLesson.name.toString()}-${currentLesson.group}" //Title: 64BASRS-TB11
                     checkAttendance(userId, LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE))
                 }
                 else { //a third state that only appears when there are no lessons found within the query parameters e.g. lessons have ended for the day or no lessons
@@ -170,9 +174,62 @@ class StudentAttendance : AppCompatActivity() {
                 }
             }
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                Log.w(TAG, "Unable to query database for lesson information.")
             }
         })
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun checkIntern(userId: String, dayOfWeek: String) {
+        if (dayOfWeek != "Saturday" || dayOfWeek != "Sunday") {//checks if current day is a weekday or weekend
+            val path = database.getReference("users/$userId/Modules/Internship")
+            val time = LocalTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME)
+            val localTime = LocalTime.parse(time)
+            path.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val startTime = LocalTime.parse(snapshot.child("StartAt").getValue<String>().toString())
+                    val endTime = LocalTime.parse(snapshot.child("EndAt").getValue<String>().toString())
+                    currentLesson = Lesson("", "Internship", startTime)
+
+                    if (localTime < startTime) { //checks if there is an upcoming lesson
+                        if(localTime >= startTime.minusMinutes(15) ){ //condition that appears when there is less than 15 minutes before work officially starts
+                            val diffTime = Duration.between(localTime, startTime).toMinutes()
+                            attendanceStatus.text = "UPCOMING IN ${diffTime.toString()} MINUTES"
+                            attendanceLinear.background = null
+                            attendText.setTextColor(Color.parseColor("#B5B5B5"))
+                            //attendanceAttendButton.isClickable = false
+                        }
+                    } else if (localTime in startTime..endTime) { //checks if current time is in the middle of a lesson
+                        attendanceStatus.text = "CURRENTLY ATTENDING"
+                    }
+
+                    attendanceSet.text = "Internship" //displays only the lesson which either 1) Will commence in 15 minutes or 2) Is ongoing
+                    attendanceLocation.text = snapshot.child("Location").getValue<String>().toString()
+                    currentLesson.userName = userName
+                    currentLesson.title = currentLesson.name.toString() //Title: Internship
+                    checkAttendance(userId, LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE))
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.w(TAG, "Unable to query database for internship information.")
+                }
+            })
+        }
+        else { //Only appears when its a weekend
+            attendanceStatus.text = "Great job"
+            if (dayOfWeek == "Saturday"){
+                attendanceSet.text = "See you next week!"
+            }
+            else {
+                attendanceSet.text = "See you tomorrow!"
+            }
+            attendanceLocation.text = ""
+            attendanceAttendButton.isVisible = false
+            attendanceMCButton.isClickable = false
+            attendanceLateWarning.text = ""
+            attendanceMCButton.isVisible = false
+            attendanceMCButton.isClickable = false
+        }
     }
 
     fun checkAttendance(userId: String, date: String) { //checks if attendance has already been marked for the current class
@@ -202,7 +259,7 @@ class StudentAttendance : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                Log.w(TAG, "Unable to query database for attendance information.")
             }
         })
     }
@@ -273,5 +330,16 @@ class StudentAttendance : AppCompatActivity() {
                     "Status" to status
             )
         }
+    }
+
+    fun findCommonElements (arr1: ArrayList<String>, arr2: ArrayList<String>): Array<String?> { //finds common elements in both arraylists and
+        // returns an array with the common values
+        val hash1 = HashSet(arr1)
+        val hash2 = HashSet(arr2)
+        val finArray = arrayOfNulls<String>(hash1.size)
+
+        hash1.retainAll(hash2) //checks elements in array2, keep matching elements
+        hash1.toArray(finArray) //converts hashmap hash1 to a String array
+        return finArray //returns array
     }
 }
