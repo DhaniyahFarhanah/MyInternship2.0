@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar">
-        <activity android:name=".StudentPersonalDataViewing"></activity>
+        <activity android:name=".InternPersonalDataView" />
+        <activity android:name=".StudentPersonalDataViewing" />
         <activity android:name=".StaffAttendanceDataMoreInfo" />
         <activity android:name=".StaffAttendanceDataHome" />
         <activity android:name=".MainUiStaff" />

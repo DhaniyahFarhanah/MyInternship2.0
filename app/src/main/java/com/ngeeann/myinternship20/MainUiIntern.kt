@@ -28,11 +28,16 @@ class MainUiIntern : AppCompatActivity() {
                     .putExtra("userId", userId)
                     .putExtra("username", username))
         }
+
         internAttendance.setOnClickListener {
             startActivity(Intent(this, StudentAttendance::class.java)
                     .putExtra("userId", userId)
                     .putExtra("username", username)
                     .putExtra("group", "Intern"))
+        }
+
+        internData.setOnClickListener {
+            startActivity(Intent(this, InternPersonalDataView::class.java))
         }
     }
 
