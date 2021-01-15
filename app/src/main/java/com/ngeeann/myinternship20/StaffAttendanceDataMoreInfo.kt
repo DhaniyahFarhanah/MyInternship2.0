@@ -71,30 +71,35 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
         binding.staffRecyclerView.layoutManager = LinearLayoutManager(this)//makes the recycler view a vertical scrollable list.
 
         binding.dateNextButton.visibility = View.GONE
-        navBarSet(chosenStudentTotal)//set to the default upon opening
+        navBarSet()//set to the default upon opening
 
         val defaultDateString = revertDateCalendar(changeDayToInt(chosenDayOfWeek)) //called to get the correct date based on schedule
         binding.dateChosenText.text = "$chosenDate ${changeMonthToString(chosenMonth)} $chosenYear" //sets date into the textview
-        queryLesson(chosenModule,chosenGroup)
+        queryLesson(chosenModule,chosenGroup,chosenStudentTotal)
         selectedIndexList = presentIndexList
+        binding.totalDataTextView.text = "Total: ${selectedIndexList.size} / $chosenStudentTotal"
 
         binding.dateNextButton.setOnClickListener { //next date onclick
             nextDay(defaultDateString) //to get calendar to next date
-            navBarSet(chosenStudentTotal) //to override data upon change of date
+            navBarSet() //to override data upon change of date
             Log.i(TAG,"Calendar date advanced by 7 days.")
-            queryLesson(chosenModule, chosenGroup)
+            queryLesson(chosenModule, chosenGroup,chosenStudentTotal)
+            binding.totalDataTextView.text = "Total: ${selectedIndexList.size} / $chosenStudentTotal"
         }
 
         binding.datePreviousButton.setOnClickListener { //previous date onclick
+            binding.totalDataTextView.text = "Total: ${selectedIndexList.size} / $chosenStudentTotal"
             previousDay() //to get calendar to previous date
-            navBarSet(chosenStudentTotal) //to override data upon change of date
+            navBarSet() //to override data upon change of date
             Log.i(TAG,"Calendar date returned by 7 days.")
-            queryLesson(chosenModule, chosenGroup)
+            queryLesson(chosenModule, chosenGroup,chosenStudentTotal)
+            binding.totalDataTextView.text = "Total: ${selectedIndexList.size} / $chosenStudentTotal"
         }
 
         binding.dateChosenText.setOnClickListener { //picks the date from an open calendar onclick
+            binding.totalDataTextView.text = "Total: ${selectedIndexList.size} / $chosenStudentTotal"
             pickDate() //to get calendar to previous date
-            navBarSet(chosenStudentTotal) //to override data upon change of date
+            navBarSet() //to override data upon change of date
         }
 
         binding.moduleView.text = chosenModule //puts the module value in the moduleView text view
@@ -108,21 +113,24 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
                 R.id.nav_present -> {
                     status = "Present" //changes the status so it would go to present
                     selectedIndexList = presentIndexList
-                    navBarSet(chosenStudentTotal)
+                    navBarSet()
+                    binding.totalDataTextView.text = "Total: ${selectedIndexList.size} / $chosenStudentTotal"
                     //queryLesson(chosenModule, chosenGroup, status)
                 }
                 //late data displayed
                 R.id.nav_late -> {
                     status = "Late" //changes to status so it would go to late
                     selectedIndexList = lateIndexList
-                    navBarSet(chosenStudentTotal)
+                    navBarSet()
+                    binding.totalDataTextView.text = "Total: ${selectedIndexList.size} / $chosenStudentTotal"
                     //queryLesson(chosenModule, chosenGroup, status)
                 }
                 //absent data displayed
                 R.id.nav_absent -> {
                     status = "Absent" //changes to status so it would go to absent.
                     selectedIndexList = absIndexList
-                    navBarSet(chosenStudentTotal)
+                    navBarSet()
+                    binding.totalDataTextView.text = "Total: ${selectedIndexList.size} / $chosenStudentTotal"
                     //queryLesson(chosenModule, chosenGroup, "MC")
                 }
             }
@@ -134,9 +142,8 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
         }
     }
 
-    private fun navBarSet(studentsTotal:String){
+    private fun navBarSet(){
         staffRecyclerView.adapter = DataRecyclerAdapter() //puts data in respective item slot in the recycler view
-        binding.totalDataTextView.text = "Total: ${selectedIndexList.size} / $studentsTotal" //puts total of the list into the total text view
     }
 
     private fun getDateCalendar(){
@@ -266,7 +273,7 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
         }
     }
 
-    private fun queryLesson(module: String, group: String) { //initializes 4 arrays with values from the lesson entry
+    private fun queryLesson(module: String, group: String, chosenStudentTotal:String) { //initializes 4 arrays with values from the lesson entry
         val date = conDateToString()
         val path = database.child("attendance/$date/$module-$group").orderByChild("Name")
         path.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -302,12 +309,14 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
                         }
                     }
                     staffRecyclerView.adapter = DataRecyclerAdapter()
+                    binding.totalDataTextView.text = "Total: ${selectedIndexList.size} / $chosenStudentTotal"
                     staffRecyclerView.adapter?.notifyDataSetChanged()
                 }
                 else {
                     clearAttendanceLists() //clears 6 different lists, I'm sorry system memory :(
                     staffRecyclerView.adapter?.notifyDataSetChanged()
                     Toast.makeText(this@StaffAttendanceDataMoreInfo, "No lesson records on this date found.", Toast.LENGTH_SHORT).show()
+                    binding.totalDataTextView.text = "Total: 0 / $chosenStudentTotal"
                     Log.w(TAG, "No records found, snapshot name ${snapshot.key.toString()}")
                     Log.d(TAG, "Date is $date")
                 }
