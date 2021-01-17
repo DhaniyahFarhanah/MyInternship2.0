@@ -312,7 +312,8 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
                 "MC" -> {holder.calendarLayout.setBackgroundColor(Color.parseColor("#5A5A5A"))
                          holder.dateCustom.setTextColor(Color.parseColor("#FFFFFF"))} //changes to light gray for absent status
 
-                "" -> holder.calendarLayout.setBackgroundColor(Color.parseColor("#CACACA")) //changes to default for no data/not included in the calendar list
+                "" -> {holder.calendarLayout.setBackgroundColor(Color.parseColor("#FFFFFF"))
+                       holder.dateCustom.setTextColor(Color.parseColor("#292929"))}//changes to default for no data/not included in the calendar list
             }
         }
 
