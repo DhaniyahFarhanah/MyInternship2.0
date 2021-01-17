@@ -9,7 +9,7 @@
         android:id="@+id/backgroundLayout"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@color/white">
+        android:background="#CACACA">
 
         <TextView
             android:id="@+id/customCalendarText"

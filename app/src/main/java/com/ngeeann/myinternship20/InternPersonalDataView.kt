@@ -1,6 +1,8 @@
 package com.ngeeann.myinternship20
 
 import android.app.DatePickerDialog
+import android.content.res.ColorStateList
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,14 +28,16 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
       if it's on tuesday, the array list would be "","1"...so on til last day of the month
 
       so for example January 2020. 1st Jan is on friday. Therefore, this array would be {"","","","","","",1,2....,31}*/
-
     var customCalendarDatesArrayList = arrayListOf<String>()
 
-    var arrayOfDates = arrayListOf<Int>() //this one will hold all the dates for the month without the "". It will also be an Int
+    //Test with working data. Description of what data set to be received from firebase
+    var statusArrayList = arrayListOf<String>() //the array of status with "" same as customCalendar so that it can check the status and change the background accordingly
 
     var chosenDay = 0
     var chosenMonth = 0
     var chosenYear = 0
+
+    var dateSelected = ""
 
     var customCalMonth = 0 //custom Calendar focused on month arguments
 
@@ -88,11 +92,11 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
 
         setArrayOfDates(getLastDayOfMonth(customCalMonth))
 
-        binding.nextMonthButton.setOnClickListener {
+        binding.nextMonthButton.setOnClickListener { //moves to the next month
             nextMonth()
         }
 
-        binding.prevMonthButton.setOnClickListener {
+        binding.prevMonthButton.setOnClickListener { //moves to previous month
             prevMonth()
         }
 
@@ -101,7 +105,7 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         }
     }
 
-    private fun changeMonthToString(monthNum: Int): String {
+    fun changeMonthToString(monthNum: Int): String { //function to change month to a string
         val monthArray = arrayOf("January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December")
         return monthArray[monthNum]
@@ -141,7 +145,7 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         binding.dateSubmittedLogText.text = "$chosenDay ${changeMonthToString(chosenMonth)} $chosenYear"
     }
 
-    private fun nextMonth(){ //goes to the next month
+    private fun nextMonth(){ //goes to the next month for attendance
         customCal.add(Calendar.MONTH,1)
         customCalMonth = customCal.get(Calendar.MONTH)
         binding.calendarText.text = "${changeMonthToString(customCal.get(Calendar.MONTH))} ${customCal.get(Calendar.YEAR)}"
@@ -150,7 +154,7 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         binding.customCalendar.adapter = CustomCalendarAdapter()
     }
 
-    private fun prevMonth(){ //goes to the prev month
+    private fun prevMonth(){ //goes to the prev month for attendance
         customCal.add(Calendar.MONTH,-1)
         customCalMonth = customCal.get(Calendar.MONTH)
         binding.calendarText.text = "${changeMonthToString(customCal.get(Calendar.MONTH))} ${customCal.get(Calendar.YEAR)}"
@@ -159,8 +163,7 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         binding.customCalendar.adapter = CustomCalendarAdapter()
     }
 
-    private fun getLastDayOfMonth(mm:Int) :Int{ //to get the last day of
-
+    private fun getLastDayOfMonth(mm:Int) :Int{ //to get the last day of the month
         customCal.set(Calendar.MONTH,mm)
         customCal.add(Calendar.MONTH,1)
         customCal.add(Calendar.DATE,-1)
@@ -171,11 +174,12 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
 
     }
 
+    //to set the calendarDatesArray to the correct dayOfWeek also clear statusArray and adds the space to make the positioning of conditions the same
     private fun setFirstDayOfMonth(mm: Int) {
-
         var firstDayOfMonth = 0
 
         customCalendarDatesArrayList.clear()
+        statusArrayList.clear()
 
         customCal.set(Calendar.MONTH,mm)
         customCal.set(Calendar.DATE,1)
@@ -185,20 +189,30 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         when(firstDayOfMonth){
             2 -> {
                 customCalendarDatesArrayList.add("")
+                statusArrayList.add("")
             }
             3 -> {customCalendarDatesArrayList.add("")
                 customCalendarDatesArrayList.add("")
+                statusArrayList.add("")
+                statusArrayList.add("")
             }
             4 -> {
                 customCalendarDatesArrayList.add("")
                 customCalendarDatesArrayList.add("")
                 customCalendarDatesArrayList.add("")
+                statusArrayList.add("")
+                statusArrayList.add("")
+                statusArrayList.add("")
             }
             5 -> {
                 customCalendarDatesArrayList.add("")
                 customCalendarDatesArrayList.add("")
                 customCalendarDatesArrayList.add("")
                 customCalendarDatesArrayList.add("")
+                statusArrayList.add("")
+                statusArrayList.add("")
+                statusArrayList.add("")
+                statusArrayList.add("")
             }
 
             6 -> {
@@ -207,6 +221,11 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
                 customCalendarDatesArrayList.add("")
                 customCalendarDatesArrayList.add("")
                 customCalendarDatesArrayList.add("")
+                statusArrayList.add("")
+                statusArrayList.add("")
+                statusArrayList.add("")
+                statusArrayList.add("")
+                statusArrayList.add("")
             }
 
             7 -> {
@@ -216,6 +235,12 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
                 customCalendarDatesArrayList.add("")
                 customCalendarDatesArrayList.add("")
                 customCalendarDatesArrayList.add("")
+                statusArrayList.add("")
+                statusArrayList.add("")
+                statusArrayList.add("")
+                statusArrayList.add("")
+                statusArrayList.add("")
+                statusArrayList.add("")
             }
         }
     }
@@ -223,8 +248,21 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
     private fun setArrayOfDates(lastDayOfMonth: Int){ //sets the array of dates into the arraylist and inserts it into the calendar
 
         for(n in 1..lastDayOfMonth){
-            arrayOfDates.add(n) //this one is for checking database
             customCalendarDatesArrayList.add(n.toString()) //this one is for the calendar
+
+            //conditions of the status. FOR TESTING ONLY
+            if(n<=5){
+                statusArrayList.add("Present")
+            }
+            else if (n==6){
+                statusArrayList.add("MC")
+            }
+            else if (n>6){
+                statusArrayList.add("Late")
+            }
+            else{
+                statusArrayList.add("")
+            }
         }
 
     }
@@ -238,7 +276,23 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.monthAndYear.text=customCalendarDatesArrayList[position]
+            holder.dateCustom.text = customCalendarDatesArrayList[position]
+
+            holder.calendarLayout.setBackgroundColor(Color.parseColor("#CACACA")) //background color becomes default white
+            holder.dateCustom.setTextColor(Color.parseColor("#292929")) //text color becomes default
+
+            when(statusArrayList[position]){
+                "Present" -> {holder.calendarLayout.setBackgroundColor(Color.parseColor("#20AC3E"))
+                              holder.dateCustom.setTextColor(Color.parseColor("#FFFFFF"))} //changes to green for present status
+
+                "Late" -> {holder.calendarLayout.setBackgroundColor(Color.parseColor("#931313"))
+                           holder.dateCustom.setTextColor(Color.parseColor("#FFFFFF"))} //changes to red for late status
+
+                "MC" -> {holder.calendarLayout.setBackgroundColor(Color.parseColor("#292929"))
+                         holder.dateCustom.setTextColor(Color.parseColor("#FFFFFF"))} //changes to light gray for absent status
+
+                "" -> holder.calendarLayout.setBackgroundColor(Color.parseColor("#CACACA")) //changes to default for no data/not included in the calendar list
+            }
         }
 
         override fun getItemCount(): Int {
@@ -247,11 +301,33 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         }
 
         inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-
-            var monthAndYear: TextView = itemView.findViewById(R.id.customCalendarText)
+            var dateCustom: TextView = itemView.findViewById(R.id.customCalendarText)
             var calendarLayout: RelativeLayout = itemView.findViewById(R.id.backgroundLayout)
 
+            init { //when pressed, will open the activity with correct info
+                itemView.setOnClickListener {
+                    val position = adapterPosition //gets the position of the selected array in int
+
+                    binding.details.visibility = View.VISIBLE
+
+                    dateSelected = "$chosenYear-${chosenMonth+1}-${customCalendarDatesArrayList[position]}"
+                    binding.detailsDateText.text = dateSelected
+                    binding.entryTimeDetailsText.text = getEntryTime()
+                    binding.leaveTimeDetailsText.text = getLeaveTime()
+                }
+            }
         }
 
+    } //end of customCalendar adapter
+
+    //public to put the text into the adapter class
+    fun getEntryTime() :String{
+        return "10.02"
     }
+
+    //public to put the text into the adapter class
+    fun getLeaveTime() :String{
+        return "18.58"
+    }
+
 }
