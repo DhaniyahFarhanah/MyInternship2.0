@@ -257,7 +257,7 @@
                 android:id="@+id/Present"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:background="#20AC3E"
+                android:background="#2ACC4C"
                 android:gravity="center"
                 android:textSize="20sp" />
 
@@ -280,7 +280,7 @@
                 android:layout_height="20dp"
                 android:layout_marginStart="60dp"
                 android:layout_toEndOf="@+id/presentText"
-                android:background="#931313"
+                android:background="#CC1010"
                 android:gravity="center"
                 android:textSize="20sp" />
 
@@ -302,7 +302,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_toStartOf="@+id/absentTextView"
-                android:background="#BABABA"
+                android:background="#5A5A5A"
                 android:gravity="center"
                 android:textSize="20sp" />
 

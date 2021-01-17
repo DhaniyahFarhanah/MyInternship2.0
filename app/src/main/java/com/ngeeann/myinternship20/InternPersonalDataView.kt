@@ -18,16 +18,37 @@ import com.ngeeann.myinternship20.databinding.InternPersonaldataViewBinding
 import kotlinx.android.synthetic.main.intern_personaldata_view.*
 import java.util.*
 
+/* Personal Data viewing for Interns
+
+1) log is the same. Just personalized.
+
+2) For attendance, there is a calendar. Based on the status from the statusArrayList, it would change the color of the date accordingly
+   "Present" -> green
+   "Late" -> red
+   "Absent" -> dark gray
+   default of the calendar is light gray
+
+3) The calendar array needs spacing infront to showcase the first day of the month in the correct column. customCalendarDatesArrayList
+   if it's on tuesday, the array list would be "","1"...so on til last day of the month
+   so for example January 2020. 1st Jan is on friday. Therefore, this array would be {"","","","","","",1,2....,31}
+
+   statusArrayList has the same kind of formatting. The spaces are created by the function "setFirstDayOfMonth". Inside it already clears
+   the statusArrayList
+
+   after the adding of spaces, retrieve the array of status using the customCalendarDatesArrayList. If it's possible. If no data is entered, make it null or ""
+
+4) when the person chooses the specified date, it would showcase the date that was selected (because idk how to change color of a selected one and refresh it to the original color.
+    the entry time and the leave time in a details layout. You can add more details to be added if you want.
+
+If you want to use a function/variable inside the recyclerView, the function has to be public.
+ */
+
 class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var binding: InternPersonaldataViewBinding
     private val cal = Calendar.getInstance() //calendar for log viewing
     private val customCal = Calendar.getInstance() //calendar for custom calendar (yes I need 2)
 
-    /*this array is to get the dates for the custom calendar. There will be "" for empty days that are not in the first week.
-      if it's on tuesday, the array list would be "","1"...so on til last day of the month
-
-      so for example January 2020. 1st Jan is on friday. Therefore, this array would be {"","","","","","",1,2....,31}*/
     var customCalendarDatesArrayList = arrayListOf<String>()
 
     //Test with working data. Description of what data set to be received from firebase
@@ -37,7 +58,7 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
     var chosenMonth = 0
     var chosenYear = 0
 
-    var dateSelected = ""
+    var dateSelected = "" //date selected in string according to the attendance taking database
 
     var customCalMonth = 0 //custom Calendar focused on month arguments
 
@@ -252,13 +273,13 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
 
             //conditions of the status. FOR TESTING ONLY
             if(n<=5){
-                statusArrayList.add("Present")
+                statusArrayList.add("Late")
             }
             else if (n==6){
                 statusArrayList.add("MC")
             }
             else if (n>6){
-                statusArrayList.add("Late")
+                statusArrayList.add("Present")
             }
             else{
                 statusArrayList.add("")
@@ -278,17 +299,17 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.dateCustom.text = customCalendarDatesArrayList[position]
 
-            holder.calendarLayout.setBackgroundColor(Color.parseColor("#CACACA")) //background color becomes default white
+            holder.calendarLayout.setBackgroundColor(Color.parseColor("#FFFFFF")) //background color becomes default white
             holder.dateCustom.setTextColor(Color.parseColor("#292929")) //text color becomes default
 
             when(statusArrayList[position]){
-                "Present" -> {holder.calendarLayout.setBackgroundColor(Color.parseColor("#20AC3E"))
+                "Present" -> {holder.calendarLayout.setBackgroundColor(Color.parseColor("#2ACC4C"))
                               holder.dateCustom.setTextColor(Color.parseColor("#FFFFFF"))} //changes to green for present status
 
-                "Late" -> {holder.calendarLayout.setBackgroundColor(Color.parseColor("#931313"))
+                "Late" -> {holder.calendarLayout.setBackgroundColor(Color.parseColor("#CC1010"))
                            holder.dateCustom.setTextColor(Color.parseColor("#FFFFFF"))} //changes to red for late status
 
-                "MC" -> {holder.calendarLayout.setBackgroundColor(Color.parseColor("#292929"))
+                "MC" -> {holder.calendarLayout.setBackgroundColor(Color.parseColor("#5A5A5A"))
                          holder.dateCustom.setTextColor(Color.parseColor("#FFFFFF"))} //changes to light gray for absent status
 
                 "" -> holder.calendarLayout.setBackgroundColor(Color.parseColor("#CACACA")) //changes to default for no data/not included in the calendar list
@@ -304,14 +325,13 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
             var dateCustom: TextView = itemView.findViewById(R.id.customCalendarText)
             var calendarLayout: RelativeLayout = itemView.findViewById(R.id.backgroundLayout)
 
-            init { //when pressed, will open the activity with correct info
+            init { //when pressed, would show the details layout.
                 itemView.setOnClickListener {
                     val position = adapterPosition //gets the position of the selected array in int
 
                     binding.details.visibility = View.VISIBLE
 
-                    dateSelected = "$chosenYear-${chosenMonth+1}-${customCalendarDatesArrayList[position]}"
-                    binding.detailsDateText.text = dateSelected
+                    binding.detailsDateText.text = "${customCalendarDatesArrayList[position]} ${changeMonthToString(chosenMonth)} $chosenYear"
                     binding.entryTimeDetailsText.text = getEntryTime()
                     binding.leaveTimeDetailsText.text = getLeaveTime()
                 }
@@ -330,4 +350,4 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         return "18.58"
     }
 
-}
+} //333 lines nice
