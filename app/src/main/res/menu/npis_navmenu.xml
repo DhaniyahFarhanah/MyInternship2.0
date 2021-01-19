@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_overview"
-        android:icon="@drawable/ic_baseline_assessment"
-        android:title="Overview"/><item
-
         android:id="@+id/nav_log"
         android:icon="@drawable/ic_baseline_logvec"
         android:title="Log"/>
@@ -13,10 +9,5 @@
         android:id="@+id/nav_attendance"
         android:icon="@drawable/ic_baseline_attendancevec"
         android:title="Attendance"/>
-
-    <item
-        android:id="@+id/nav_grading"
-        android:icon="@drawable/ic_baseline_grade"
-        android:title="Grade"/>
 
 </menu>
