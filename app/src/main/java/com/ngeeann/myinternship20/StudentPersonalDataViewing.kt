@@ -77,14 +77,12 @@ class StudentPersonalDataViewing : AppCompatActivity(), DatePickerDialog.OnDateS
 
         binding.dateTextView.setOnClickListener { //
             pickDate()
-            querySchedule(userId,changeDayToString(cal.get(Calendar.DAY_OF_WEEK)))
         }
 
         binding.studentAttendanceRecyclerView.adapter = StudentAttendanceRecyclerAdapter() //resets recycler data shown
 
         binding.dayDisplayTextView.setOnClickListener { //allows user to open date picker
             pickDate()
-            querySchedule(userId,changeDayToString(cal.get(Calendar.DAY_OF_WEEK)))
         }
 
         binding.dateNextButton.setOnClickListener { //goes to the next day by 1
@@ -141,6 +139,7 @@ class StudentPersonalDataViewing : AppCompatActivity(), DatePickerDialog.OnDateS
 
         binding.dateTextView.text = "$chosenDate ${changeMonthToString(chosenMonth)} $chosenYear"
         binding.dayDisplayTextView.text = "${changeDayToString(cal.get(Calendar.DAY_OF_WEEK))}"
+        querySchedule(userId,changeDayToString(cal.get(Calendar.DAY_OF_WEEK)))
     }
 
     /*
@@ -182,6 +181,7 @@ class StudentPersonalDataViewing : AppCompatActivity(), DatePickerDialog.OnDateS
             if(statusListArray[position]=="Late"){
                 holder.time.visibility = View.VISIBLE
             }
+
             holder.time.text = "${entryTimeListArray[position]}"
             //changes color based on the status
             when(statusListArray[position]){
@@ -271,6 +271,7 @@ class StudentPersonalDataViewing : AppCompatActivity(), DatePickerDialog.OnDateS
     private fun queryAttendance (userId: String, date: String, modListArray: ArrayList<String>) {
         val path = database.child("attendance/$date").orderByChild("$userId/EntryTime")
         val entryNameArrayList = arrayListOf<String>()
+
         path.addListenerForSingleValueEvent( object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) { //initializes data into array, checks for matches with moduleNameListArray, detailListArray gets filled with information for each one
                 entryTimeListArray.clear()
