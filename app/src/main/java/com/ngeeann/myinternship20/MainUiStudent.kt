@@ -31,7 +31,8 @@ class MainUiStudent : AppCompatActivity() {
         }
 
         studentData.setOnClickListener {
-            startActivity(Intent(this, StudentPersonalDataViewing::class.java))
+            startActivity(Intent(this, StudentPersonalDataViewing::class.java)
+                    .putExtra("userId", userId))
         }
     }
 
