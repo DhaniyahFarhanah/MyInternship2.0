@@ -153,7 +153,7 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
     }
 
     private fun revertDateCalendar(dd:Int):String{
-        if(dd>cal.get(Calendar.DAY_OF_WEEK)){
+        if(dd > cal.get(Calendar.DAY_OF_WEEK)){
             cal.set(Calendar.DAY_OF_WEEK,dd)
             cal.add(Calendar.DATE,-7)
         }

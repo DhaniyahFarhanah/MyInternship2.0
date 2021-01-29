@@ -55,7 +55,6 @@ dateArrayList[3] comes from the same log "file" as the log entry value in logArr
 5. Before  adding the new set of data into the arrayLists, the arrayLists are first cleared of the previous set of data, ready to be used again
 
 Intern Attendance Viewer Process:
-
 1. Based on the same selected intern, it would retrieve an array of dates for that month according to the database format, YYYY-MM-DD.
 2. The status array would already have the spacings to fit the calendar's dates called from setFirstDayOfMonth which is a custom calendar function.
 3. Based on the status, "Present", "Late", "MC", would have different colors for the date. "" would mean that there is no data for that day.
@@ -69,25 +68,33 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
     private val cal = Calendar.getInstance()
     private val customCal = Calendar.getInstance()
     private val database = Firebase.database.reference
-    private val TAG = "NPISStudentDataHome"
+    private val TAG1 = "InternFeature"
+    private val TAG2 = "AttendFeature"
+    private lateinit var selectedStudent: String
 
     var chosenDay = 0
     var chosenMonth = 0
     var chosenYear = 0
 
+    //These lists are used for the Intern Log Viewer
     val logArrayList = arrayListOf<String>()
     val dateArrayList = arrayListOf<String>()
 
+    //These lists are used for the attendance viewer
     val statusArrayList = arrayListOf<String>() //to be populated with the attendance status. It will have the spacing in front of it. Because it has to fit the custom calendar dates array.
+    val entryTimeArrayList = arrayListOf<String>()
+    val leaveTimeArrayList = arrayListOf<String>()
     val attendanceDatesArrayList = arrayListOf<String>() //to be populated with the YYYY-MM-DD arrays for the selected month display. For database comparison.
 
     val customCalendarDatesArrayList = arrayListOf<String>()
     var customCalMonth = 0 //for custom calendar about months
+    private var firstDayOfMonth = 0
 
     @RequiresApi(Build.VERSION_CODES.O)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val userId = intent.getStringExtra("userId")
+        val userId = intent.getStringExtra("userId").toString()
+        Log.i("MainCreate", "NPIS UserId: $userId")
         val studentNameArray: ArrayList<String> = intent.getStringArrayListExtra("studNameArr") //initializes an array with the Name values of students under the SV from the Main UI
                 ?: arrayListOf("Student 1 Name", "Student 2 Name", "Student 3 Name") //if the program is unable to fetch the data from the previous activity, the system will produce default values
         val studIdArray: ArrayList<String> = intent.getStringArrayListExtra("studIdArr") //initializes a matching array with the ID values of interns,
@@ -99,15 +106,14 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
 
         binding.npisBottomNav.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
-
                 R.id.nav_log -> { //shows student log page while hiding other pages
-                    logLayout.visibility=View.VISIBLE
-                    attendanceLayout.visibility=View.GONE
+                    logLayout.visibility = View.VISIBLE
+                    attendanceLayout.visibility = View.GONE
                 }
 
                 R.id.nav_attendance -> { //shows student attendance page while hiding other pages
-                    logLayout.visibility=View.GONE
-                    attendanceLayout.visibility=View.VISIBLE
+                    logLayout.visibility = View.GONE
+                    attendanceLayout.visibility = View.VISIBLE
                     customCal.set(Calendar.MONTH,chosenMonth)
                 }
             }
@@ -120,7 +126,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         binding.studentDataSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
-                val selectedStudent: String = studentNameArray[position].toString()
+                selectedStudent = studIdArray[position].toString()
                 Toast.makeText(applicationContext,"$selectedStudent's Data", Toast.LENGTH_SHORT).show()
 
                 getDateCalendar()
@@ -129,6 +135,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
 
                 //log coding here
                 fetchStudentLog(studIdArray[position]) //populates logArrayList and dateArrayList with all logs from the selected student
+                attendByMonth(studIdArray[position])
 
                 binding.dateSubmittedLogText.setOnClickListener {
                     pickDate()
@@ -149,29 +156,32 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         }
 
         //***Attendance Viewing Code Here***
-
         binding.customCalendar.layoutManager = GridLayoutManager(applicationContext,7,LinearLayoutManager.VERTICAL,false) //makes 7 columns for each day of week
         binding.customCalendar.setHasFixedSize(true) //doesn't make the calendar deform with extra rows
         binding.customCalendar.adapter = CustomCalendarAdapter() //gets the calendar adapter. conditions of the day's
 
-        customCalMonth= customCal.get(Calendar.MONTH)
+        customCalMonth = customCal.get(Calendar.MONTH)
         setFirstDayOfMonth(customCalMonth)
+        for (i in 1..31){
+            statusArrayList.add("")
+        }
         binding.calendarText.text = "${changeMonthToString(customCalMonth)} ${customCal.get(Calendar.YEAR)}"
 
         setArrayOfDates(getLastDayOfMonth(customCalMonth))
 
         binding.nextMonthButton.setOnClickListener { //moves to the next month
             nextMonth()
+            //attendByMonth(userId.toString())
         }
 
         binding.prevMonthButton.setOnClickListener { //moves to previous month
             prevMonth()
+            //attendByMonth(userId.toString())
         }
 
         binding.npisDatabackarrow.setOnClickListener { //back to dashboard
             this.finish()
         }
-
     }
 
     private fun changeMonthToString(monthNum: Int): String {
@@ -224,118 +234,50 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
 
     /*to set the calendarDatesArray to the correct dayOfWeek also clear statusArray and adds the space to make the positioning of conditions the same
      so for example, 1st Jan is on a friday. The beginning of the list array would be ("","","","","",1,2,3..31}*/
-    private fun setFirstDayOfMonth(mm: Int) {
-        var firstDayOfMonth = 0
+    private fun setFirstDayOfMonth(mm: Int) { //this function offsets the customCalendarDatesArrayList so that the start of the month
+        //positions on the correct day of the week
 
         customCalendarDatesArrayList.clear()
         statusArrayList.clear()
+        attendanceDatesArrayList.clear()
 
         customCal.set(Calendar.MONTH,mm)
         customCal.set(Calendar.DATE,1)
 
         firstDayOfMonth = customCal.get(Calendar.DAY_OF_WEEK)
 
-        when(firstDayOfMonth){
-            2 -> {
-                customCalendarDatesArrayList.add("")
-                statusArrayList.add("")
-            }
-            3 -> {customCalendarDatesArrayList.add("")
-                customCalendarDatesArrayList.add("")
-                statusArrayList.add("")
-                statusArrayList.add("")
-            }
-            4 -> {
-                customCalendarDatesArrayList.add("")
-                customCalendarDatesArrayList.add("")
-                customCalendarDatesArrayList.add("")
-                statusArrayList.add("")
-                statusArrayList.add("")
-                statusArrayList.add("")
-            }
-            5 -> {
-                customCalendarDatesArrayList.add("")
-                customCalendarDatesArrayList.add("")
-                customCalendarDatesArrayList.add("")
-                customCalendarDatesArrayList.add("")
-                statusArrayList.add("")
-                statusArrayList.add("")
-                statusArrayList.add("")
-                statusArrayList.add("")
-            }
-
-            6 -> {
-                customCalendarDatesArrayList.add("")
-                customCalendarDatesArrayList.add("")
-                customCalendarDatesArrayList.add("")
-                customCalendarDatesArrayList.add("")
-                customCalendarDatesArrayList.add("")
-                statusArrayList.add("")
-                statusArrayList.add("")
-                statusArrayList.add("")
-                statusArrayList.add("")
-                statusArrayList.add("")
-            }
-
-            7 -> {
-                customCalendarDatesArrayList.add("")
-                customCalendarDatesArrayList.add("")
-                customCalendarDatesArrayList.add("")
-                customCalendarDatesArrayList.add("")
-                customCalendarDatesArrayList.add("")
-                customCalendarDatesArrayList.add("")
-                statusArrayList.add("")
-                statusArrayList.add("")
-                statusArrayList.add("")
-                statusArrayList.add("")
-                statusArrayList.add("")
-                statusArrayList.add("")
-            }
+        for (n in 2.. firstDayOfMonth) { //replacement for the giant when condition that has been commented out below
+            customCalendarDatesArrayList.add("")
+            statusArrayList.add("")
         }
     }
 
     private fun setArrayOfDates(lastDayOfMonth: Int){ //sets the array of dates into the arraylist and inserts it into the calendar
-
         for(n in 1..lastDayOfMonth){
             customCalendarDatesArrayList.add(n.toString()) //this one is for the calendar
             attendanceDatesArrayList.add(conDateToStringAttendanceVer(n)) //this will have the array of YYYY-MM-DD without the spacing infront.
-
-            //conditions of the status. FOR TESTING ONLY. Remove when you see this. This is just to test if the UI would respond accordingly to the data
-            if(n<=5){
-                statusArrayList.add("Late")
-            }
-            else if (n==6){
-                statusArrayList.add("MC")
-            }
-            else if (n>6){
-                statusArrayList.add("Present")
-            }
-            else{
-                statusArrayList.add("")
-            }
         }
-
     }
 
-    private fun nextMonth(){ //goes to the next month for attendance
+    private fun nextMonth() { //goes to the next month for attendance
         customCal.add(Calendar.MONTH,1)
         customCalMonth = customCal.get(Calendar.MONTH)
         binding.calendarText.text = "${changeMonthToString(customCal.get(Calendar.MONTH))} ${customCal.get(Calendar.YEAR)}"
         setFirstDayOfMonth(customCalMonth)
         setArrayOfDates(getLastDayOfMonth(customCalMonth))
-        binding.customCalendar.adapter = CustomCalendarAdapter()
+        attendByMonth(selectedStudent)
     }
 
-    private fun prevMonth(){ //goes to the prev month for attendance
+    private fun prevMonth() { //goes to the prev month for attendance
         customCal.add(Calendar.MONTH,-1)
         customCalMonth = customCal.get(Calendar.MONTH)
         binding.calendarText.text = "${changeMonthToString(customCal.get(Calendar.MONTH))} ${customCal.get(Calendar.YEAR)}"
         setFirstDayOfMonth(customCalMonth)
         setArrayOfDates(getLastDayOfMonth(customCalMonth))
-        binding.customCalendar.adapter = CustomCalendarAdapter()
+        attendByMonth(selectedStudent)
     }
 
-    private fun getLastDayOfMonth(mm:Int) :Int{ //to get the last day of the month for custom calendar
+    private fun getLastDayOfMonth(mm:Int) :Int { //to get the last day of the month for custom calendar
         customCal.set(Calendar.MONTH,mm)
         customCal.add(Calendar.MONTH,1)
         customCal.add(Calendar.DATE,-1)
@@ -362,7 +304,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         else {
             chosenDay.toString()
         }
-        return "$chosenYear-${chosenMonth+1}-$day"
+        return "${customCal.get(Calendar.YEAR)}-${customCal.get(Calendar.MONTH)+1}-$day"
     }
 
     private fun fetchStudentLog(studId: String) { //uses studentId to query for daily logs written by the student and places the date and log entry values into arrayLists
@@ -385,7 +327,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG, "Query failed.")
+                Log.w(TAG1, "Query failed.")
             }
         })
     }
@@ -400,36 +342,73 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         }
     }
 
-    fun attendByDate () { //displays all students attendance for that day
-        val date = "2020-12-10" //"$chosenYear-$chosenMonth-$chosenDay" TODO change the testing date back to an actual date when done testing
-        val path = database.child("attendance").child(date).child("Internship").orderByKey() //orders the attendance records by student ID
+    fun attendByMonth (studId: String) { //instantiates all attendance records for the intern for the month
+        val path = database.child("attendance").orderByKey() //orders the attendance records by student ID
+        val month = if (customCalMonth < 9) {
+            "0${customCalMonth + 1}"
+        }
+        else {
+            customCalMonth + 1
+        }
+        val year = customCal.get(Calendar.YEAR)
+        var date : String
+        var status : String
+        var dayString : String
+
+        Log.i(TAG2, "InternID: $studId Year: $year Month: $month")
+
+        statusArrayList.clear()
+        entryTimeArrayList.clear()
+        leaveTimeArrayList.clear()
+
+        for (n in 2.. firstDayOfMonth) { //replacement for the giant when condition that has been commented out below
+            statusArrayList.add("")
+            entryTimeArrayList.add("")
+            leaveTimeArrayList.add("")
+        }
+
+
         path.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                for (studentSnapshot in snapshot.children) {
-                    studentSnapshot.child("Name").getValue<String>()
+                Log.i(TAG2, "The calendar dates arraylist has ${customCalendarDatesArrayList.size} elements.")
+                for (day in 1..customCalendarDatesArrayList.size) { //search range across a month
+                    dayString = if (day < 10){
+                        "0$day"
+                    } else {
+                        day.toString()
+                    }
+                    date = "$year-$month-$dayString" //"$chosenYear-$chosenMonth-$chosenDay"
+                    if(snapshot.child("$date/Internship/$studId").exists()) {
+                        Log.i(TAG2, "Attendance found on $date")
+                        status = snapshot.child("$date/Internship/$studId/Status").value.toString()
+                        if (status != "MC") {
+                            statusArrayList.add(status)
+                            entryTimeArrayList.add(snapshot.child("$date/Internship/$studId/EntryTime").value.toString())
+                            leaveTimeArrayList.add(snapshot.child("$date/Internship/$studId/LeaveTime").value.toString())
+                        }
+                        else {
+                            statusArrayList.add(status)
+                            entryTimeArrayList.add("")
+                            leaveTimeArrayList.add("")
+                        }
+                    }
+                    else {
+                        Log.i(TAG2, "Date record not found.")
+                        statusArrayList.add("Absent")
+                        entryTimeArrayList.add("")
+                        leaveTimeArrayList.add("")
+                    }
                 }
+            customCalendar.adapter?.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG, "Unable to query database.")
+                Log.w(TAG2, "Unable to query database.")
             }
         }  )
     }
 
-    fun attendByStudent (studId: String) { //displays specific student's attendance across a week. Attendance dates use "YYYY-MM-DD" format
-        val date = "$chosenYear-$chosenMonth-$chosenDay"
-        val path = database.child("attendance").orderByChild("Internship/$studId/userid").equalTo(studId)
-        path.addListenerForSingleValueEvent(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG, "Unable to query database.")
-            }
-        })
-    }
-    inner class CustomCalendarAdapter: RecyclerView.Adapter<NpisStudentDataHome.CustomCalendarAdapter.ViewHolder>() {
+    inner class CustomCalendarAdapter: RecyclerView.Adapter<NpisStudentDataHome.CustomCalendarAdapter.ViewHolder>() { //uses statusArrayList, entryTimeArrayList and leaveTimeArrayList
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val v = LayoutInflater.from(parent.context).inflate(R.layout.calendar_date_card,parent,false)
@@ -452,13 +431,12 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
                 "MC" -> {holder.calendarLayout.setBackgroundColor(Color.parseColor("#5A5A5A"))
                     holder.dateCustom.setTextColor(Color.parseColor("#FFFFFF"))} //changes to light gray for absent status
 
-                "" -> {holder.calendarLayout.setBackgroundColor(Color.parseColor("#FFFFFF"))
+                "Absent" -> {holder.calendarLayout.setBackgroundColor(Color.parseColor("#FFFFFF"))
                     holder.dateCustom.setTextColor(Color.parseColor("#292929"))}//changes to default for no data/not included in the calendar list
             }
         }
 
         override fun getItemCount(): Int {
-
             return customCalendarDatesArrayList.size
         }
 
@@ -471,25 +449,14 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
                     val position = adapterPosition //gets the position of the selected array in int
 
                     binding.details.visibility = View.VISIBLE
-                    binding.detailsDateText.text = "${customCalendarDatesArrayList[position]} ${changeMonthToString(chosenMonth)} $chosenYear"
-                    binding.entryTimeDetailsText.text = getEntryTime()
-                    binding.leaveTimeDetailsText.text = getLeaveTime()
+                    binding.detailsDateText.text = "${customCalendarDatesArrayList[position]} ${changeMonthToString(customCalMonth)} ${customCal.get(Calendar.YEAR)}"
+                    binding.entryTimeDetailsText.text = entryTimeArrayList[position]
+                    binding.leaveTimeDetailsText.text = leaveTimeArrayList[position]
                 }
             }
         }
     } //end of customCalendar adapter
-
-    //public to put the text into the adapter class
-    fun getEntryTime() :String{
-        return "10.02"
-    }
-
-    //public to put the text into the adapter class
-    fun getLeaveTime() :String{
-        return "18.58"
-    }
-
-} //oof 476 lines of code very naise
+} //oof ~476~ 540 lines of code very naise
 
 
 

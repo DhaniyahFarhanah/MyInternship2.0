@@ -20,7 +20,7 @@ class MainUiStudent : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ui_student_main)
-        userId = intent.getStringExtra("username").toString()
+        userId = intent.getStringExtra("userId").toString()
         fetchUserInfo(userId)
 
         studentAttendance.setOnClickListener {

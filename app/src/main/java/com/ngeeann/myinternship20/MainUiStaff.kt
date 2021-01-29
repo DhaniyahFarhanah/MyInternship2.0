@@ -21,7 +21,7 @@ class MainUiStaff : AppCompatActivity() { //TODO add in the putExtra values late
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ui_staff_main)
 
-        userId = intent.getStringExtra("username").toString()
+        userId = intent.getStringExtra("userId").toString()
 
         fetchUserInfo(userId)
 

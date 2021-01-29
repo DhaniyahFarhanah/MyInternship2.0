@@ -21,7 +21,7 @@ class MainUiNPIS : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ui_npis_main)
-        userId = intent.getStringExtra("username").toString()
+        userId = intent.getStringExtra("userId").toString()
 
         fetchUserInfo(userId) //gets supervisor particular to display on the screen
         fetchStudentInfo(userId) //gets student info and puts it in an array

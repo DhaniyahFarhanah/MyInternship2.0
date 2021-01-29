@@ -20,7 +20,7 @@ class MainUiIntern : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ui_intern_main)
-        userId = intent.getStringExtra("username").toString()
+        userId = intent.getStringExtra("userId").toString()
         fetchUserInfo(userId)
 
         internLog.setOnClickListener {
@@ -37,7 +37,8 @@ class MainUiIntern : AppCompatActivity() {
         }
 
         internData.setOnClickListener {
-            startActivity(Intent(this, InternPersonalDataView::class.java))
+            startActivity(Intent(this, InternPersonalDataView::class.java)
+                    .putExtra("userId", userId))
         }
     }
 
