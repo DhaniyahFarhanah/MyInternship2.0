@@ -59,7 +59,14 @@ Intern Attendance Viewer Process:
 2. The status array would already have the spacings to fit the calendar's dates called from setFirstDayOfMonth which is a custom calendar function.
 3. Based on the status, "Present", "Late", "MC", would have different colors for the date. "" would mean that there is no data for that day.
 4. when the user presses the specified date in the calendar, it would show the details. Entry Time, Exit Time, Maybe a view MC button.
-
+Attendance Status Colour Scheme
+Days in the calendar are presented as squares on screen and the intern's daily attendance status is represented by a colour in this order:
+   Status  |  Colour      |  Hex Code
+   Present |  Green       |  #2ACC4C
+   Late    |  Red         |  #CC1010
+   MC      |  Dark Gray   |  #5A5A5A
+   Absent* |  Light Gray  |  #FFFFFF
+   * if no record is found, the system considers them as absent, this could mean an intent who did not mark their attendance or no work occurring on that day.
 */
 class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListener { //TODO 1: Add in a overall student stat value to see all students together in one graph?
 // TODO 2: avoid making redundant calls by creating a check that sees if the student selected was the same as before, if it is a different student then allow the program to carry on as usual

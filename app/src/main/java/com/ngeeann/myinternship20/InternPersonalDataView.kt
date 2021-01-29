@@ -27,16 +27,18 @@ import kotlinx.android.synthetic.main.npis_studentdatahome.*
 import java.util.*
 
 /* Personal Data viewing for Interns
+1) Logbook feature is similar to the one found in the NPIS Logbook viewer but with minor tweaks to make it more personalized.
 
-1) Log is the same. Just personalized.
+2) The attendance feature, appears in a monthly calendar format. The feature uses a set of arraylists to store information taken from the attendance records in the database.
+   Days in the calendar are presented as squares on screen and the intern's daily attendance status is represented by a colour in this order:
+   Status  |  Colour      |  Hex Code
+   Present |  Green       |  #2ACC4C
+   Late    |  Red         |  #CC1010
+   MC      |  Dark Gray   |  #5A5A5A
+   Absent* |  Light Gray  |  #FFFFFF
+   * if no record is found, the system considers them as absent, this could mean an intent who did not mark their attendance or no work occurring on that day.
 
-2) For attendance, there is a monthly calendar format. Based on the status from the statusArrayList, it would change the color of the date accordingly
-   "Present" -> green
-   "Late" -> red
-   "MC" -> dark gray
-   if no record is found, the calendar is light gray, this could refer to an absent student or no work on that day.
-
-3) The calendar array needs spacing infront to showcase the first day of the month in the correct column. customCalendarDatesArrayList
+3) The calendar array needs spacing in front to showcase the first day of the month in the correct column. customCalendarDatesArrayList
    if it's on tuesday, the array list would be "","1"...so on til last day of the month
    so for example January 2020. 1st Jan is on friday. Therefore, this array would be {"","","","","","",1,2....,31}
 
