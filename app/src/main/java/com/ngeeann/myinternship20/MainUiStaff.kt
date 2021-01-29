@@ -3,6 +3,7 @@ package com.ngeeann.myinternship20
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -15,6 +16,7 @@ import kotlinx.android.synthetic.main.ui_staff_main.*
 class MainUiStaff : AppCompatActivity() { //TODO add in the putExtra values later on to allow staff to check student attendance
     private val database = Firebase.database
     lateinit var userId: String
+    val TAG = "Staff Menu"
     var staffModules: ArrayList<String?> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,11 +54,12 @@ class MainUiStaff : AppCompatActivity() { //TODO add in the putExtra values late
 
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(baseContext,"Unable to connect to the server.", Toast.LENGTH_SHORT).show()
+                Log.w(TAG, "Failed to query database.")
             }
         })
     }
 
-    data class NPstaff(
+    data class NPstaff (
         var Name: String? = "",
         var school: String? = "",
         var email: String? = "",

@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.loginscreen.*
 class LoginMainScreen : AppCompatActivity() {
 
     val database = Firebase.database
-    val TAG = "LoginActivity"
+    val tag = "LoginActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +68,7 @@ class LoginMainScreen : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(baseContext, "There was an error logging in, please try again.",
                     Toast.LENGTH_SHORT).show()
-                Log.w(TAG, "Login query failed.")    //log error message
+                Log.w(tag, "Login query failed.")    //log error message
             }
         })
     }
@@ -97,7 +97,7 @@ class LoginMainScreen : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(baseContext, "There was an error fetching the group value, please try again.",
                         Toast.LENGTH_SHORT).show() //ERROR MESSAGE
-                Log.w(TAG, "Group query failed.")
+                Log.w(tag, "Group query failed.")
             }
         })
     }

@@ -23,7 +23,6 @@ import com.google.firebase.ktx.Firebase
 import com.ngeeann.myinternship20.databinding.InternPersonaldataViewBinding
 import kotlinx.android.synthetic.main.intern_personaldata_view.*
 import kotlinx.android.synthetic.main.intern_personaldata_view.customCalendar
-import kotlinx.android.synthetic.main.npis_studentdatahome.*
 import java.util.*
 
 /* Personal Data viewing for Interns
@@ -63,7 +62,7 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
     private val TAG1 = "LogBookFeature"
     private val TAG2 = "AttendFeature"
 
-    var chosenDay = 0
+    private var chosenDay = 0
     var chosenMonth = 0
     var chosenYear = 0
 
@@ -75,13 +74,11 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
     var statusArrayList = arrayListOf<String>() //the array of status with "" same as customCalendar so that it can check the status and change the background accordingly
     val entryTimeArrayList = arrayListOf<String>()
     val leaveTimeArrayList = arrayListOf<String>()
-    val attendanceDatesArrayList = arrayListOf<String>()
+    private val attendanceDatesArrayList = arrayListOf<String>()
 
     var customCalendarDatesArrayList = arrayListOf<String>()
-    var customCalMonth = 0 //custom Calendar focused on month arguments
+    private var customCalMonth = 0 //custom Calendar focused on month arguments
     private var firstDayOfMonth = 0
-
-    var dateSelected = "" //date selected in string according to the attendance taking database
 
     override fun onCreate(savedInstanceState: Bundle?) {
         userId = intent.getStringExtra("userId").toString()
@@ -244,14 +241,12 @@ class InternPersonalDataView : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         }
     }
 
-    private fun getLastDayOfMonth(mm:Int) :Int{ //to get the last day of the month
+    private fun getLastDayOfMonth(mm:Int): Int{ //to get the last day of the month
         customCal.set(Calendar.MONTH,mm)
         customCal.add(Calendar.MONTH,1)
         customCal.add(Calendar.DATE,-1)
 
-        val lastDayOfMonth = customCal.get(Calendar.DATE)
-
-        return lastDayOfMonth
+        return customCal.get(Calendar.DATE)
     }
 
     private fun conDateToString(): String { //converts the currently selected date from integer values to a single combined string: "04 November 2020"

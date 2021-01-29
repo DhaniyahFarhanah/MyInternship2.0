@@ -20,8 +20,6 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashSet
 
 /*
 Feature code process
@@ -49,10 +47,10 @@ their name and their attendance status (MC) and skip steps 4 to 5.
 
 class StudentAttendance : AppCompatActivity() {
     private val database = Firebase.database
-    private val TAG: String = "StudentAttendance"
+    private val tag: String = "StudentAttendance"
+    private lateinit var userType: String
     lateinit var currentLesson: Lesson
     lateinit var userName: String
-    lateinit var userType: String
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,14 +60,13 @@ class StudentAttendance : AppCompatActivity() {
         userName = intent.getStringExtra("username").toString()
         userType= intent.getStringExtra("group").toString() //Student or Intern
         val calendar = Calendar.getInstance()
-        val dayNum = calendar.get(Calendar.DAY_OF_WEEK) //gets the day of the week as a numeral e.g. 0 is Saturday
         val date = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE) //Date format: yyyy-MM-dd, 2020-12-25
         val time = LocalTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME) //Time format: 17:12:47
 
-        val weekArray = arrayOf<String>("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday") //array to convert numeral value of
+        val weekArray = arrayOf("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday") //array to convert numeral value of
         // day of the week to the string name
         val dayOfWeek = weekArray[calendar.get(Calendar.DAY_OF_WEEK)]
-        if (userType == "Student"){
+        if (userType == "Student") {
             checkClass(userId.toString(), dayOfWeek, time) //WHEN TESTING MAKE SURE THE HOUR PORTION HAS 2 DIGITS e.g. 8 am is 08:00
         }
         else {
@@ -136,7 +133,7 @@ class StudentAttendance : AppCompatActivity() {
                         if (localTime < startTime) { //checks if there is an upcoming lesson
                             if(localTime >= startTime.minusMinutes(15) ){
                                 val diffTime = Duration.between(localTime, startTime).toMinutes()
-                                attendanceStatus.text = "UPCOMING IN ${diffTime.toString()} MINUTES"
+                                attendanceStatus.text = "UPCOMING IN $diffTime MINUTES"
                                 currLess = n
                                 attendanceLinear.background = null
                                 attendText.setTextColor(Color.parseColor("#B5B5B5"))
@@ -174,7 +171,7 @@ class StudentAttendance : AppCompatActivity() {
                 }
             }
             override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG, "Unable to query database for lesson information.")
+                Log.w(tag, "Unable to query database for lesson information.")
             }
         })
     }
@@ -194,7 +191,7 @@ class StudentAttendance : AppCompatActivity() {
                     if (localTime < startTime) { //checks if there is an upcoming lesson
                         if(localTime >= startTime.minusMinutes(15) ){ //condition that appears when there is less than 15 minutes before work officially starts
                             val diffTime = Duration.between(localTime, startTime).toMinutes()
-                            attendanceStatus.text = "UPCOMING IN ${diffTime.toString()} MINUTES"
+                            attendanceStatus.text = "UPCOMING IN $diffTime MINUTES"
                             attendanceLinear.background = null
                             attendText.setTextColor(Color.parseColor("#B5B5B5"))
                             //attendanceAttendButton.isClickable = false
@@ -211,7 +208,7 @@ class StudentAttendance : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Log.w(TAG, "Unable to query database for internship information.")
+                    Log.w(tag, "Unable to query database for internship information.")
                 }
             })
         }
@@ -259,14 +256,14 @@ class StudentAttendance : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG, "Unable to query database for attendance information.")
+                Log.w(tag, "Unable to query database for attendance information.")
             }
         })
     }
 
     private fun attendButtonClicked () {
         if(userType == "Student" || attendText.text == "LEAVE") {
-            attendanceLinear.background=null
+            attendanceLinear.background = null
             attendText.setTextColor(Color.parseColor("#B5B5B5"))
             attendanceAttendButton.isClickable = false //once attendance has been submitted, both buttons will be disabled for that lesson
             mcLinear.background = null
@@ -287,7 +284,7 @@ class StudentAttendance : AppCompatActivity() {
         }
 
         val attendUpdates = hashMapOf<String, Any>(
-                "$userId" to lessonValues
+                userId to lessonValues
         )
 
         database.getReference("attendance/$date/${currentLesson.title}").updateChildren(attendUpdates)
@@ -301,7 +298,7 @@ class StudentAttendance : AppCompatActivity() {
         attendanceLateWarning.setTextColor(Color.parseColor("#0ae973"))
     }
 
-    data class Lesson(
+    data class Lesson (
             var group: String? = "",
             var name: String? = "",
             var startTime: LocalTime
@@ -310,7 +307,7 @@ class StudentAttendance : AppCompatActivity() {
         var title: String = "" //Value initialized in checkClass function, two types, one will contain Lesson Name only while the other will contain Lesson Name+Group
         var userName: String = "" //Value initialized in checkClass function
         var status: String = "" //Student's attendance status: Present, Late, Absent or MC
-        var mc: String = "" //Value initialized in MCButton, Medical Certificate picture online database storage link// TODO add in a proper link later on (LOW PRIORITY)
+        private var mc: String = "" //Value initialized in MCButton, Medical Certificate picture online database storage link// TODO add in a proper link later on (LOW PRIORITY)
         //var details: String = ""
 
         fun toMap(): Map<String, Any?> {
@@ -330,16 +327,5 @@ class StudentAttendance : AppCompatActivity() {
                     "Status" to status
             )
         }
-    }
-
-    fun findCommonElements (arr1: ArrayList<String>, arr2: ArrayList<String>): Array<String?> { //finds common elements in both arraylists and
-        // returns an array with the common values
-        val hash1 = HashSet(arr1)
-        val hash2 = HashSet(arr2)
-        val finArray = arrayOfNulls<String>(hash1.size)
-
-        hash1.retainAll(hash2) //checks elements in array2, keep matching elements
-        hash1.toArray(finArray) //converts hashmap hash1 to a String array
-        return finArray //returns array
     }
 }

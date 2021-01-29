@@ -13,8 +13,8 @@ class LoginGroupSelect: DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        var rootView: View= inflater.inflate(R.layout.login_groupset_ui,container)
+    ): View {
+        val rootView: View = inflater.inflate(R.layout.login_groupset_ui,container)
         val intent= Intent(activity,LoginSetup::class.java)
 
         rootView.cancelButton.setOnClickListener{

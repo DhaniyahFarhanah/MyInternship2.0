@@ -323,7 +323,7 @@ class StaffAttendanceDataMoreInfo : AppCompatActivity()/*, DatePickerDialog.OnDa
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@StaffAttendanceDataMoreInfo, "Failed to query, please try again.", Toast.LENGTH_SHORT)
+                Toast.makeText(this@StaffAttendanceDataMoreInfo, "Failed to query, please try again.", Toast.LENGTH_SHORT).show()
                 Log.w(TAG, "Query failure")
             }
         })

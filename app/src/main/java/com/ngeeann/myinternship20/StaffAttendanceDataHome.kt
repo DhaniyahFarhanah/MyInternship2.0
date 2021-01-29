@@ -1,6 +1,5 @@
 package com.ngeeann.myinternship20
 
-import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
@@ -36,10 +34,10 @@ class StaffAttendanceDataHome : AppCompatActivity() {
     private lateinit var binding: StaffAttendancedatahomeBinding//used binding again
     private val database = Firebase.database.reference
     val TAG = "StaffAttendHome"
-    private var groupArrayList = arrayListOf<String>("Group 1","Group 2")//test array for groups to see layout
-    private var studentTotalArrayList = arrayListOf<String>("Number 1", "Number 2")
-    private var dayArrayList = arrayListOf<String>("Tuesday", "Wednesday")//test array for day of the week to see the layout
-    private var timeArrayList = arrayListOf<String>("TS 1","TS 2")//test array for timing to see the layout
+    private var groupArrayList = arrayListOf("Group 1","Group 2")//test array for groups to see layout
+    private var studentTotalArrayList = arrayListOf("Number 1", "Number 2")
+    private var dayArrayList = arrayListOf("Tuesday", "Wednesday")//test array for day of the week to see the layout
+    private var timeArrayList = arrayListOf("TS 1","TS 2")//test array for timing to see the layout
     private var chosenModule = "Module 1"//string to get chosen module
 
     override fun onCreate(savedInstanceState: Bundle?) {
