@@ -43,12 +43,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:ems="10"
+            android:layout_marginBottom="10dp"
             android:drawableLeft="@drawable/ic_action_user"
             android:hint="User ID"
             android:inputType="textPersonName"
             android:textColor="@color/white"
             android:textColorHint="#79FFFFFF"
-            android:textSize="25dp" />
+            android:textSize="25sp" />
 
         <EditText
             android:id="@+id/passwordTextBox"
@@ -59,67 +60,45 @@
             android:textColor="@color/white"
             android:textColorHint="#79FFFFFF"
             android:ems="10"
-            android:textSize="25dp"
+            android:textSize="25sp"
             android:inputType="textPassword" />
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/setupButton"
-        android:layout_width="172dp"
-        android:layout_height="56dp"
-        android:text="SetUp"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="@color/purple_500"
-        android:textSize="18dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.03"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.047"
-        app:rippleColor="#A19B9B" />
 
     <Button
         android:id="@+id/loginButton"
-        android:layout_width="172dp"
+        android:layout_width="match_parent"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
         android:layout_height="56dp"
-        android:textSize="18dp"
-        android:text="Login"
         android:backgroundTint="@color/purple_500"
+        android:text="Login"
+        android:textSize="23dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-        app:layout_constraintHorizontal_bias="0.854"
-        app:layout_constraintStart_toEndOf="@+id/setupButton"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         app:layout_constraintVertical_bias="0.047" />
 
-    <ImageButton
-        android:id="@+id/bioButton"
-        android:layout_width="116dp"
-        android:layout_height="129dp"
-        android:background="#00000000"
+    <TextView
+        android:id="@+id/setupButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set Up Here"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.733"
-        app:srcCompat="@drawable/fingerprint" />
+        android:layout_marginBottom="9dp"/>
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="116dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Login With Fingerprint"
-        android:textColor="#72FFFFFF"
-        android:textSize="10dp"
+        android:text="_____________"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/bioButton"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/bioButton"
-        app:layout_constraintTop_toBottomOf="@+id/bioButton"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="8dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

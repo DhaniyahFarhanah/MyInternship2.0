@@ -161,7 +161,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white"
+                    android:background="#919191"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="20dp">
@@ -170,7 +170,7 @@
                         android:id="@+id/scheduleImage"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:src="@drawable/staffcalendar" />
+                        android:src="@drawable/teacherschedule_unavailable" />
 
                     <TextView
                         android:id="@+id/scheduleLabel"
@@ -181,7 +181,6 @@
                         android:fontFamily="sans-serif"
                         android:gravity="center"
                         android:text="SET SCHEDULE"
-                        android:textColor="#292929"
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
@@ -195,8 +194,7 @@
                         android:layout_toEndOf="@+id/scheduleImage"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Set and Change the internship's details here"
-                        android:textColor="#515151"
+                        android:text="Set and Change the internship's timings here"
                         android:textSize="16sp" />
 
                 </RelativeLayout>

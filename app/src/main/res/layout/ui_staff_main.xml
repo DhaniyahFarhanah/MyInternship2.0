@@ -90,63 +90,6 @@
             android:rowCount="3">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/staffAttendance"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="12dp"
-                android:elevation="6dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="6dp">
-
-                <RelativeLayout
-                    android:id="@+id/attendanceLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <ImageView
-                        android:id="@+id/attendanceImage"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/teacherattendance" />
-
-                    <TextView
-                        android:id="@+id/attendanceLabel"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_toEndOf="@+id/attendanceImage"
-                        android:fontFamily="sans-serif"
-                        android:gravity="center"
-                        android:text="ATTENDANCE"
-                        android:textColor="#292929"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/attendanceDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_toEndOf="@+id/attendanceImage"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="Start your class attendance taking here"
-                        android:textColor="#515151"
-                        android:textSize="16sp" />
-
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
                 android:id="@+id/staffStudentAttendanceData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -203,6 +146,61 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/staffAttendance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="12dp"
+                android:elevation="6dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="6dp">
+
+                <RelativeLayout
+                    android:id="@+id/attendanceLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#919191"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <ImageView
+                        android:id="@+id/attendanceImage"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/teacherattendance_unavailable" />
+
+                    <TextView
+                        android:id="@+id/attendanceLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/attendanceImage"
+                        android:fontFamily="sans-serif"
+                        android:gravity="center"
+                        android:text="ATTENDANCE"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/attendanceDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_toEndOf="@+id/attendanceImage"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="Start your class attendance taking here"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
                 android:id="@+id/staffScheduleTask"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -216,7 +214,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white"
+                    android:background="#919191"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="20dp">
@@ -225,7 +223,7 @@
                         android:id="@+id/scheduleImage"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:src="@drawable/staffcalendar" />
+                        android:src="@drawable/teacherschedule_unavailable" />
 
                     <TextView
                         android:id="@+id/scheduleLabel"
@@ -236,7 +234,6 @@
                         android:fontFamily="sans-serif"
                         android:gravity="center"
                         android:text="SET SCHEDULE"
-                        android:textColor="#292929"
                         android:textSize="24sp"
                         android:textStyle="bold"/>
 
@@ -251,7 +248,6 @@
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="Set and Change your class locations and status here"
-                        android:textColor="#515151"
                         android:textSize="16sp" />
 
                 </RelativeLayout>
