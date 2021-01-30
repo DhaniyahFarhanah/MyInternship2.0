@@ -3,6 +3,7 @@ package com.ngeeann.myinternship20
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -16,6 +17,7 @@ class MainUiIntern : AppCompatActivity() {
     private val database = Firebase.database
     lateinit var userId: String
     lateinit var username: String
+    val TAG = "Intern Menu"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +52,7 @@ class MainUiIntern : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val intern = snapshot.getValue<Intern>()
                 intern?.let{
-                    internNameText.text= it.Name + "'s Dashboard"
+                    internNameText.text = it.Name + "'s Dashboard"
                     username = it.Name.toString()
                     internIdText.text = it.StudID
                     internSchoolText.text = it.School
@@ -62,6 +64,7 @@ class MainUiIntern : AppCompatActivity() {
 
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(baseContext,"Unable to connect to the server.",Toast.LENGTH_SHORT).show()
+                Log.w(TAG, "Failed to query database.")
             }
         })
     }
@@ -74,6 +77,7 @@ class MainUiIntern : AppCompatActivity() {
         var address: String? = "",
         var postal: String? = ""
     ){
+        /*
         fun toMap(): Map<String, Any?> {
             return mapOf(
                 "Course" to Course,
@@ -84,5 +88,6 @@ class MainUiIntern : AppCompatActivity() {
                 "postal" to postal
             )
         }
+        */
     }
 }

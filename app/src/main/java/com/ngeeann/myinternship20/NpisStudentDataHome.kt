@@ -59,7 +59,14 @@ Intern Attendance Viewer Process:
 2. The status array would already have the spacings to fit the calendar's dates called from setFirstDayOfMonth which is a custom calendar function.
 3. Based on the status, "Present", "Late", "MC", would have different colors for the date. "" would mean that there is no data for that day.
 4. when the user presses the specified date in the calendar, it would show the details. Entry Time, Exit Time, Maybe a view MC button.
-
+Attendance Status Colour Scheme
+Days in the calendar are presented as squares on screen and the intern's daily attendance status is represented by a colour in this order:
+   Status  |  Colour      |  Hex Code
+   Present |  Green       |  #2ACC4C
+   Late    |  Red         |  #CC1010
+   MC      |  Dark Gray   |  #5A5A5A
+   Absent* |  Light Gray  |  #FFFFFF
+   * if no record is found, the system considers them as absent, this could mean an intent who did not mark their attendance or no work occurring on that day.
 */
 class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListener { //TODO 1: Add in a overall student stat value to see all students together in one graph?
 // TODO 2: avoid making redundant calls by creating a check that sees if the student selected was the same as before, if it is a different student then allow the program to carry on as usual
@@ -68,8 +75,8 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
     private val cal = Calendar.getInstance()
     private val customCal = Calendar.getInstance()
     private val database = Firebase.database.reference
-    private val TAG1 = "InternFeature"
-    private val TAG2 = "AttendFeature"
+    private val tag1 = "InternFeature"
+    private val tag2 = "AttendFeature"
     private lateinit var selectedStudent: String
 
     var chosenDay = 0
@@ -81,10 +88,10 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
     val dateArrayList = arrayListOf<String>()
 
     //These lists are used for the attendance viewer
+    private val attendanceDatesArrayList = arrayListOf<String>() //to be populated with the YYYY-MM-DD arrays for the selected month display. For database comparison.
     val statusArrayList = arrayListOf<String>() //to be populated with the attendance status. It will have the spacing in front of it. Because it has to fit the custom calendar dates array.
     val entryTimeArrayList = arrayListOf<String>()
     val leaveTimeArrayList = arrayListOf<String>()
-    val attendanceDatesArrayList = arrayListOf<String>() //to be populated with the YYYY-MM-DD arrays for the selected month display. For database comparison.
 
     val customCalendarDatesArrayList = arrayListOf<String>()
     var customCalMonth = 0 //for custom calendar about months
@@ -125,8 +132,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         binding.studentDataSpinner.adapter = adapter //using adapter, the studentDataSpinner gets populated with the names stored in studentNameArray
         binding.studentDataSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
-                selectedStudent = studIdArray[position].toString()
+                selectedStudent = studIdArray[position]
                 Toast.makeText(applicationContext,"$selectedStudent's Data", Toast.LENGTH_SHORT).show()
 
                 getDateCalendar()
@@ -282,9 +288,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         customCal.add(Calendar.MONTH,1)
         customCal.add(Calendar.DATE,-1)
 
-        val lastDayOfMonth = customCal.get(Calendar.DATE)
-
-        return lastDayOfMonth
+        return customCal.get(Calendar.DATE)
     }
 
     private fun conDateToString(): String { //converts the currently selected date from integer values to a single combined string: "04 November 2020"
@@ -327,7 +331,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG1, "Query failed.")
+                Log.w(tag1, "Query failed.")
             }
         })
     }
@@ -355,7 +359,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
         var status : String
         var dayString : String
 
-        Log.i(TAG2, "InternID: $studId Year: $year Month: $month")
+        Log.i(tag2, "InternID: $studId Year: $year Month: $month")
 
         statusArrayList.clear()
         entryTimeArrayList.clear()
@@ -370,7 +374,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
 
         path.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                Log.i(TAG2, "The calendar dates arraylist has ${customCalendarDatesArrayList.size} elements.")
+                Log.i(tag2, "The calendar dates arraylist has ${customCalendarDatesArrayList.size} elements.")
                 for (day in 1..customCalendarDatesArrayList.size) { //search range across a month
                     dayString = if (day < 10){
                         "0$day"
@@ -379,7 +383,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
                     }
                     date = "$year-$month-$dayString" //"$chosenYear-$chosenMonth-$chosenDay"
                     if(snapshot.child("$date/Internship/$studId").exists()) {
-                        Log.i(TAG2, "Attendance found on $date")
+                        Log.i(tag2, "Attendance found on $date")
                         status = snapshot.child("$date/Internship/$studId/Status").value.toString()
                         if (status != "MC") {
                             statusArrayList.add(status)
@@ -393,7 +397,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
                         }
                     }
                     else {
-                        Log.i(TAG2, "Date record not found.")
+                        Log.i(tag2, "Date record not found.")
                         statusArrayList.add("Absent")
                         entryTimeArrayList.add("")
                         leaveTimeArrayList.add("")
@@ -403,7 +407,7 @@ class NpisStudentDataHome : AppCompatActivity(), DatePickerDialog.OnDateSetListe
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG2, "Unable to query database.")
+                Log.w(tag2, "Unable to query database.")
             }
         }  )
     }

@@ -15,7 +15,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.intern_log.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import kotlin.math.log
+
 /*
 1. Calls fetchKey function. FetchKey function works by querying the user profile for a log uid key on the current date.
 If key is found:

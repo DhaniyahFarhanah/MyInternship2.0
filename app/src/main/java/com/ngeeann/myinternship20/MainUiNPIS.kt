@@ -3,6 +3,7 @@ package com.ngeeann.myinternship20
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -15,6 +16,7 @@ import kotlinx.android.synthetic.main.ui_npis_main.*
 class MainUiNPIS : AppCompatActivity() {
     private val database = Firebase.database
     lateinit var userId: String
+    val TAG = "NPIS Menu"
     var studentName: ArrayList<String?> = arrayListOf()
     var studentId: ArrayList<String> = arrayListOf()
 
@@ -64,7 +66,7 @@ class MainUiNPIS : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                Log.w(TAG,"Failed to query database.")
             }
         })
     }

@@ -3,6 +3,7 @@ package com.ngeeann.myinternship20
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -54,6 +55,7 @@ class MainUiStudent : AppCompatActivity() {
 
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(baseContext,"Unable to connect to the server.", Toast.LENGTH_SHORT).show()
+                Log.w("Student Menu", "Failed to query database.")
             }
         })
     }
