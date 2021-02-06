@@ -50,7 +50,7 @@ class MainUiIntern : AppCompatActivity() {
 
         path.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val intern = snapshot.getValue<Intern>()
+                val intern = snapshot.getValue<User>()
                 intern?.let{
                     internNameText.text = it.Name + "'s Dashboard"
                     username = it.Name.toString()
@@ -69,25 +69,12 @@ class MainUiIntern : AppCompatActivity() {
         })
     }
 
-    data class Intern(
+    data class User (
         var Course: String? = "",
         var Name: String? = "",
         var StudID: String?= "",
         var School: String? = "",
         var address: String? = "",
         var postal: String? = ""
-    ){
-        /*
-        fun toMap(): Map<String, Any?> {
-            return mapOf(
-                "Course" to Course,
-                "Name" to Name,
-                "StudID" to StudID,
-                "School" to School,
-                "address" to address,
-                "postal" to postal
-            )
-        }
-        */
-    }
+    )
 }

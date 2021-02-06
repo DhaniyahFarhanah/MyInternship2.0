@@ -63,7 +63,7 @@ class StudentAttendance : AppCompatActivity() {
         val date = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE) //Date format: yyyy-MM-dd, 2020-12-25
         val time = LocalTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME) //Time format: 17:12:47
 
-        val weekArray = arrayOf("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday") //array to convert numeral value of
+        val weekArray = arrayOf("", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday") //array to convert numeral value of
         // day of the week to the string name
         val dayOfWeek = weekArray[calendar.get(Calendar.DAY_OF_WEEK)]
         if (userType == "Student") {

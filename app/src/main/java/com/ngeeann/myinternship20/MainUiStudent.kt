@@ -43,7 +43,7 @@ class MainUiStudent : AppCompatActivity() {
         studentNameText.text = userId
         path.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val student = snapshot.getValue<Student>()
+                val student = snapshot.getValue<User>()
                 student?.let{
                     studentNameText.text= it.Name + "'s Dashboard"
                     userName = it.Name.toString()
@@ -60,7 +60,7 @@ class MainUiStudent : AppCompatActivity() {
         })
     }
 
-    data class Student(
+    data class User (
         var Name: String? = "",
         var StudID: String? = "",
         var School: String? = "",

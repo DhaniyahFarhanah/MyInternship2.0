@@ -24,7 +24,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 /*
-Student Personal Attendance /////////Viewer
+Student Personal Attendance Viewer
 1. Selected day chooses which day's attendance records they would like to view
 2. Send a query (querySchedule()) to the database, looking for the user's daily schedule for the selected day of the week and retrieves the values e.g. Tuesday has LNXSR, CCADC & BASRS
     path: users/[userid]/Modules/[day of week] and then initializes values into a list for the day.
@@ -43,8 +43,7 @@ class StudentPersonalDataViewing : AppCompatActivity(), DatePickerDialog.OnDateS
 
     private val cal = Calendar.getInstance()
     private val database = Firebase.database.reference
-    private val tag =
-        "StudentAttendance" //A log tag declaration for debugging usage. Search for "StudentAttendance" in Logcat to find log entries for the program
+    private val tag = "StudentAttendance" //A log tag declaration for debugging usage. Search for "StudentAttendance" in Logcat to find log entries for the program
 
     private var chosenDate = 0
     private var chosenMonth = 0

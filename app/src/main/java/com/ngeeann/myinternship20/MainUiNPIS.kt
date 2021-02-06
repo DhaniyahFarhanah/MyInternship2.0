@@ -41,7 +41,7 @@ class MainUiNPIS : AppCompatActivity() {
         val path = database.getReference("users/$userId")
         path.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val staff = snapshot.getValue<NPIS>()
+                val staff = snapshot.getValue<User>()
                 staff?.let{
                     npisNameText.text = it.Name + "'s Dashboard"
                     npisEmailText.text = it.email
@@ -71,7 +71,7 @@ class MainUiNPIS : AppCompatActivity() {
         })
     }
 
-    data class NPIS(
+    data class User (
             var Name: String? = "",
             var school: String? = "",
             var email: String? = "",

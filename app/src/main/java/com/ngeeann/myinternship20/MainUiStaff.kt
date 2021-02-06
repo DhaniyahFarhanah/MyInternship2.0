@@ -40,7 +40,7 @@ class MainUiStaff : AppCompatActivity() { //TODO add in the putExtra values late
         val path = database.getReference("users/$userId")
         path.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val staff = snapshot.getValue<NPstaff>()
+                val staff = snapshot.getValue<User>()
                 staff?.let{
                     staffNameText.text = it.Name + "'s Dashboard"
                     staffEmailText.text = it.email
@@ -59,7 +59,7 @@ class MainUiStaff : AppCompatActivity() { //TODO add in the putExtra values late
         })
     }
 
-    data class NPstaff (
+    data class User (
         var Name: String? = "",
         var school: String? = "",
         var email: String? = "",

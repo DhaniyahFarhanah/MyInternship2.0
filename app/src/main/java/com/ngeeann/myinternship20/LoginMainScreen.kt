@@ -43,8 +43,8 @@ class LoginMainScreen : AppCompatActivity() {
     }
 
     private fun loginQuery() {
-        val username = idTextBox.text   // pull info from textview
-        val password = passwordTextBox.text.toString()
+        val username = idTextBox.text   // gets string value from the on-screen idTextBox textview
+        val password = passwordTextBox.text.toString() //gets string value from on the on-screen password text box
         val pwRef = database.getReference("users/$username/password")
 
         pwRef.addListenerForSingleValueEvent(object : ValueEventListener {
